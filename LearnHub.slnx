@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/LearnHub.Api/LearnHub.Api.csproj" />
+    <Project Path="src/LearnHub.Application/LearnHub.Application.csproj" />
+    <Project Path="src/LearnHub.Contracts/LearnHub.Contracts.csproj" />
+    <Project Path="src/LearnHub.Domain/LearnHub.Domain.csproj" />
+    <Project Path="src/LearnHub.Infrastructure/LearnHub.Infrastructure.csproj" />
+  </Folder>
+</Solution>

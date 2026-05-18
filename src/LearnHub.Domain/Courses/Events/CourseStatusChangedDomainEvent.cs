@@ -1,5 +1,3 @@
-
-
 using LearnHub.Domain.Common;
 using LearnHub.Domain.Courses.Enums;
 

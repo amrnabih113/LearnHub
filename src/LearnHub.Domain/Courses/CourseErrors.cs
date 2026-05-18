@@ -22,7 +22,7 @@ public static class CourseErrors
 
     public static Error PriceRequired
     => Error.Validation(code: "DomainError.Course.PriceRequired",
-    description: "Course Price is Required");
+    description: "Course price cannot be negative");
 
     public static Error InvalidCourseStatus
     => Error.Validation(code: "DomainError.Course.InvalidCourseStatus",

@@ -63,7 +63,7 @@ public sealed class Course : AuditableEntity
         {
             return CourseErrors.InvalidCourseStatus;
         }
-        if (price <= 0)
+        if (price < 0)
         {
             return CourseErrors.PriceRequired;
         }
@@ -89,7 +89,7 @@ public sealed class Course : AuditableEntity
         {
             return CourseErrors.InvalidCourseStatus;
         }
-        if (price <= 0)
+        if (price < 0)
         {
             return CourseErrors.PriceRequired;
         }

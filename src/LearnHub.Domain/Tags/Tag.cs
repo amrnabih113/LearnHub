@@ -1,4 +1,5 @@
 using LearnHub.Domain.Common;
+using LearnHub.Domain.Common.Results;
 
 namespace LearnHub.Domain.Courses.Tags;
 
@@ -14,16 +15,31 @@ public sealed class Tag : AuditableEntity
         Slug = slug;
     }
 
-    public static Tag Create(string name, string slug)
+    public static Result<Tag> Create(string name, string slug)
     {
-        // Add validation logic for name and slug if needed
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return TagErrors.NameRequired;
+        }
+        if (string.IsNullOrWhiteSpace(slug))
+        {
+            return TagErrors.SlugRequired;
+        }
         return new Tag(name, slug);
     }
 
-    public void Update(string name, string slug)
+    public Result<Updated> Update(string name, string slug)
     {
-        // Add validation logic for name and slug if needed
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return TagErrors.NameRequired;
+        }
+        if (string.IsNullOrWhiteSpace(slug))
+        {
+            return TagErrors.SlugRequired;
+        }
         Name = name;
         Slug = slug;
+        return Result.Updated;
     }
 }

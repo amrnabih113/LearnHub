@@ -16,10 +16,6 @@ public static class ReviewErrors
     => Error.Validation(code: "DomainError.Review.RatingInvalid",
     description: "Rating must be between 1 and 5");
 
-    public static Error TitleRequired
-    => Error.Validation(code: "DomainError.Review.TitleRequired",
-    description: "Review title is required");
-
     public static Error CommentRequired
     => Error.Validation(code: "DomainError.Review.CommentRequired",
     description: "Review comment is required");

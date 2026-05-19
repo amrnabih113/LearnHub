@@ -12,24 +12,22 @@ public sealed class InstructorReview : AuditableEntity
     public string StudentId { get; private set; } = default!;
     public Guid? CourseId { get; private set; }
     public Rating Rating { get; private set; } = default!;
-    public string Title { get; private set; } = default!;
     public string Comment { get; private set; } = default!;
     public ReviewStatus Status { get; private set; }
 
     private InstructorReview() { }
 
-    private InstructorReview(Guid id, string instructorId, string studentId, Guid? courseId, Rating rating, string title, string comment) : base(id)
+    private InstructorReview(Guid id, string instructorId, string studentId, Guid? courseId, Rating rating, string comment) : base(id)
     {
         InstructorId = instructorId;
         StudentId = studentId;
         CourseId = courseId;
         Rating = rating;
-        Title = title;
         Comment = comment;
         Status = ReviewStatus.Draft;
     }
 
-    public static Result<InstructorReview> Create(Guid id, string instructorId, string studentId, Guid? courseId, int rating, string title, string comment)
+    public static Result<InstructorReview> Create(Guid id, string instructorId, string studentId, Guid? courseId, int rating, string comment)
     {
         if (string.IsNullOrWhiteSpace(instructorId))
         {
@@ -39,11 +37,6 @@ public sealed class InstructorReview : AuditableEntity
         if (string.IsNullOrWhiteSpace(studentId))
         {
             return ReviewErrors.StudentIdRequired;
-        }
-
-        if (string.IsNullOrWhiteSpace(title))
-        {
-            return ReviewErrors.TitleRequired;
         }
 
         if (string.IsNullOrWhiteSpace(comment))
@@ -57,7 +50,7 @@ public sealed class InstructorReview : AuditableEntity
             return ratingResult.Errors;
         }
 
-        var review = new InstructorReview(id, instructorId.Trim(), studentId.Trim(), courseId, ratingResult.Value, title.Trim(), comment.Trim());
+        var review = new InstructorReview(id, instructorId.Trim(), studentId.Trim(), courseId, ratingResult.Value, comment.Trim());
         review.AddDomainEvent(new InstructorReviewCreatedDomainEvent(review.Id, review.InstructorId, review.StudentId));
 
         return review;
@@ -77,16 +70,11 @@ public sealed class InstructorReview : AuditableEntity
         return Result.Updated;
     }
 
-    public Result<Updated> Update(int rating, string title, string comment)
+    public Result<Updated> Update(int rating, string comment)
     {
         if (Status != ReviewStatus.Draft)
         {
             return ReviewErrors.NotDraft;
-        }
-
-        if (string.IsNullOrWhiteSpace(title))
-        {
-            return ReviewErrors.TitleRequired;
         }
 
         if (string.IsNullOrWhiteSpace(comment))
@@ -101,7 +89,6 @@ public sealed class InstructorReview : AuditableEntity
         }
 
         Rating = ratingResult.Value;
-        Title = title.Trim();
         Comment = comment.Trim();
         UpdatedAtUtc = DateTimeOffset.UtcNow;
 

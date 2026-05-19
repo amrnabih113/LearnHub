@@ -4,3 +4,10 @@ D:\Amr\C#_projects\LearnHub\src\LearnHub.Domain\obj\Debug\net10.0\LearnHub.Domai
 D:\Amr\C#_projects\LearnHub\src\LearnHub.Domain\obj\Debug\net10.0\LearnHub.Domain.AssemblyInfo.cs
 D:\Amr\C#_projects\LearnHub\src\LearnHub.Domain\obj\Debug\net10.0\LearnHub.Domain.csproj.CoreCompileInputs.cache
 D:\Amr\C#_projects\LearnHub\src\LearnHub.Domain\obj\Debug\net10.0\LearnHub.Domain.sourcelink.json
+D:\Amr\C#_projects\LearnHub\src\LearnHub.Domain\bin\Debug\net10.0\LearnHub.Domain.deps.json
+D:\Amr\C#_projects\LearnHub\src\LearnHub.Domain\bin\Debug\net10.0\LearnHub.Domain.dll
+D:\Amr\C#_projects\LearnHub\src\LearnHub.Domain\bin\Debug\net10.0\LearnHub.Domain.pdb
+D:\Amr\C#_projects\LearnHub\src\LearnHub.Domain\obj\Debug\net10.0\LearnHub.Domain.dll
+D:\Amr\C#_projects\LearnHub\src\LearnHub.Domain\obj\Debug\net10.0\refint\LearnHub.Domain.dll
+D:\Amr\C#_projects\LearnHub\src\LearnHub.Domain\obj\Debug\net10.0\LearnHub.Domain.pdb
+D:\Amr\C#_projects\LearnHub\src\LearnHub.Domain\obj\Debug\net10.0\ref\LearnHub.Domain.dll

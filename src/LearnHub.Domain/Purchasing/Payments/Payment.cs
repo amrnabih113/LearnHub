@@ -1,4 +1,5 @@
 using LearnHub.Domain.Common;
+using LearnHub.Domain.Common.Enums;
 using LearnHub.Domain.Common.Results;
 using LearnHub.Domain.Purchasing.Enums;
 using LearnHub.Domain.Purchasing.Events;
@@ -19,6 +20,9 @@ public sealed class Payment : AuditableEntity
     public DateTimeOffset? SucceededAtUtc { get; private set; }
     public DateTimeOffset? FailedAtUtc { get; private set; }
     public DateTimeOffset? RefundedAtUtc { get; private set; }
+
+    // EF navigation
+    public Orders.Order? Order { get; private set; }
 
     private Payment() { }
 

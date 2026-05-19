@@ -4,6 +4,7 @@ using LearnHub.Domain.Common.Results;
 using LearnHub.Domain.Identity;
 using LearnHub.Domain.Courses.Events;
 using LearnHub.Domain.Courses.Enums;
+using LearnHub.Domain.Subscriptions;
 using LearnHub.Domain.Purchasing.ValueObjects;
 using LearnHub.Domain.Courses.Sections;
 using LearnHub.Domain.Classification.Tags;
@@ -27,6 +28,8 @@ public sealed class Course : AuditableEntity
     public IEnumerable<Section> Sections => _sections.AsReadOnly();
     public string? ThumbnailUrl { get; private set; }
     public string? Language { get; private set; }
+    public bool IsIncludedInSubscription { get; private set; }
+    public SubscriptionTier RequiredSubscriptionTier { get; private set; }
 
     public CourseLevel Level { get; private set; }
     public CourseStatus Status { get; private set; }
@@ -35,7 +38,7 @@ public sealed class Course : AuditableEntity
 
     private Course() { }
 
-    private Course(Guid id, string title, string description, string instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, string language, string? country) : base(id)
+    private Course(Guid id, string title, string description, string instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, bool isIncludedInSubscription, SubscriptionTier requiredSubscriptionTier, string language, string? country) : base(id)
     {
         Title = title;
         Description = description;
@@ -45,11 +48,13 @@ public sealed class Course : AuditableEntity
         Level = level;
         Status = status;
         Price = price;
+        IsIncludedInSubscription = isIncludedInSubscription;
+        RequiredSubscriptionTier = requiredSubscriptionTier;
         Language = language;
         Country = country;
     }
 
-    public static Result<Course> Create(Guid id, string title, string description, string instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, string language, string? country)
+    public static Result<Course> Create(Guid id, string title, string description, string instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, bool isIncludedInSubscription, SubscriptionTier requiredSubscriptionTier, string language, string? country)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -84,10 +89,15 @@ public sealed class Course : AuditableEntity
             return CourseErrors.LanguageRequired;
         }
 
-        return new Course(id, title, description, instructorId, categoryId, thumbnailUrl, level, status, price, language, country);
+        if (!Enum.IsDefined(typeof(SubscriptionTier), requiredSubscriptionTier))
+        {
+            return CourseErrors.InvalidSubscriptionTier;
+        }
+
+        return new Course(id, title, description, instructorId, categoryId, thumbnailUrl, level, status, price, isIncludedInSubscription, requiredSubscriptionTier, language, country);
     }
 
-    public Result<Updated> Update(string title, string description, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, string language, string? country)
+    public Result<Updated> Update(string title, string description, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, bool isIncludedInSubscription, SubscriptionTier requiredSubscriptionTier, string language, string? country)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -118,11 +128,18 @@ public sealed class Course : AuditableEntity
             return CourseErrors.LanguageRequired;
         }
 
+        if (!Enum.IsDefined(typeof(SubscriptionTier), requiredSubscriptionTier))
+        {
+            return CourseErrors.InvalidSubscriptionTier;
+        }
+
         Title = title;
         Description = description;
         CategoryId = categoryId;
         ThumbnailUrl = thumbnailUrl;
         Level = level;
+        IsIncludedInSubscription = isIncludedInSubscription;
+        RequiredSubscriptionTier = requiredSubscriptionTier;
         if (Status != status)
         {
             var statusChangeResult = ChangeStatus(status);

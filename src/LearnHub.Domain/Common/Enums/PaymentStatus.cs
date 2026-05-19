@@ -1,4 +1,4 @@
-namespace LearnHub.Domain.Purchasing.Enums;
+namespace LearnHub.Domain.Common.Enums;
 
 public enum PaymentStatus
 {

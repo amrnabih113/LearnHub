@@ -26,6 +26,9 @@ public sealed class Order : AuditableEntity
     private readonly List<OrderItem> _items = [];
     public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
 
+    private readonly List<Payments.Payment> _payments = new();
+    public IReadOnlyCollection<Payments.Payment> Payments => _payments.AsReadOnly();
+
     private Order() { }
 
     private Order(Guid id, string studentId, string currency) : base(id)

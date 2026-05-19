@@ -36,4 +36,8 @@ public static class CourseErrors
     => Error.Validation(code: "DomainError.Course.LanguageRequired",
     description: "Course language is required");
 
+    public static Error InvalidSubscriptionTier
+    => Error.Validation(code: "DomainError.Course.InvalidSubscriptionTier",
+    description: "Required subscription tier is invalid");
+
 }

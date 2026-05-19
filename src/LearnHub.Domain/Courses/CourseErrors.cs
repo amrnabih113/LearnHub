@@ -32,4 +32,8 @@ public static class CourseErrors
     => Error.Validation(code: "DomainError.Course.SectionsRequired",
     description: "Course sections are required");
 
+    public static Error LanguageRequired
+    => Error.Validation(code: "DomainError.Course.LanguageRequired",
+    description: "Course language is required");
+
 }

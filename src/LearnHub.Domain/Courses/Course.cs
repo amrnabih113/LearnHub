@@ -4,8 +4,9 @@ using LearnHub.Domain.Common.Results;
 using LearnHub.Domain.Identity;
 using LearnHub.Domain.Courses.Events;
 using LearnHub.Domain.Courses.Enums;
-using LearnHub.Domain.Courses.Tags;
 using LearnHub.Domain.Courses.Sections;
+using LearnHub.Domain.Classification.Tags;
+using LearnHub.Domain.Classification.Categories;
 
 namespace LearnHub.Domain.Courses;
 
@@ -14,14 +15,18 @@ public sealed class Course : AuditableEntity
     public string? Title { get; private set; }
     public string? Description { get; private set; }
     public string? InstructorId { get; private set; }
+    public Guid CategoryId { get; private set; }
     public User? Instructor { get; private set; }
-
+    private readonly List<Guid> _tagIds = [];
+    public IReadOnlyCollection<Guid> TagIds => _tagIds.AsReadOnly();
     private readonly List<Tag> _tags = [];
-    public IEnumerable<Tag> Tags => _tags.AsReadOnly();
-
+    public IReadOnlyCollection<Tag> Tags => _tags.AsReadOnly();
+    public Category? Category { get; private set; }
     private readonly List<Section> _sections = [];
     public IEnumerable<Section> Sections => _sections.AsReadOnly();
     public string? ThumbnailUrl { get; private set; }
+    public string? Language { get; private set; }
+
     public CourseLevel Level { get; private set; }
     public CourseStatus Status { get; private set; }
     public decimal Price { get; private set; }
@@ -29,19 +34,21 @@ public sealed class Course : AuditableEntity
 
     private Course() { }
 
-    private Course(Guid id, string title, string description, string instructorId, string? thumbnailUrl, CourseLevel level, CourseStatus status, decimal price, string? country) : base(id)
+    private Course(Guid id, string title, string description, string instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, decimal price, string language, string? country) : base(id)
     {
         Title = title;
         Description = description;
         InstructorId = instructorId;
+        CategoryId = categoryId;
         ThumbnailUrl = thumbnailUrl;
         Level = level;
         Status = status;
         Price = price;
+        Language = language;
         Country = country;
     }
 
-    public static Result<Course> Create(Guid id, string title, string description, string instructorId, string? thumbnailUrl, CourseLevel level, CourseStatus status, decimal price, string? country)
+    public static Result<Course> Create(Guid id, string title, string description, string instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, decimal price, string language, string? country)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -55,6 +62,10 @@ public sealed class Course : AuditableEntity
         {
             return CourseErrors.InstructorIdRequired;
         }
+        if (categoryId == Guid.Empty)
+        {
+            return CourseClassificationErrors.CategoryIdRequired;
+        }
         if (!Enum.IsDefined(typeof(CourseLevel), level))
         {
             return CourseErrors.InvalidCourseLevel;
@@ -67,11 +78,15 @@ public sealed class Course : AuditableEntity
         {
             return CourseErrors.PriceRequired;
         }
+        if (string.IsNullOrWhiteSpace(language))
+        {
+            return CourseErrors.LanguageRequired;
+        }
 
-        return new Course(id, title, description, instructorId, thumbnailUrl, level, status, price, country);
+        return new Course(id, title, description, instructorId, categoryId, thumbnailUrl, level, status, price, language, country);
     }
 
-    public Result<Updated> Update(string title, string description, string? thumbnailUrl, CourseLevel level, CourseStatus status, decimal price, string? country)
+    public Result<Updated> Update(string title, string description, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, decimal price, string language, string? country)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -81,6 +96,10 @@ public sealed class Course : AuditableEntity
         {
             return CourseErrors.DescriptionRequired;
         }
+        if (categoryId == Guid.Empty)
+        {
+            return CourseClassificationErrors.CategoryIdRequired;
+        }
         if (!Enum.IsDefined(typeof(CourseLevel), level))
         {
             return CourseErrors.InvalidCourseLevel;
@@ -93,9 +112,14 @@ public sealed class Course : AuditableEntity
         {
             return CourseErrors.PriceRequired;
         }
+        if (string.IsNullOrWhiteSpace(language))
+        {
+            return CourseErrors.LanguageRequired;
+        }
 
         Title = title;
         Description = description;
+        CategoryId = categoryId;
         ThumbnailUrl = thumbnailUrl;
         Level = level;
         if (Status != status)
@@ -107,9 +131,66 @@ public sealed class Course : AuditableEntity
             }
         }
         Price = price;
+        Language = language;
         Country = country;
         UpdatedAtUtc = DateTimeOffset.UtcNow;
 
+        return Result.Updated;
+    }
+
+    public Result<Updated> ChangeCategory(Guid categoryId)
+    {
+        if (categoryId == Guid.Empty)
+        {
+            return CourseClassificationErrors.CategoryIdRequired;
+        }
+
+        if (CategoryId == categoryId)
+        {
+            return Result.Updated;
+        }
+
+        CategoryId = categoryId;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+        return Result.Updated;
+    }
+
+    public Result<Updated> AddTag(Guid tagId, int maxTags = 10)
+    {
+        if (tagId == Guid.Empty)
+        {
+            return CourseClassificationErrors.TagIdRequired;
+        }
+
+        if (_tagIds.Contains(tagId))
+        {
+            return CourseClassificationErrors.TagAlreadyAssigned;
+        }
+
+        if (_tagIds.Count >= maxTags)
+        {
+            return CourseClassificationErrors.TagLimitReached;
+        }
+
+        _tagIds.Add(tagId);
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+
+        return Result.Updated;
+    }
+
+    public Result<Updated> RemoveTag(Guid tagId)
+    {
+        if (tagId == Guid.Empty)
+        {
+            return CourseClassificationErrors.TagIdRequired;
+        }
+
+        if (!_tagIds.Remove(tagId))
+        {
+            return CourseClassificationErrors.TagNotFound;
+        }
+
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
         return Result.Updated;
     }
 

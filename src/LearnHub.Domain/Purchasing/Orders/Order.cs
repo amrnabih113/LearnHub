@@ -21,7 +21,7 @@ public sealed class Order : AuditableEntity
     public DateTimeOffset? RefundedAtUtc { get; private set; }
     public string? FailureReason { get; private set; }
     public string? RefundReason { get; private set; }
-    public TransactionId? TransactionId { get; private set; }
+    public string? TransactionId { get; private set; }
 
     private readonly List<OrderItem> _items = [];
     public IReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
@@ -56,7 +56,7 @@ public sealed class Order : AuditableEntity
         return order;
     }
 
-    public Result<Updated> AddItem(Guid courseId, string courseTitle, Money coursePriceSnapshot, int quantity = 1)
+    public Result<Updated> AddItem(Guid courseId, string courseTitle, Money coursePriceSnapshot)
     {
         if (Status != OrderStatus.Draft)
         {
@@ -78,7 +78,7 @@ public sealed class Order : AuditableEntity
             return OrderErrors.InvalidCurrency;
         }
 
-        var createResult = OrderItem.Create(Guid.NewGuid(), courseId, courseTitle, coursePriceSnapshot, quantity);
+        var createResult = OrderItem.Create(Guid.NewGuid(), courseId, courseTitle, coursePriceSnapshot);
         if (createResult.IsError)
         {
             return createResult.Errors;
@@ -168,7 +168,7 @@ public sealed class Order : AuditableEntity
         return Result.Updated;
     }
 
-    public Result<Updated> MarkPaid(TransactionId transactionId, DateTimeOffset paidAtUtc)
+    public Result<Updated> MarkPaid(string transactionId, DateTimeOffset paidAtUtc)
     {
         if (Status == OrderStatus.Paid)
         {

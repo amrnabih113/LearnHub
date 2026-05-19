@@ -4,6 +4,7 @@ using LearnHub.Domain.Common.Results;
 using LearnHub.Domain.Identity;
 using LearnHub.Domain.Courses.Events;
 using LearnHub.Domain.Courses.Enums;
+using LearnHub.Domain.Purchasing.ValueObjects;
 using LearnHub.Domain.Courses.Sections;
 using LearnHub.Domain.Classification.Tags;
 using LearnHub.Domain.Classification.Categories;
@@ -29,12 +30,12 @@ public sealed class Course : AuditableEntity
 
     public CourseLevel Level { get; private set; }
     public CourseStatus Status { get; private set; }
-    public decimal Price { get; private set; }
+    public Money Price { get; private set; } = null!;
     public string? Country { get; private set; }
 
     private Course() { }
 
-    private Course(Guid id, string title, string description, string instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, decimal price, string language, string? country) : base(id)
+    private Course(Guid id, string title, string description, string instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, string language, string? country) : base(id)
     {
         Title = title;
         Description = description;
@@ -48,7 +49,7 @@ public sealed class Course : AuditableEntity
         Country = country;
     }
 
-    public static Result<Course> Create(Guid id, string title, string description, string instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, decimal price, string language, string? country)
+    public static Result<Course> Create(Guid id, string title, string description, string instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, string language, string? country)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -74,7 +75,7 @@ public sealed class Course : AuditableEntity
         {
             return CourseErrors.InvalidCourseStatus;
         }
-        if (price < 0)
+        if (price is null)
         {
             return CourseErrors.PriceRequired;
         }
@@ -86,7 +87,7 @@ public sealed class Course : AuditableEntity
         return new Course(id, title, description, instructorId, categoryId, thumbnailUrl, level, status, price, language, country);
     }
 
-    public Result<Updated> Update(string title, string description, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, decimal price, string language, string? country)
+    public Result<Updated> Update(string title, string description, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, string language, string? country)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -108,7 +109,7 @@ public sealed class Course : AuditableEntity
         {
             return CourseErrors.InvalidCourseStatus;
         }
-        if (price < 0)
+        if (price is null)
         {
             return CourseErrors.PriceRequired;
         }

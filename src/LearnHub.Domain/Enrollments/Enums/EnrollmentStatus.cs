@@ -1,7 +1,7 @@
 namespace LearnHub.Domain.Enrollments.Enums;
 public enum EnrollmentStatus
 {
-    Active,
+Active,
     Completed,
     Dropped
 }

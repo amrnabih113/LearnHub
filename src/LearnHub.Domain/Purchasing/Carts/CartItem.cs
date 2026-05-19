@@ -12,19 +12,16 @@ public sealed class CartItem : AuditableEntity
 
     public Money UnitPrice { get; private set; } = null!;
 
-    public int Quantity { get; private set; }
-
     private CartItem() { }
 
-    private CartItem(Guid id, Guid courseId, string courseTitle, Money unitPrice, int quantity) : base(id)
+    private CartItem(Guid id, Guid courseId, string courseTitle, Money unitPrice) : base(id)
     {
         CourseId = courseId;
         CourseTitle = courseTitle.Trim();
         UnitPrice = unitPrice;
-        Quantity = quantity;
     }
 
-    public static Result<CartItem> Create(Guid id, Guid courseId, string courseTitle, Money unitPrice, int quantity)
+    public static Result<CartItem> Create(Guid id, Guid courseId, string courseTitle, Money unitPrice)
     {
         if (courseId == Guid.Empty)
         {
@@ -36,25 +33,8 @@ public sealed class CartItem : AuditableEntity
             return CartErrors.CourseTitleRequired;
         }
 
-        if (quantity <= 0)
-        {
-            return CartErrors.QuantityInvalid;
-        }
-
-        return new CartItem(id, courseId, courseTitle, unitPrice, quantity);
+        return new CartItem(id, courseId, courseTitle, unitPrice);
     }
 
-    public Result<Updated> UpdateQuantity(int quantity)
-    {
-        if (quantity <= 0)
-        {
-            return CartErrors.QuantityInvalid;
-        }
-
-        Quantity = quantity;
-        UpdatedAtUtc = DateTimeOffset.UtcNow;
-        return Result.Updated;
-    }
-
-    public Money Total() => UnitPrice.Multiply(Quantity);
+    public Money Total() => UnitPrice;
 }

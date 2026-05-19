@@ -195,6 +195,7 @@ public sealed class Enrollment : AuditableEntity
         var certificateResult = Certificate.Create(
             Guid.NewGuid(),
             Id,
+            StudentId,
             $"CERT-{CourseId:N}-{Id:N}"[..32]);
 
         if (certificateResult.IsSuccess)

@@ -12,7 +12,7 @@ public sealed class Payment : AuditableEntity
     public PaymentProvider Provider { get; private set; }
     public Money Amount { get; private set; } = default!;
     public PaymentStatus Status { get; private set; }
-    public TransactionId? TransactionId { get; private set; }
+    public string? TransactionId { get; private set; }
     public string? ProviderReference { get; private set; }
     public string? FailureReason { get; private set; }
     public string? RefundReason { get; private set; }
@@ -30,7 +30,10 @@ public sealed class Payment : AuditableEntity
         Status = PaymentStatus.Initiated;
     }
 
-    public static Result<Payment> Create(Guid id, Guid orderId, PaymentProvider provider, Money amount)
+    public static Result<Payment> Create(Guid id,
+                                         Guid orderId,
+                                         PaymentProvider provider,
+                                         Money amount)
     {
         if (orderId == Guid.Empty)
         {
@@ -50,7 +53,7 @@ public sealed class Payment : AuditableEntity
         return new Payment(id, orderId, provider, amount);
     }
 
-    public Result<Updated> MarkSucceeded(TransactionId transactionId, string providerReference, DateTimeOffset succeededAtUtc)
+    public Result<Updated> MarkSucceeded(string transactionId, string providerReference, DateTimeOffset succeededAtUtc)
     {
         if (Status == PaymentStatus.Succeeded)
         {
@@ -67,7 +70,7 @@ public sealed class Payment : AuditableEntity
         Status = PaymentStatus.Succeeded;
         SucceededAtUtc = succeededAtUtc;
         UpdatedAtUtc = succeededAtUtc;
-        AddDomainEvent(new PaymentSucceededDomainEvent(Id, OrderId, transactionId.Value));
+        AddDomainEvent(new PaymentSucceededDomainEvent(Id, OrderId, transactionId));
         return Result.Updated;
     }
 

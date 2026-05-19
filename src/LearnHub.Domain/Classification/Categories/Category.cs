@@ -1,4 +1,3 @@
-using LearnHub.Domain.Classification.Enums;
 using LearnHub.Domain.Common;
 using LearnHub.Domain.Common.Results;
 
@@ -10,7 +9,6 @@ public sealed class Category : AuditableEntity
     public string Slug { get; private set; } = default!;
     public string? Description { get; private set; }
     public Guid? ParentCategoryId { get; private set; }
-    public CategoryStatus Status { get; private set; }
 
     private Category() { }
 
@@ -20,7 +18,6 @@ public sealed class Category : AuditableEntity
         Slug = slug;
         Description = description;
         ParentCategoryId = parentCategoryId;
-        Status = CategoryStatus.Active;
     }
 
     public static Result<Category> Create(Guid id, string name, string slug, string? description = null, Guid? parentCategoryId = null)
@@ -45,10 +42,6 @@ public sealed class Category : AuditableEntity
 
     public Result<Updated> Rename(string name, string slug, string? description = null)
     {
-        if (Status != CategoryStatus.Active)
-        {
-            return CategoryErrors.NotActive;
-        }
 
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -69,10 +62,6 @@ public sealed class Category : AuditableEntity
 
     public Result<Updated> ChangeParent(Guid? parentCategoryId, IReadOnlyCollection<Guid>? ancestorCategoryIds = null)
     {
-        if (Status != CategoryStatus.Active)
-        {
-            return CategoryErrors.NotActive;
-        }
 
         if (parentCategoryId.HasValue && parentCategoryId.Value == Id)
         {
@@ -89,17 +78,6 @@ public sealed class Category : AuditableEntity
         return Result.Updated;
     }
 
-    public Result<Updated> Archive()
-    {
-        if (Status == CategoryStatus.Archived)
-        {
-            return CategoryErrors.AlreadyArchived;
-        }
-
-        Status = CategoryStatus.Archived;
-        UpdatedAtUtc = DateTimeOffset.UtcNow;
-        return Result.Updated;
-    }
 
     private static string NormalizeSlug(string value)
     {

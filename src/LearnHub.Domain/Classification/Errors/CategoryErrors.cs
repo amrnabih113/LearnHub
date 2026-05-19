@@ -19,12 +19,4 @@ public static class CategoryErrors
     public static Error HierarchyInvalid
     => Error.Conflict(code: "DomainError.Category.HierarchyInvalid",
     description: "Category hierarchy is invalid");
-
-    public static Error NotActive
-    => Error.Conflict(code: "DomainError.Category.NotActive",
-    description: "Only active categories can be changed");
-
-    public static Error AlreadyArchived
-    => Error.Conflict(code: "DomainError.Category.AlreadyArchived",
-    description: "Category is already archived");
 }

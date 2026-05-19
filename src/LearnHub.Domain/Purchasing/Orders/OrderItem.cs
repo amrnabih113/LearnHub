@@ -9,19 +9,17 @@ public sealed class OrderItem : AuditableEntity
     public Guid CourseId { get; private set; }
     public string CourseTitle { get; private set; } = default!;
     public Money UnitPriceSnapshot { get; private set; } = default!;
-    public int Quantity { get; private set; }
 
     private OrderItem() { }
 
-    private OrderItem(Guid id, Guid courseId, string courseTitle, Money unitPriceSnapshot, int quantity) : base(id)
+    private OrderItem(Guid id, Guid courseId, string courseTitle, Money unitPriceSnapshot) : base(id)
     {
         CourseId = courseId;
         CourseTitle = courseTitle;
         UnitPriceSnapshot = unitPriceSnapshot;
-        Quantity = quantity;
     }
 
-    public static Result<OrderItem> Create(Guid id, Guid courseId, string courseTitle, Money unitPriceSnapshot, int quantity)
+    public static Result<OrderItem> Create(Guid id, Guid courseId, string courseTitle, Money unitPriceSnapshot)
     {
         if (courseId == Guid.Empty)
         {
@@ -33,25 +31,8 @@ public sealed class OrderItem : AuditableEntity
             return OrderErrors.ItemNotFound;
         }
 
-        if (quantity <= 0)
-        {
-            return OrderErrors.InvalidDiscount;
-        }
-
-        return new OrderItem(id, courseId, courseTitle.Trim(), unitPriceSnapshot, quantity);
+        return new OrderItem(id, courseId, courseTitle.Trim(), unitPriceSnapshot);
     }
 
-    public Result<Updated> UpdateQuantity(int quantity)
-    {
-        if (quantity <= 0)
-        {
-            return OrderErrors.InvalidDiscount;
-        }
-
-        Quantity = quantity;
-        UpdatedAtUtc = DateTimeOffset.UtcNow;
-        return Result.Updated;
-    }
-
-    public Money LineTotal => UnitPriceSnapshot.Multiply(Quantity);
+    public Money LineTotal => UnitPriceSnapshot;
 }

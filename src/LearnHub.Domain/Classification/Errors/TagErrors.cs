@@ -11,12 +11,4 @@ public static class TagErrors
     public static Error SlugRequired
     => Error.Validation(code: "DomainError.Tag.SlugRequired",
     description: "Tag slug is required");
-
-    public static Error NotActive
-    => Error.Conflict(code: "DomainError.Tag.NotActive",
-    description: "Only active tags can be changed");
-
-    public static Error AlreadyArchived
-    => Error.Conflict(code: "DomainError.Tag.AlreadyArchived",
-    description: "Tag is already archived");
 }

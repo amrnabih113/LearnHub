@@ -7,7 +7,7 @@ namespace LearnHub.Domain.Purchasing.Coupons;
 
 public sealed class Coupon : AuditableEntity
 {
-    public CouponCode Code { get; private set; } = default!;
+    public string Code { get; private set; } = default!;
     public DiscountType DiscountType { get; private set; }
     public decimal DiscountValue { get; private set; }
     public string Currency { get; private set; } = default!;
@@ -21,7 +21,7 @@ public sealed class Coupon : AuditableEntity
 
     private Coupon() { }
 
-    private Coupon(Guid id, CouponCode code, DiscountType discountType, decimal discountValue, string currency, DateTimeOffset? expiresAtUtc, int? maxRedemptions) : base(id)
+    private Coupon(Guid id, string code, DiscountType discountType, decimal discountValue, string currency, DateTimeOffset? expiresAtUtc, int? maxRedemptions) : base(id)
     {
         Code = code;
         DiscountType = discountType;
@@ -34,11 +34,12 @@ public sealed class Coupon : AuditableEntity
 
     public static Result<Coupon> Create(Guid id, string code, DiscountType discountType, decimal discountValue, string currency, DateTimeOffset? expiresAtUtc = null, int? maxRedemptions = null, IEnumerable<Guid>? allowedCourseIds = null)
     {
-        var codeResult = CouponCode.Create(code);
-        if (codeResult.IsError)
+        if (string.IsNullOrWhiteSpace(code))
         {
-            return codeResult.Errors;
+            return CouponErrors.CodeRequired;
         }
+
+        var normalizedCode = code.Trim().ToUpperInvariant();
 
         if (!Enum.IsDefined(typeof(DiscountType), discountType))
         {
@@ -71,7 +72,7 @@ public sealed class Coupon : AuditableEntity
             return CouponErrors.Expired;
         }
 
-        var coupon = new Coupon(id, codeResult.Value, discountType, discountValue, normalizedCurrency, expiresAtUtc, maxRedemptions);
+        var coupon = new Coupon(id, normalizedCode, discountType, discountValue, normalizedCurrency, expiresAtUtc, maxRedemptions);
         if (allowedCourseIds is not null)
         {
             coupon._allowedCourseIds.AddRange(allowedCourseIds.Where(courseId => courseId != Guid.Empty));
@@ -121,8 +122,8 @@ public sealed class Coupon : AuditableEntity
         return Result.Updated;
     }
 
-    public CouponSnapshot ToSnapshot(bool isTemporaryFreeVoucher = false)
+    public CouponSnapshot ToSnapshot()
     {
-        return new CouponSnapshot(Code, DiscountType, DiscountValue, Currency, ExpiresAtUtc, isTemporaryFreeVoucher);
+        return new CouponSnapshot(Code, DiscountType, DiscountValue, Currency, ExpiresAtUtc);
     }
 }

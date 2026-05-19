@@ -1,4 +1,3 @@
-using LearnHub.Domain.Classification.Enums;
 using LearnHub.Domain.Common;
 using LearnHub.Domain.Common.Results;
 
@@ -9,7 +8,6 @@ public sealed class Tag : AuditableEntity
     public string Name { get; private set; } = default!;
     public string Slug { get; private set; } = default!;
     public string? Description { get; private set; }
-    public TagStatus Status { get; private set; }
 
     private Tag() { }
 
@@ -18,7 +16,6 @@ public sealed class Tag : AuditableEntity
         Name = name;
         Slug = slug;
         Description = description;
-        Status = TagStatus.Active;
     }
 
     public static Result<Tag> Create(Guid id, string name, string slug, string? description = null)
@@ -38,10 +35,7 @@ public sealed class Tag : AuditableEntity
 
     public Result<Updated> Rename(string name, string slug, string? description = null)
     {
-        if (Status != TagStatus.Active)
-        {
-            return TagErrors.NotActive;
-        }
+        
 
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -60,17 +54,7 @@ public sealed class Tag : AuditableEntity
         return Result.Updated;
     }
 
-    public Result<Updated> Archive()
-    {
-        if (Status == TagStatus.Archived)
-        {
-            return TagErrors.AlreadyArchived;
-        }
 
-        Status = TagStatus.Archived;
-        UpdatedAtUtc = DateTimeOffset.UtcNow;
-        return Result.Updated;
-    }
 
     private static string NormalizeSlug(string value)
     {

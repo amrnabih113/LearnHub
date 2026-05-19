@@ -3,12 +3,12 @@ using LearnHub.Domain.Purchasing.Enums;
 namespace LearnHub.Domain.Purchasing.ValueObjects;
 
 public sealed record CouponSnapshot(
-    CouponCode Code,
+    string Code,
     DiscountType DiscountType,
     decimal DiscountValue,
     string Currency,
-    DateTimeOffset? ExpiresAtUtc,
-    bool IsTemporaryFreeVoucher)
+    DateTimeOffset? ExpiresAtUtc
+   )
 {
     public bool IsExpired(DateTimeOffset nowUtc)
         => ExpiresAtUtc.HasValue && nowUtc >= ExpiresAtUtc.Value;

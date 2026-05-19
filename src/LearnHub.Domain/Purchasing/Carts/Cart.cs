@@ -36,7 +36,7 @@ public sealed class Cart : AuditableEntity
         return new Cart(id, studentId, currency);
     }
 
-    public Result<Updated> AddItem(Guid courseId, string courseTitle, Money unitPrice, int quantity = 1)
+    public Result<Updated> AddItem(Guid courseId, string courseTitle, Money unitPrice)
     {
         if (courseId == Guid.Empty)
         {
@@ -48,11 +48,6 @@ public sealed class Cart : AuditableEntity
             return CartErrors.CourseTitleRequired;
         }
 
-        if (quantity <= 0)
-        {
-            return CartErrors.QuantityInvalid;
-        }
-
         if (!string.Equals(unitPrice.Currency, Currency, StringComparison.OrdinalIgnoreCase))
         {
             return CartErrors.InvalidCurrency;
@@ -61,17 +56,10 @@ public sealed class Cart : AuditableEntity
         var existing = _items.FirstOrDefault(i => i.CourseId == courseId);
         if (existing is not null)
         {
-            var updateResult = existing.UpdateQuantity(existing.Quantity + quantity);
-            if (updateResult.IsError)
-            {
-                return updateResult.Errors;
-            }
-
-            UpdatedAtUtc = DateTimeOffset.UtcNow;
-            return Result.Updated;
+            return CartErrors.ItemAlreadyAdded;
         }
 
-        var createResult = CartItem.Create(Guid.NewGuid(), courseId, courseTitle, unitPrice, quantity);
+        var createResult = CartItem.Create(Guid.NewGuid(), courseId, courseTitle, unitPrice);
         if (createResult.IsError)
         {
             return createResult.Errors;
@@ -99,34 +87,7 @@ public sealed class Cart : AuditableEntity
         return Result.Updated;
     }
 
-    public Result<Updated> UpdateQuantity(Guid courseId, int quantity)
-    {
-        if (courseId == Guid.Empty)
-        {
-            return CartErrors.CourseIdRequired;
-        }
 
-        var existing = _items.FirstOrDefault(i => i.CourseId == courseId);
-        if (existing is null)
-        {
-            return CartErrors.ItemNotFound;
-        }
-
-        if (quantity <= 0)
-        {
-            // Remove when quantity set to 0 or negative
-            return RemoveItem(courseId);
-        }
-
-        var updateResult = existing.UpdateQuantity(quantity);
-        if (updateResult.IsError)
-        {
-            return updateResult.Errors;
-        }
-
-        UpdatedAtUtc = DateTimeOffset.UtcNow;
-        return Result.Updated;
-    }
 
     public Result<Money> GetTotal()
     {

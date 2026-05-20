@@ -14,8 +14,11 @@ public class User : AuditableEntity
     public string LastName { get; private set; } = default!;
     public string FullName => $"{FirstName} {LastName}";
 
+    public string PasswordHash { get; private set; } = default!;
     public string PhoneNumber { get; private set; } = default!;
     public string Email { get; private set; } = default!;
+
+    public bool IsEmailVerified { get; private set; } = false;
     public List<Role> Roles { get; private set; } = [];
     public string? ImageUrl { get; private set; } = default!;
     public DateOnly? DateOfBirth { get; private set; }
@@ -24,13 +27,15 @@ public class User : AuditableEntity
 
     private User() { }
 
-    private User(Guid id, string firstName, string lastName, string email, string phoneNumber, Role role, string? imageUrl = null, DateOnly? dateOfBirth = null, string? bio = null, string? country = null)
+    private User(Guid id, string firstName, string lastName, string email, string passwordHash, string phoneNumber, Role role, string? imageUrl = null, DateOnly? dateOfBirth = null, string? bio = null, string? country = null)
     : base(id)
     {
         FirstName = firstName;
         LastName = lastName;
         Email = email;
+        PasswordHash = passwordHash;
         PhoneNumber = phoneNumber;
+        IsEmailVerified = false;
         Roles.Add(role);
         ImageUrl = imageUrl;
         DateOfBirth = dateOfBirth;
@@ -38,7 +43,7 @@ public class User : AuditableEntity
         Country = country;
     }
 
-    public static Result<User> Create(Guid id, string firstName, string lastName, string email, string phoneNumber, Role role, string? imageUrl = null, DateOnly? dateOfBirth = null, string? bio = null, string? country = null)
+    public static Result<User> Create(Guid id, string firstName, string lastName, string email, string passwordHash, string phoneNumber, Role role, string? imageUrl = null, DateOnly? dateOfBirth = null, string? bio = null, string? country = null)
     {
         if (string.IsNullOrWhiteSpace(firstName))
         {
@@ -51,6 +56,10 @@ public class User : AuditableEntity
         if (string.IsNullOrWhiteSpace(email))
         {
             return UserErrors.EmailRequired;
+        }
+        if (string.IsNullOrWhiteSpace(passwordHash))
+        {
+            return UserErrors.PasswordHashRequired;
         }
         try
         {
@@ -69,10 +78,10 @@ public class User : AuditableEntity
         {
             return UserErrors.InvalidRole;
         }
-        return new User(id, firstName, lastName, email, phoneNumber, role, imageUrl, dateOfBirth, bio, country);
+        return new User(id, firstName, lastName, email, passwordHash, phoneNumber, role, imageUrl, dateOfBirth, bio, country);
     }
 
-    public Result<Updated> Update(string firstName, string lastName, Role role, string email, string phoneNumber, string? imageUrl = null, DateOnly? dateOfBirth = null, string? bio = null, string? country = null)
+    public Result<Updated> Update(string firstName, string lastName, Role role, string email, string passwordHash, string phoneNumber, string? imageUrl = null, DateOnly? dateOfBirth = null, string? bio = null, string? country = null)
     {
         if (string.IsNullOrWhiteSpace(firstName))
         {
@@ -111,6 +120,7 @@ public class User : AuditableEntity
         FirstName = firstName;
         LastName = lastName;
         Email = email;
+        PasswordHash = passwordHash;
         PhoneNumber = phoneNumber;
         ImageUrl = imageUrl;
         DateOfBirth = dateOfBirth;
@@ -118,6 +128,18 @@ public class User : AuditableEntity
         Roles.Add(role);
         Country = country;
 
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+
+        return Result.Updated;
+    }
+    public Result<Updated> VerifyEmail()
+    {
+        if (IsEmailVerified)
+        {
+            return Result.Updated;
+        }
+
+        IsEmailVerified = true;
         UpdatedAtUtc = DateTimeOffset.UtcNow;
 
         return Result.Updated;

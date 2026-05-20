@@ -19,6 +19,11 @@ public static class UserErrors
         description:
         "Email is required."
     );
+    public static Error PasswordHashRequired => Error.Validation(
+        code: "DomainError.User.PasswordHashRequired",
+        description:
+        "Email is required."
+    );
     public static Error InvalidEmail => Error.Validation(
         code: "DomainError.User.InvalidEmail",
         description:

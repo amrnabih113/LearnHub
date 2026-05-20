@@ -8,7 +8,7 @@ namespace LearnHub.Domain.Purchasing.Orders;
 
 public sealed class Order : AuditableEntity
 {
-    public string StudentId { get; private set; } = default!;
+    public Guid StudentId { get; private set; }
     public string Currency { get; private set; } = default!;
     public OrderStatus Status { get; private set; }
     public CouponSnapshot? AppliedCoupon { get; private set; }
@@ -31,7 +31,7 @@ public sealed class Order : AuditableEntity
 
     private Order() { }
 
-    private Order(Guid id, string studentId, string currency) : base(id)
+    private Order(Guid id, Guid studentId, string currency) : base(id)
     {
         StudentId = studentId;
         Currency = currency;
@@ -41,9 +41,9 @@ public sealed class Order : AuditableEntity
         TotalAmount = Money.Zero(currency);
     }
 
-    public static Result<Order> Create(Guid id, string studentId, string currency)
+    public static Result<Order> Create(Guid id, Guid studentId, string currency)
     {
-        if (string.IsNullOrWhiteSpace(studentId))
+        if (studentId == Guid.Empty)
         {
             return OrderErrors.StudentIdRequired;
         }
@@ -53,7 +53,7 @@ public sealed class Order : AuditableEntity
             return OrderErrors.CurrencyRequired;
         }
 
-        var order = new Order(id, studentId.Trim(), currency.Trim().ToUpperInvariant());
+        var order = new Order(id, studentId, currency.Trim().ToUpperInvariant());
         order.AddDomainEvent(new OrderCreatedDomainEvent(order.Id, order.StudentId));
 
         return order;

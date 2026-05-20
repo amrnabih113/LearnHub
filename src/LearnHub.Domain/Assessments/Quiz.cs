@@ -161,7 +161,7 @@ public sealed class Quiz : AuditableEntity
         return Result.Updated;
     }
 
-    public Result<QuizAttempt> StartAttempt(Guid attemptId, string studentId, int previousAttemptsCount)
+    public Result<QuizAttempt> StartAttempt(Guid attemptId, Guid studentId, int previousAttemptsCount)
     {
         if (Status != QuizStatus.Published)
         {

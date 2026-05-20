@@ -4,7 +4,7 @@ namespace LearnHub.Domain.Subscriptions.Events;
 
 public sealed class SubscriptionCancelledEvent : DomainEvent
 {
-    public SubscriptionCancelledEvent(Guid subscriptionId, string studentId, DateTimeOffset cancelledAtUtc)
+    public SubscriptionCancelledEvent(Guid subscriptionId, Guid studentId, DateTimeOffset cancelledAtUtc)
     {
         SubscriptionId = subscriptionId;
         StudentId = studentId;
@@ -12,6 +12,6 @@ public sealed class SubscriptionCancelledEvent : DomainEvent
     }
 
     public Guid SubscriptionId { get; }
-    public string StudentId { get; }
+    public Guid StudentId { get; }
     public DateTimeOffset CancelledAtUtc { get; }
 }

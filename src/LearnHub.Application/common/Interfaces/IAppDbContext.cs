@@ -17,31 +17,32 @@ namespace LearnHub.Application.common.Interfaces;
 public interface IAppDbContext
 {
 
-    DbSet<Course> Courses { get; }
+    public DbSet<Course> Courses { get; }
 
-    DbSet<Enrollment> Enrollments { get; }
+    public DbSet<Enrollment> Enrollments { get; }
 
-    DbSet<User> Users { get; }
+    public DbSet<User> Users { get; }
+    public DbSet<RefreshToken> RefreshTokens { get; }
+     public DbSet<OtpCode> OtpCodes { get; }
+    public DbSet<Cart> Carts { get; }
 
-    DbSet<Cart> Carts { get; }
+    public DbSet<Order> Orders { get; }
 
-    DbSet<Order> Orders { get; }
+    public DbSet<Payment> Payments { get; }
 
-    DbSet<Payment> Payments { get; }
+    public DbSet<Coupon> Coupons { get; }
 
-    DbSet<Coupon> Coupons { get; }
+    public DbSet<Category> Categories { get; }
 
-    DbSet<Category> Categories { get; }
+    public DbSet<Tag> Tags { get; }
 
-    DbSet<Tag> Tags { get; }
+    public DbSet<CourseReview> CourseReviews { get; }
 
-    DbSet<CourseReview> CourseReviews { get; }
+    public DbSet<InstructorReview> InstructorReviews { get; }
 
-    DbSet<InstructorReview> InstructorReviews { get; }
+    public DbSet<Subscription> Subscriptions { get; }
 
-    DbSet<Subscription> Subscriptions { get; }
-
-    DbSet<SubscriptionPlan> SubscriptionPlans { get; }
+    public DbSet<SubscriptionPlan> SubscriptionPlans { get; }
 
     Task<int> SaveChangesAsync(
         CancellationToken cancellationToken = default);

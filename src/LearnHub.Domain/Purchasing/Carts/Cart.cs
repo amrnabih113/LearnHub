@@ -6,7 +6,7 @@ namespace LearnHub.Domain.Purchasing.Carts;
 
 public sealed class Cart : AuditableEntity
 {
-    public string StudentId { get; private set; } = null!;
+    public Guid StudentId { get; private set; }
 
     public string Currency { get; private set; } = null!;
 
@@ -15,15 +15,15 @@ public sealed class Cart : AuditableEntity
 
     private Cart() { }
 
-    private Cart(Guid id, string studentId, string currency) : base(id)
+    private Cart(Guid id, Guid studentId, string currency) : base(id)
     {
-        StudentId = studentId.Trim();
+        StudentId = studentId;
         Currency = currency.Trim().ToUpperInvariant();
     }
 
-    public static Result<Cart> Create(Guid id, string studentId, string currency)
+    public static Result<Cart> Create(Guid id, Guid studentId, string currency)
     {
-        if (string.IsNullOrWhiteSpace(studentId))
+        if (studentId == Guid.Empty)
         {
             return CartErrors.StudentIdRequired;
         }

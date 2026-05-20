@@ -11,7 +11,7 @@ public sealed class QuizAttempt : AuditableEntity
 {
     public Guid QuizId { get; private set; }
     public Guid CourseId { get; private set; }
-    public string StudentId { get; private set; } = default!;
+    public Guid StudentId { get; private set; }
     public int AttemptNumber { get; private set; }
     public QuizAttemptStatus Status { get; private set; }
     public DateTimeOffset StartedAtUtc { get; private set; }
@@ -30,7 +30,7 @@ public sealed class QuizAttempt : AuditableEntity
         Guid id,
         Guid quizId,
         Guid courseId,
-        string studentId,
+        Guid studentId,
         int attemptNumber,
         DateTimeOffset startedAtUtc,
         DateTimeOffset? expiresAtUtc) : base(id)
@@ -48,7 +48,7 @@ public sealed class QuizAttempt : AuditableEntity
         Guid id,
         Guid quizId,
         Guid courseId,
-        string studentId,
+        Guid studentId,
         int attemptNumber,
         int? timeLimitMinutes,
         int passPercentage)
@@ -63,7 +63,7 @@ public sealed class QuizAttempt : AuditableEntity
             return QuizAttemptErrors.CourseIdRequired;
         }
 
-        if (string.IsNullOrWhiteSpace(studentId))
+        if (studentId == Guid.Empty)
         {
             return QuizAttemptErrors.StudentIdRequired;
         }
@@ -76,7 +76,7 @@ public sealed class QuizAttempt : AuditableEntity
         var nowUtc = DateTimeOffset.UtcNow;
         DateTimeOffset? expiresAtUtc = timeLimitMinutes.HasValue ? nowUtc.AddMinutes(timeLimitMinutes.Value) : null;
 
-        var attempt = new QuizAttempt(id, quizId, courseId, studentId.Trim(), attemptNumber, nowUtc, expiresAtUtc);
+        var attempt = new QuizAttempt(id, quizId, courseId, studentId, attemptNumber, nowUtc, expiresAtUtc);
         attempt.AddDomainEvent(new QuizStartedDomainEvent(attempt.Id, attempt.QuizId, attempt.StudentId));
 
         return attempt;

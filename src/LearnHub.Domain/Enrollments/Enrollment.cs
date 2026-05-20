@@ -10,7 +10,7 @@ namespace LearnHub.Domain.Enrollments;
 
 public sealed class Enrollment : AuditableEntity
 {
-    public string StudentId { get; private set; } = default!;
+    public Guid StudentId { get; private set; }
 
     public Guid CourseId { get; private set; } = default!;
 
@@ -28,7 +28,7 @@ public sealed class Enrollment : AuditableEntity
 
     private Enrollment() { }
 
-    private Enrollment(Guid id, string studentId, Guid courseId) : base(id)
+    private Enrollment(Guid id, Guid studentId, Guid courseId) : base(id)
     {
         StudentId = studentId;
         CourseId = courseId;
@@ -36,9 +36,9 @@ public sealed class Enrollment : AuditableEntity
         ProgressPercentage = 0;
     }
 
-    public static Result<Enrollment> Create(Guid id, string studentId, Guid courseId)
+    public static Result<Enrollment> Create(Guid id, Guid studentId, Guid courseId)
     {
-        if (string.IsNullOrWhiteSpace(studentId))
+        if (studentId == Guid.Empty)
         {
             return EnrollmentErrors.StudentIdRequired;
         }

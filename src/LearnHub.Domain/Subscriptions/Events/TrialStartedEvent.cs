@@ -4,7 +4,7 @@ namespace LearnHub.Domain.Subscriptions.Events;
 
 public sealed class TrialStartedEvent : DomainEvent
 {
-    public TrialStartedEvent(Guid subscriptionId, string studentId, LearnHub.Domain.Subscriptions.SubscriptionTier tier, DateTimeOffset startedAtUtc, DateTimeOffset trialEndsAtUtc)
+    public TrialStartedEvent(Guid subscriptionId, Guid studentId, LearnHub.Domain.Subscriptions.SubscriptionTier tier, DateTimeOffset startedAtUtc, DateTimeOffset trialEndsAtUtc)
     {
         SubscriptionId = subscriptionId;
         StudentId = studentId;
@@ -14,7 +14,7 @@ public sealed class TrialStartedEvent : DomainEvent
     }
 
     public Guid SubscriptionId { get; }
-    public string StudentId { get; }
+    public Guid StudentId { get; }
     public SubscriptionTier Tier { get; }
     public DateTimeOffset StartedAtUtc { get; }
     public DateTimeOffset TrialEndsAtUtc { get; }

@@ -5,7 +5,7 @@ namespace LearnHub.Domain.Subscriptions;
 
 public sealed class TrialOffer : AuditableEntity
 {
-    public string StudentId { get; private set; } = default!;
+    public Guid StudentId { get; private set; }
     public SubscriptionTier Tier { get; private set; }
     public int DurationDays { get; private set; }
     public DateTimeOffset ExpiresAtUtc { get; private set; }
@@ -15,17 +15,16 @@ public sealed class TrialOffer : AuditableEntity
 
     private TrialOffer() { }
 
-    private TrialOffer(Guid id, string studentId, SubscriptionTier tier, int durationDays, DateTimeOffset expiresAtUtc) : base(id)
+    private TrialOffer(Guid id, Guid studentId, SubscriptionTier tier, int durationDays, DateTimeOffset expiresAtUtc) : base(id)
     {
         StudentId = studentId;
         Tier = tier;
-        DurationDays = durationDays;    
+        DurationDays = durationDays;
         ExpiresAtUtc = expiresAtUtc;
     }
-
-    public static Result<TrialOffer> Create(Guid id, string studentId, SubscriptionTier tier, int durationDays, DateTimeOffset expiresAtUtc)
+    public static Result<TrialOffer> Create(Guid id, Guid studentId, SubscriptionTier tier, int durationDays, DateTimeOffset expiresAtUtc)
     {
-        if (string.IsNullOrWhiteSpace(studentId))
+        if (studentId == Guid.Empty)
         {
             return SubscriptionErrors.StudentIdRequired;
         }
@@ -40,7 +39,7 @@ public sealed class TrialOffer : AuditableEntity
             return SubscriptionErrors.TrialExpired;
         }
 
-        return new TrialOffer(id, studentId.Trim(), tier, durationDays, expiresAtUtc);
+        return new TrialOffer(id, studentId, tier, durationDays, expiresAtUtc);
     }
 
     public bool IsActive(DateTimeOffset now) => !IsUsed && now < ExpiresAtUtc;

@@ -1,4 +1,4 @@
-namespace LearnHub.Application.Common.Interfaces.Authentication;
+namespace LearnHub.Application.Common.Interfaces;
 
 public interface IAuthorizationService
 {

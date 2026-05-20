@@ -4,7 +4,7 @@ namespace LearnHub.Domain.Assessments.Events;
 
 public sealed class QuizStartedDomainEvent : DomainEvent
 {
-    public QuizStartedDomainEvent(Guid attemptId, Guid quizId, string studentId)
+    public QuizStartedDomainEvent(Guid attemptId, Guid quizId, Guid studentId)
     {
         AttemptId = attemptId;
         QuizId = quizId;
@@ -13,5 +13,5 @@ public sealed class QuizStartedDomainEvent : DomainEvent
 
     public Guid AttemptId { get; }
     public Guid QuizId { get; }
-    public string StudentId { get; }
+    public Guid StudentId { get; }
 }

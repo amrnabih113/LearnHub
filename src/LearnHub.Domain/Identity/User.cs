@@ -15,7 +15,7 @@ public class User : AuditableEntity
     public string FullName => $"{FirstName} {LastName}";
 
     public string PasswordHash { get; private set; } = default!;
-    public string PhoneNumber { get; private set; } = default!;
+    public string? PhoneNumber { get; private set; } = default!;
     public string Email { get; private set; } = default!;
 
     public bool IsEmailVerified { get; private set; } = false;
@@ -27,7 +27,7 @@ public class User : AuditableEntity
 
     private User() { }
 
-    private User(Guid id, string firstName, string lastName, string email, string passwordHash, string phoneNumber, Role role, string? imageUrl = null, DateOnly? dateOfBirth = null, string? bio = null, string? country = null)
+    private User(Guid id, string firstName, string lastName, string email, string passwordHash, Role role, string? phoneNumber = null, string? imageUrl = null, DateOnly? dateOfBirth = null, string? bio = null, string? country = null)
     : base(id)
     {
         FirstName = firstName;
@@ -43,7 +43,7 @@ public class User : AuditableEntity
         Country = country;
     }
 
-    public static Result<User> Create(Guid id, string firstName, string lastName, string email, string passwordHash, string phoneNumber, Role role, string? imageUrl = null, DateOnly? dateOfBirth = null, string? bio = null, string? country = null)
+    public static Result<User> Create(Guid id, string firstName, string lastName, string email, string passwordHash, Role role, string? phoneNumber = null, string? imageUrl = null, DateOnly? dateOfBirth = null, string? bio = null, string? country = null)
     {
         if (string.IsNullOrWhiteSpace(firstName))
         {
@@ -69,19 +69,19 @@ public class User : AuditableEntity
         {
             return UserErrors.InvalidEmail;
         }
-        if (string.IsNullOrWhiteSpace(phoneNumber) || !Regex.IsMatch(phoneNumber, @"^\+?\d{7,15}$"))
+        if (!string.IsNullOrWhiteSpace(phoneNumber) && !Regex.IsMatch(phoneNumber!, @"^\+?\d{7,15}$"))
         {
-            return UserErrors.PhoneNumberRequired;
+            return UserErrors.InvalidPhoneNumber;
         }
 
         if (!Enum.IsDefined(typeof(Role), role))
         {
             return UserErrors.InvalidRole;
         }
-        return new User(id, firstName, lastName, email, passwordHash, phoneNumber, role, imageUrl, dateOfBirth, bio, country);
+        return new User(id, firstName, lastName, email, passwordHash, role, phoneNumber, imageUrl, dateOfBirth, bio, country);
     }
 
-    public Result<Updated> Update(string firstName, string lastName, Role role, string email, string passwordHash, string phoneNumber, string? imageUrl = null, DateOnly? dateOfBirth = null, string? bio = null, string? country = null)
+    public Result<Updated> Update(string firstName, string lastName, Role role, string email, string passwordHash, string? phoneNumber = null, string? imageUrl = null, DateOnly? dateOfBirth = null, string? bio = null, string? country = null)
     {
         if (string.IsNullOrWhiteSpace(firstName))
         {
@@ -103,11 +103,7 @@ public class User : AuditableEntity
         {
             return UserErrors.InvalidEmail;
         }
-        if (string.IsNullOrWhiteSpace(phoneNumber))
-        {
-            return UserErrors.PhoneNumberRequired;
-        }
-        if (!Regex.IsMatch(phoneNumber, @"^\+?\d{7,15}$"))
+        if (!string.IsNullOrWhiteSpace(phoneNumber) && !Regex.IsMatch(phoneNumber, @"^\+?\d{7,15}$"))
         {
             return UserErrors.InvalidPhoneNumber;
         }
@@ -132,6 +128,20 @@ public class User : AuditableEntity
 
         return Result.Updated;
     }
+
+    public Result<Updated> ChangePassword(string newPasswordHash)
+    {
+        if (string.IsNullOrWhiteSpace(newPasswordHash))
+        {
+            return UserErrors.PasswordHashRequired;
+        }
+
+        PasswordHash = newPasswordHash;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+
+        return Result.Updated;
+    }
+
     public Result<Updated> VerifyEmail()
     {
         if (IsEmailVerified)

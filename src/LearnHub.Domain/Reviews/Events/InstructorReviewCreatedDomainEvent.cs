@@ -4,7 +4,7 @@ namespace LearnHub.Domain.Reviews.Events;
 
 public sealed class InstructorReviewCreatedDomainEvent : DomainEvent
 {
-    public InstructorReviewCreatedDomainEvent(Guid reviewId, string instructorId, string studentId)
+    public InstructorReviewCreatedDomainEvent(Guid reviewId, Guid instructorId, Guid studentId)
     {
         ReviewId = reviewId;
         InstructorId = instructorId;
@@ -12,6 +12,6 @@ public sealed class InstructorReviewCreatedDomainEvent : DomainEvent
     }
 
     public Guid ReviewId { get; }
-    public string InstructorId { get; }
-    public string StudentId { get; }
+    public Guid InstructorId { get; }
+    public Guid StudentId { get; }
 }

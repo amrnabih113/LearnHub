@@ -9,14 +9,14 @@ namespace LearnHub.Domain.Reviews.CourseReviews;
 public sealed class CourseReview : AuditableEntity
 {
     public Guid CourseId { get; private set; }
-    public string StudentId { get; private set; } = default!;
+    public Guid StudentId { get; private set; }
     public Rating Rating { get; private set; } = default!;
     public string Comment { get; private set; } = default!;
     public ReviewStatus Status { get; private set; }
 
     private CourseReview() { }
 
-    private CourseReview(Guid id, Guid courseId, string studentId, Rating rating, string comment) : base(id)
+    private CourseReview(Guid id, Guid courseId, Guid studentId, Rating rating, string comment) : base(id)
     {
         CourseId = courseId;
         StudentId = studentId;
@@ -25,14 +25,14 @@ public sealed class CourseReview : AuditableEntity
         Status = ReviewStatus.Draft;
     }
 
-    public static Result<CourseReview> Create(Guid id, Guid courseId, string studentId, int rating, string comment)
+    public static Result<CourseReview> Create(Guid id, Guid courseId, Guid studentId, int rating, string comment)
     {
         if (courseId == Guid.Empty)
         {
             return ReviewErrors.TargetIdRequired;
         }
 
-        if (string.IsNullOrWhiteSpace(studentId))
+        if (studentId == Guid.Empty)
         {
             return ReviewErrors.StudentIdRequired;
         }
@@ -48,7 +48,7 @@ public sealed class CourseReview : AuditableEntity
             return ratingResult.Errors;
         }
 
-        var review = new CourseReview(id, courseId, studentId.Trim(), ratingResult.Value, comment.Trim());
+        var review = new CourseReview(id, courseId, studentId, ratingResult.Value, comment.Trim());
         review.AddDomainEvent(new CourseReviewCreatedDomainEvent(review.Id, review.CourseId, review.StudentId));
 
         return review;

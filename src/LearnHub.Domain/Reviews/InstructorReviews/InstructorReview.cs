@@ -8,8 +8,8 @@ namespace LearnHub.Domain.Reviews.InstructorReviews;
 
 public sealed class InstructorReview : AuditableEntity
 {
-    public string InstructorId { get; private set; } = default!;
-    public string StudentId { get; private set; } = default!;
+    public Guid InstructorId { get; private set; }
+    public Guid StudentId { get; private set; }
     public Guid? CourseId { get; private set; }
     public Rating Rating { get; private set; } = default!;
     public string Comment { get; private set; } = default!;
@@ -17,7 +17,7 @@ public sealed class InstructorReview : AuditableEntity
 
     private InstructorReview() { }
 
-    private InstructorReview(Guid id, string instructorId, string studentId, Guid? courseId, Rating rating, string comment) : base(id)
+    private InstructorReview(Guid id, Guid instructorId, Guid studentId, Guid? courseId, Rating rating, string comment) : base(id)
     {
         InstructorId = instructorId;
         StudentId = studentId;
@@ -27,14 +27,13 @@ public sealed class InstructorReview : AuditableEntity
         Status = ReviewStatus.Draft;
     }
 
-    public static Result<InstructorReview> Create(Guid id, string instructorId, string studentId, Guid? courseId, int rating, string comment)
+    public static Result<InstructorReview> Create(Guid id, Guid instructorId, Guid studentId, Guid? courseId, int rating, string comment)
     {
-        if (string.IsNullOrWhiteSpace(instructorId))
+        if (instructorId == Guid.Empty)
         {
             return ReviewErrors.TargetIdRequired;
         }
-
-        if (string.IsNullOrWhiteSpace(studentId))
+        if (studentId == Guid.Empty)
         {
             return ReviewErrors.StudentIdRequired;
         }
@@ -50,7 +49,7 @@ public sealed class InstructorReview : AuditableEntity
             return ratingResult.Errors;
         }
 
-        var review = new InstructorReview(id, instructorId.Trim(), studentId.Trim(), courseId, ratingResult.Value, comment.Trim());
+        var review = new InstructorReview(id, instructorId, studentId, courseId, ratingResult.Value, comment.Trim());
         review.AddDomainEvent(new InstructorReviewCreatedDomainEvent(review.Id, review.InstructorId, review.StudentId));
 
         return review;

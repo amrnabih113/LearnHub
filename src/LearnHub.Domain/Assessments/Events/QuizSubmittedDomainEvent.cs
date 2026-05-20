@@ -4,7 +4,7 @@ namespace LearnHub.Domain.Assessments.Events;
 
 public sealed class QuizSubmittedDomainEvent : DomainEvent
 {
-    public QuizSubmittedDomainEvent(Guid attemptId, Guid quizId, string studentId, decimal scorePercentage, bool passed)
+    public QuizSubmittedDomainEvent(Guid attemptId, Guid quizId, Guid studentId, decimal scorePercentage, bool passed)
     {
         AttemptId = attemptId;
         QuizId = quizId;
@@ -15,7 +15,7 @@ public sealed class QuizSubmittedDomainEvent : DomainEvent
 
     public Guid AttemptId { get; }
     public Guid QuizId { get; }
-    public string StudentId { get; }
+    public Guid StudentId { get; }
     public decimal ScorePercentage { get; }
     public bool Passed { get; }
 }

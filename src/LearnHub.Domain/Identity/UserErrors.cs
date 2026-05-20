@@ -22,7 +22,7 @@ public static class UserErrors
     public static Error PasswordHashRequired => Error.Validation(
         code: "DomainError.User.PasswordHashRequired",
         description:
-        "Email is required."
+        "Password hash is required."
     );
     public static Error InvalidEmail => Error.Validation(
         code: "DomainError.User.InvalidEmail",
@@ -45,4 +45,5 @@ public static class UserErrors
         description:
         "Role is not valid."
     );
+
 }

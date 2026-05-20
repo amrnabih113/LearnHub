@@ -8,13 +8,13 @@ public sealed class Certificate : AuditableEntity
     public Guid EnrollmentId { get; private set; }
 
     public Enrollment Enrollment { get; private set; } = default!;
-    public string StudentId  { get; private set; } = default!;
+    public Guid StudentId { get; private set; }
     public string Code { get; private set; } = default!;
     public DateTimeOffset IssuedAtUtc { get; private set; }
 
     private Certificate() { }
 
-    private Certificate(Guid id, Guid enrollmentId, string studentId, string code) : base(id)
+    private Certificate(Guid id, Guid enrollmentId, Guid studentId, string code) : base(id)
     {
         EnrollmentId = enrollmentId;
         StudentId = studentId;
@@ -22,7 +22,7 @@ public sealed class Certificate : AuditableEntity
         IssuedAtUtc = DateTimeOffset.UtcNow;
     }
 
-    public static Result<Certificate> Create(Guid id, Guid enrollmentId, string studentId,   string code)
+    public static Result<Certificate> Create(Guid id, Guid enrollmentId, Guid studentId, string code)
     {
         if (enrollmentId == Guid.Empty)
         {
@@ -34,6 +34,6 @@ public sealed class Certificate : AuditableEntity
             return CertificateErrors.CodeRequired;
         }
 
-        return new Certificate(id, enrollmentId, studentId,    code);
+        return new Certificate(id, enrollmentId, studentId, code);
     }
 }

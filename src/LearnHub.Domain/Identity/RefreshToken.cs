@@ -8,13 +8,20 @@ namespace LearnHub.Domain.Identity;
 public sealed class RefreshToken : AuditableEntity
 {
     public string? Token { get; }
-    public string? UserId { get; }
+    public Guid? UserId { get; }
     public DateTimeOffset ExpiresOnUtc { get; }
+    public DateTimeOffset? RevokedAtUtc { get; private set; }
 
+    public bool IsRevoked => RevokedAtUtc.HasValue;
+
+    public void Revoke()
+    {
+        RevokedAtUtc = DateTimeOffset.UtcNow;
+    }
     private RefreshToken()
     { }
 
-    private RefreshToken(Guid id, string? token, string? userId, DateTimeOffset expiresOnUtc)
+    private RefreshToken(Guid id, string? token, Guid? userId, DateTimeOffset expiresOnUtc)
         : base(id)
     {
         Token = token;
@@ -22,7 +29,7 @@ public sealed class RefreshToken : AuditableEntity
         ExpiresOnUtc = expiresOnUtc;
     }
 
-    public static Result<RefreshToken> Create(Guid id, string? token, string? userId, DateTimeOffset expiresOnUtc)
+    public static Result<RefreshToken> Create(Guid id, string? token, Guid? userId, DateTimeOffset expiresOnUtc)
     {
         if (id == Guid.Empty)
         {
@@ -34,7 +41,7 @@ public sealed class RefreshToken : AuditableEntity
             return RefreshTokenErrors.TokenRequired;
         }
 
-        if (string.IsNullOrWhiteSpace(userId))
+        if (userId == Guid.Empty)
         {
             return RefreshTokenErrors.UserIdRequired;
         }

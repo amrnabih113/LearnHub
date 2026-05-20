@@ -5,7 +5,7 @@ namespace LearnHub.Domain.Subscriptions;
 
 public sealed class Subscription : AuditableEntity
 {
-    public string StudentId { get; private set; } = default!;
+    public Guid StudentId { get; private set; }
     public SubscriptionTier Tier { get; private set; }
     public BillingCycle BillingCycle { get; private set; }
     public SubscriptionStatus Status { get; private set; }
@@ -20,7 +20,7 @@ public sealed class Subscription : AuditableEntity
 
     private Subscription() { }
 
-    private Subscription(Guid id, string studentId, SubscriptionTier tier, BillingCycle billingCycle, DateTimeOffset startedAtUtc, DateTimeOffset expiresAtUtc) : base(id)
+    private Subscription(Guid id, Guid studentId, SubscriptionTier tier, BillingCycle billingCycle, DateTimeOffset startedAtUtc, DateTimeOffset expiresAtUtc) : base(id)
     {
         StudentId = studentId;
         Tier = tier;
@@ -30,9 +30,9 @@ public sealed class Subscription : AuditableEntity
         Status = SubscriptionStatus.PendingActivation;
     }
 
-    public static Result<Subscription> Create(Guid id, string studentId, SubscriptionTier tier, BillingCycle billingCycle, DateTimeOffset startedAtUtc, DateTimeOffset expiresAtUtc)
+    public static Result<Subscription> Create(Guid id, Guid studentId, SubscriptionTier tier, BillingCycle billingCycle, DateTimeOffset startedAtUtc, DateTimeOffset expiresAtUtc)
     {
-        if (string.IsNullOrWhiteSpace(studentId))
+        if (studentId == Guid.Empty)
         {
             return SubscriptionErrors.StudentIdRequired;
         }
@@ -52,7 +52,7 @@ public sealed class Subscription : AuditableEntity
             return SubscriptionErrors.ExpirationRequired;
         }
 
-        return new Subscription(id, studentId.Trim(), tier, billingCycle, startedAtUtc, expiresAtUtc);
+        return new Subscription(id, studentId, tier, billingCycle, startedAtUtc, expiresAtUtc);
     }
 
     public Result<Updated> Activate(DateTimeOffset activatedAtUtc)

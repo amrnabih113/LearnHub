@@ -9,10 +9,14 @@ public class Lesson : AuditableEntity
 {
     public string? Title { get; private set; }
     public string? Description { get; private set; }
-    public string? VideoUrl { get; private set; }
+    public string VideoUrl { get; private set; } = string.Empty;
     public bool IsPreview { get; private set; }
     public readonly List<Resource> _resources = [];
     public IEnumerable<Resource> Resources => _resources.AsReadOnly();
+    private readonly List<SubtitleTrack> _subtitles = [];
+    public IReadOnlyCollection<SubtitleTrack> Subtitles => _subtitles.AsReadOnly();
+    private readonly List<VideoQuality> _qualities = [];
+    public IReadOnlyCollection<VideoQuality> Qualities => _qualities.AsReadOnly();
     public string? Content { get; private set; }
     public int DurationInMinutes { get; private set; }
     public int Order { get; private set; }

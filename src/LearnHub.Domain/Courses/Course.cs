@@ -6,6 +6,7 @@ using LearnHub.Domain.Courses.Events;
 using LearnHub.Domain.Courses.Enums;
 using LearnHub.Domain.Subscriptions;
 using LearnHub.Domain.Purchasing.ValueObjects;
+using LearnHub.Domain.Common.ValueObjects;
 using LearnHub.Domain.Courses.Sections;
 using LearnHub.Domain.Classification.Tags;
 using LearnHub.Domain.Classification.Categories;
@@ -27,7 +28,7 @@ public sealed class Course : AuditableEntity
     private readonly List<Section> _sections = [];
     public IEnumerable<Section> Sections => _sections.AsReadOnly();
     public string? ThumbnailUrl { get; private set; }
-    public string? Language { get; private set; }
+    public Language Language { get; private set; } = null!;
     public bool IsIncludedInSubscription { get; private set; }
     public SubscriptionTier RequiredSubscriptionTier { get; private set; }
 
@@ -38,7 +39,7 @@ public sealed class Course : AuditableEntity
 
     private Course() { }
 
-    private Course(Guid id, string title, string description, string instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, bool isIncludedInSubscription, SubscriptionTier requiredSubscriptionTier, string language, string? country) : base(id)
+    private Course(Guid id, string title, string description, string instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, bool isIncludedInSubscription, SubscriptionTier requiredSubscriptionTier, Language language, string? country) : base(id)
     {
         Title = title;
         Description = description;
@@ -84,9 +85,10 @@ public sealed class Course : AuditableEntity
         {
             return CourseErrors.PriceRequired;
         }
-        if (string.IsNullOrWhiteSpace(language))
+        var languageVoResult = LearnHub.Domain.Common.ValueObjects.Language.Create(language ?? string.Empty);
+        if (languageVoResult.IsError)
         {
-            return CourseErrors.LanguageRequired;
+            return languageVoResult.Errors;
         }
 
         if (!Enum.IsDefined(typeof(SubscriptionTier), requiredSubscriptionTier))
@@ -94,7 +96,7 @@ public sealed class Course : AuditableEntity
             return CourseErrors.InvalidSubscriptionTier;
         }
 
-        return new Course(id, title, description, instructorId, categoryId, thumbnailUrl, level, status, price, isIncludedInSubscription, requiredSubscriptionTier, language, country);
+        return new Course(id, title, description, instructorId, categoryId, thumbnailUrl, level, status, price, isIncludedInSubscription, requiredSubscriptionTier, languageVoResult.Value, country);
     }
 
     public Result<Updated> Update(string title, string description, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, bool isIncludedInSubscription, SubscriptionTier requiredSubscriptionTier, string language, string? country)
@@ -123,9 +125,10 @@ public sealed class Course : AuditableEntity
         {
             return CourseErrors.PriceRequired;
         }
-        if (string.IsNullOrWhiteSpace(language))
+        var languageVoResult = LearnHub.Domain.Common.ValueObjects.Language.Create(language ?? string.Empty);
+        if (languageVoResult.IsError)
         {
-            return CourseErrors.LanguageRequired;
+            return languageVoResult.Errors;
         }
 
         if (!Enum.IsDefined(typeof(SubscriptionTier), requiredSubscriptionTier))
@@ -149,7 +152,7 @@ public sealed class Course : AuditableEntity
             }
         }
         Price = price;
-        Language = language;
+        Language = languageVoResult.Value;
         Country = country;
         UpdatedAtUtc = DateTimeOffset.UtcNow;
 

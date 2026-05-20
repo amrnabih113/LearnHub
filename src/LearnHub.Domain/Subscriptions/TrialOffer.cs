@@ -7,6 +7,7 @@ public sealed class TrialOffer : AuditableEntity
 {
     public string StudentId { get; private set; } = default!;
     public SubscriptionTier Tier { get; private set; }
+    public int DurationDays { get; private set; }
     public DateTimeOffset ExpiresAtUtc { get; private set; }
     public DateTimeOffset? UsedAtUtc { get; private set; }
 
@@ -14,14 +15,15 @@ public sealed class TrialOffer : AuditableEntity
 
     private TrialOffer() { }
 
-    private TrialOffer(Guid id, string studentId, SubscriptionTier tier, DateTimeOffset expiresAtUtc) : base(id)
+    private TrialOffer(Guid id, string studentId, SubscriptionTier tier, int durationDays, DateTimeOffset expiresAtUtc) : base(id)
     {
         StudentId = studentId;
         Tier = tier;
+        DurationDays = durationDays;    
         ExpiresAtUtc = expiresAtUtc;
     }
 
-    public static Result<TrialOffer> Create(Guid id, string studentId, SubscriptionTier tier, DateTimeOffset expiresAtUtc)
+    public static Result<TrialOffer> Create(Guid id, string studentId, SubscriptionTier tier, int durationDays, DateTimeOffset expiresAtUtc)
     {
         if (string.IsNullOrWhiteSpace(studentId))
         {
@@ -38,7 +40,7 @@ public sealed class TrialOffer : AuditableEntity
             return SubscriptionErrors.TrialExpired;
         }
 
-        return new TrialOffer(id, studentId.Trim(), tier, expiresAtUtc);
+        return new TrialOffer(id, studentId.Trim(), tier, durationDays, expiresAtUtc);
     }
 
     public bool IsActive(DateTimeOffset now) => !IsUsed && now < ExpiresAtUtc;

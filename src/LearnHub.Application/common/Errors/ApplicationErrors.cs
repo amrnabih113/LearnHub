@@ -59,4 +59,14 @@ public static class ApplicationErrors
         description:
         "User not found."
     );
+    public static Error InvalidRole => Error.Validation(
+        code: "ApplicationError.User.InvalidRole",
+        description:
+        "Invalid user role."
+    );
+      public static Error AdminRoleUnauthorized => Error.Validation(
+        code: "ApplicationError.User.AdminRoleUnauthorized",
+        description:
+        "Only can register as a student or instructor. Admin role is not allowed."
+    );
 }

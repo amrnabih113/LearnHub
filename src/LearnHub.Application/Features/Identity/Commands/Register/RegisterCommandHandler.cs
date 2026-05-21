@@ -12,13 +12,13 @@ namespace LearnHub.Application.Features.Identity.Commands.Register;
 
 public class RegisterCommandHandler(IAppDbContext context,
                                     IPasswordHasher passwordHasher,
-                                    ITokenProvider tokenProvider) : IRequestHandler<RegisterCommand, Result<TokenResponse>>
+                                    ITokenProvider tokenProvider) : IRequestHandler<RegisterCommand, Result<Created>>
 {
     private readonly IAppDbContext _context = context;
     private readonly IPasswordHasher _passwordHasher = passwordHasher;
     private readonly ITokenProvider _tokenProvider = tokenProvider;
 
-    public async Task<Result<TokenResponse>> Handle(RegisterCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Created>> Handle(RegisterCommand request, CancellationToken cancellationToken)
     {
         if (await _context.Users.AnyAsync(x => x.Email == request.Email, cancellationToken))
         {
@@ -33,6 +33,14 @@ public class RegisterCommandHandler(IAppDbContext context,
         if (passwordHash.IsError)
         {
             return passwordHash.Errors;
+        }
+        if (!Enum.IsDefined(typeof(Role), request.Role))
+        {
+            return ApplicationErrors.InvalidRole;
+        }
+        if (request.Role == Role.Admin)
+        {
+            return ApplicationErrors.AdminRoleUnauthorized;
         }
         var user = User.Create(
             id: Guid.NewGuid(),
@@ -55,13 +63,7 @@ public class RegisterCommandHandler(IAppDbContext context,
             Email = user.Value.Email
         });
         await _context.SaveChangesAsync(cancellationToken);
-        var tokenResult = await _tokenProvider.GenerateJwtTokenAsync(user.Value, cancellationToken);
-
-        if (tokenResult.IsError)
-        {
-            return tokenResult.Errors;
-        }
-        return tokenResult.Value;
+        return Result.Created;
 
     }
 }

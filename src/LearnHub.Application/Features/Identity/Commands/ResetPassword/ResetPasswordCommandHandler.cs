@@ -1,7 +1,6 @@
 using LearnHub.Application.common.Errors;
 using LearnHub.Application.common.Interfaces;
 using LearnHub.Application.Common.Interfaces.Authentication;
-using LearnHub.Application.Common.Interfaces.Notifications;
 using LearnHub.Domain.Common.Results;
 using LearnHub.Domain.Identity.Events;
 using MediatR;

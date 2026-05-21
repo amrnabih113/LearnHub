@@ -12,4 +12,4 @@ public sealed record RegisterCommand(
     string Password,
     string ConfirmPassword,
     Role Role,
-    string? PhoneNumber = null) : IRequest<Result<TokenResponse>>;
+    string? PhoneNumber = null) : IRequest<Result<Created>>;

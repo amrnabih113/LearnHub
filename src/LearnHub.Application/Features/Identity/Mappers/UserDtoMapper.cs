@@ -15,7 +15,7 @@ public static class UserDtoMapper
         FullName: $"{user.FirstName} {user.LastName}",
         Email: user.Email,
         PhoneNumber: user.PhoneNumber ?? string.Empty,
-        Role: user.Roles.FirstOrDefault(),
+        Roles: user.Roles,
         ImageUrl: user.ImageUrl,
         DateOfBirth: user.DateOfBirth,
         Bio: user.Bio,

@@ -128,7 +128,37 @@ public class User : AuditableEntity
 
         return Result.Updated;
     }
+    public Result<Updated> UpdateProfile(
+        string firstName,
+        string lastName,
+        string? phoneNumber,
+        DateOnly? dateOfBirth,
+        string? bio,
+        string? country)
+    {
+        if (string.IsNullOrWhiteSpace(firstName))
+            return UserErrors.FirstNameRequired;
 
+        if (string.IsNullOrWhiteSpace(lastName))
+            return UserErrors.LastNameRequired;
+
+        if (!string.IsNullOrWhiteSpace(phoneNumber) &&
+            !Regex.IsMatch(phoneNumber, @"^\+?\d{7,15}$"))
+        {
+            return UserErrors.InvalidPhoneNumber;
+        }
+
+        FirstName = firstName.Trim();
+        LastName = lastName.Trim();
+        PhoneNumber = phoneNumber?.Trim();
+        DateOfBirth = dateOfBirth;
+        Bio = bio?.Trim();
+        Country = country?.Trim();
+
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+
+        return Result.Updated;
+    }
     public Result<Updated> ChangePassword(string newPasswordHash)
     {
         if (string.IsNullOrWhiteSpace(newPasswordHash))
@@ -155,6 +185,18 @@ public class User : AuditableEntity
         return Result.Updated;
     }
 
+    public Result<Updated> UpdateProfileImage(string imageUrl)
+    {
+        if (string.IsNullOrWhiteSpace(imageUrl))
+        {
+            return UserErrors.ImageUrlRequired;
+        }
+
+        ImageUrl = imageUrl;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+
+        return Result.Updated;
+    }
     public Result<Updated> AssignRole(Role role)
     {
         if (!Enum.IsDefined(typeof(Role), role))

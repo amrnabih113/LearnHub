@@ -46,4 +46,9 @@ public static class UserErrors
         "Role is not valid."
     );
 
+    public static Error ImageUrlRequired => Error.Validation(
+        code: "DomainError.User.ImageUrlRequired",
+        description:
+        "Image URL is required."
+    );
 }

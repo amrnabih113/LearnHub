@@ -15,8 +15,12 @@ public static class ApplicationErrors
         description:
         "Email is not verified."
     );
-
-    public static Error EmailAlreadyVerified  => Error.Validation(
+    public static Error RoleAlreadyAssigned => Error.Validation(
+        code: "ApplicationError.User.RoleAlreadyAssigned",
+        description:
+        "The user already has the specified role."
+    );
+    public static Error EmailAlreadyVerified => Error.Validation(
         code: "ApplicationError.User.EmailAlreadyVerified",
         description:
         "Email is already verified."
@@ -70,9 +74,9 @@ public static class ApplicationErrors
         description:
         "Invalid user role."
     );
-      public static Error AdminRoleUnauthorized => Error.Validation(
-        code: "ApplicationError.User.AdminRoleUnauthorized",
-        description:
-        "Only can register as a student or instructor. Admin role is not allowed."
-    );
+    public static Error AdminRoleUnauthorized => Error.Validation(
+      code: "ApplicationError.User.AdminRoleUnauthorized",
+      description:
+      "Only can register as a student or instructor. Admin role is not allowed."
+  );
 }

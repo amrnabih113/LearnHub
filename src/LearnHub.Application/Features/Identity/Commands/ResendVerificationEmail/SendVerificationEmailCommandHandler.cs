@@ -29,7 +29,7 @@ public class SendVerificationEmailCommandHandler(IEmailService emailService, ILo
                        cancellationToken);
         if (user is null)
         {
-            return ApplicationErrors.UserNotFound;
+          return Result.Created;
         }
         if (user.IsEmailVerified)
         {

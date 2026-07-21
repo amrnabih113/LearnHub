@@ -23,7 +23,7 @@ public interface IAppDbContext
 
     public DbSet<User> Users { get; }
     public DbSet<RefreshToken> RefreshTokens { get; }
-     public DbSet<OtpCode> OtpCodes { get; }
+    public DbSet<OtpCode> OtpCodes { get; }
     public DbSet<Cart> Carts { get; }
 
     public DbSet<Order> Orders { get; }

@@ -16,6 +16,12 @@ public static class ApplicationErrors
         "Email is not verified."
     );
 
+    public static Error EmailAlreadyVerified  => Error.Validation(
+        code: "ApplicationError.User.EmailAlreadyVerified",
+        description:
+        "Email is already verified."
+    );
+
     public static Error InvalidRefreshToken => Error.Validation(
         code: "ApplicationError.User.InvalidRefreshToken",
         description:

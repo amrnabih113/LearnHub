@@ -4,4 +4,5 @@ using LearnHub.Domain.Common.Results;
 using LearnHub.Domain.Common.Results.Abstractions;
 using MediatR;
 
-public sealed record SendVerificationEmailCommand(string Email) : IRequest<Result<Created>>;
+public sealed record SendVerificationEmailCommand(
+    string Email) : IRequest<Result<Created>>;

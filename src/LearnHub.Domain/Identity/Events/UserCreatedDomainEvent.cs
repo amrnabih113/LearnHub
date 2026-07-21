@@ -2,8 +2,11 @@ using LearnHub.Domain.Common;
 
 namespace LearnHub.Domain.Identity.Events;
 
-public class UserCreatedDomainEvent : DomainEvent
+public sealed class UserCreatedDomainEvent(
+    Guid userId,
+    string email) : DomainEvent
 {
-    public Guid UserId { get; set; }
-    public string Email { get; set; } = default!;   
+    public Guid UserId { get; } = userId;
+
+    public string Email { get; } = email;
 }

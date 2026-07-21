@@ -4,6 +4,7 @@ using System.Net.Mail;
 using System.Text.RegularExpressions;
 using LearnHub.Domain.Common;
 using LearnHub.Domain.Common.Results;
+using LearnHub.Domain.Identity.Events;
 
 namespace LearnHub.Domain.Identity;
 
@@ -78,7 +79,14 @@ public class User : AuditableEntity
         {
             return UserErrors.InvalidRole;
         }
-        return new User(id, firstName, lastName, email, passwordHash, role, phoneNumber, imageUrl, dateOfBirth, bio, country);
+
+        var user = new User(id, firstName, lastName, email, passwordHash, role, phoneNumber, imageUrl, dateOfBirth, bio, country);
+        user.AddDomainEvent(
+          new UserCreatedDomainEvent(
+          user.Id,
+          user.Email));
+
+        return user;
     }
 
     public Result<Updated> Update(string firstName, string lastName, Role role, string email, string passwordHash, string? phoneNumber = null, string? imageUrl = null, DateOnly? dateOfBirth = null, string? bio = null, string? country = null)

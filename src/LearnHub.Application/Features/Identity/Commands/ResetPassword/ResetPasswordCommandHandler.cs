@@ -53,8 +53,6 @@ public class ResetPasswordCommandHandler(IAppDbContext context,
         _context.OtpCodes.Remove(otpCode);
         await _context.SaveChangesAsync(cancellationToken);
 
-        user.AddDomainEvent(new PasswordChangedDomainEvent(user.Id));
-
         return Result.Updated;
     }
 }

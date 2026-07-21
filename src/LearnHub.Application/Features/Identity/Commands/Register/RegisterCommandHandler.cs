@@ -57,11 +57,6 @@ public class RegisterCommandHandler(IAppDbContext context,
         }
         await _context.Users.AddAsync(user.Value, cancellationToken);
 
-        user.Value.AddDomainEvent(new UserCreatedDomainEvent
-        {
-            UserId = user.Value.Id,
-            Email = user.Value.Email
-        });
         await _context.SaveChangesAsync(cancellationToken);
         return Result.Created;
 

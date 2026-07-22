@@ -1,5 +1,6 @@
 using LearnHub.Domain.Common;
 using LearnHub.Domain.Common.Results;
+using LearnHub.Domain.Courses;
 
 namespace LearnHub.Domain.Classification.Categories;
 
@@ -10,6 +11,9 @@ public sealed class Category : AuditableEntity
     public string? Description { get; private set; }
     public Guid? ParentCategoryId { get; private set; }
 
+    private readonly List<Course> _courses = [];
+
+    public IReadOnlyCollection<Course> Courses => _courses.AsReadOnly();
     private Category() { }
 
     private Category(Guid id, string name, string slug, string? description, Guid? parentCategoryId) : base(id)

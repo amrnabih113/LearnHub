@@ -56,7 +56,6 @@ public class RegisterCommandHandler(IAppDbContext context,
 
         }
         await _context.Users.AddAsync(user.Value, cancellationToken);
-
         await _context.SaveChangesAsync(cancellationToken);
         return Result.Created;
 

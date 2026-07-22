@@ -29,7 +29,7 @@ public class ForgetPasswordCommandHandler(IAppDbContext context, IOtpProvider ot
             return Result.Created;
         }
 
-        var otpResult = _otpProvider.GenerateOtp();
+        var otpResult = _otpProvider.GenerateOtp(OtpPurpose.PasswordReset);
 
         var otpHash = _otpProvider.HashOtp(otpResult);
         var otpCode = OtpCode.Create(

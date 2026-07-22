@@ -1,8 +1,10 @@
 using LearnHub.Domain.Common;
 using LearnHub.Domain.Common.Results;
+using LearnHub.Domain.Courses;
 using LearnHub.Domain.Enrollments.Certificates;
 using LearnHub.Domain.Enrollments.Enums;
 using LearnHub.Domain.Enrollments.Events;
+using LearnHub.Domain.Identity;
 using LessonProgressEntity = LearnHub.Domain.Enrollments.LessonProgress.LessonProgress;
 
 namespace LearnHub.Domain.Enrollments;
@@ -12,7 +14,12 @@ public sealed class Enrollment : AuditableEntity
 {
     public Guid StudentId { get; private set; }
 
-    public Guid CourseId { get; private set; } = default!;
+    public User Student { get; private set; } = default!;
+
+
+    public Guid CourseId { get; private set; }
+
+    public Course Course { get; private set; } = default!;
 
     public EnrollmentStatus Status { get; private set; }
 
@@ -191,12 +198,14 @@ public sealed class Enrollment : AuditableEntity
         {
             return;
         }
+        var code = $"CERT-{CourseId:N}-{Id:N}";
 
+        code = code[..Math.Min(code.Length, 32)];
         var certificateResult = Certificate.Create(
             Guid.NewGuid(),
             Id,
             StudentId,
-            $"CERT-{CourseId:N}-{Id:N}"[..32]);
+           code);
 
         if (certificateResult.IsSuccess)
         {

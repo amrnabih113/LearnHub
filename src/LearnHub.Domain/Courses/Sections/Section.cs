@@ -5,7 +5,7 @@ using LearnHub.Domain.Courses.Sections.Lessons;
 
 namespace LearnHub.Domain.Courses.Sections;
 
-public class Section : AuditableEntity
+public sealed class Section : AuditableEntity
 {
     public string Title { get; private set; } = default!;
     public string Description { get; private set; } = default!;
@@ -15,7 +15,7 @@ public class Section : AuditableEntity
     public Guid CourseId { get; private set; }
     public Course Course { get; private set; } = default!;
 
-    public readonly List<Lesson> _lessons = [];
+    private readonly List<Lesson> _lessons = [];
     public IEnumerable<Lesson> Lessons => _lessons.AsReadOnly();
 
     private Section() { }

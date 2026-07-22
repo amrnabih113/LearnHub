@@ -5,8 +5,8 @@ public class AuditableEntity : Entity
     public DateTimeOffset CreatedAtUtc { get; set; }
     public DateTimeOffset? UpdatedAtUtc { get; set; }
 
-    public string? CreatedBy { get; set; }
-    public string? UpdatedBy { get; set; }
+    public Guid? CreatedBy { get; set; }
+    public Guid? UpdatedBy { get; set; }
     protected AuditableEntity() : base()
     {
         CreatedAtUtc = DateTimeOffset.UtcNow;

@@ -12,6 +12,7 @@ public sealed class RefreshToken : AuditableEntity
     public DateTimeOffset ExpiresOnUtc { get; }
     public DateTimeOffset? RevokedAtUtc { get; private set; }
 
+    public User User { get; private set; } = default!;
     public bool IsRevoked => RevokedAtUtc.HasValue;
 
     public void Revoke()

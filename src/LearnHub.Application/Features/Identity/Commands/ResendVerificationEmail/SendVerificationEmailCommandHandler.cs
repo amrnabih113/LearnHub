@@ -5,7 +5,6 @@ using LearnHub.Application.common.Interfaces;
 using LearnHub.Application.Common.Interfaces.Authentication;
 using LearnHub.Application.Common.Interfaces.Notifications;
 using LearnHub.Domain.Common.Results;
-using LearnHub.Domain.Common.Results.Abstractions;
 using LearnHub.Domain.Identity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +28,7 @@ public class SendVerificationEmailCommandHandler(IEmailService emailService, ILo
                        cancellationToken);
         if (user is null)
         {
-          return Result.Created;
+            return Result.Created;
         }
         if (user.IsEmailVerified)
         {
@@ -44,7 +43,7 @@ public class SendVerificationEmailCommandHandler(IEmailService emailService, ILo
         _context.OtpCodes.RemoveRange(oldOtps);
 
         // Generate a new OTP code for email verification
-        var otpResult = _otpProvider.GenerateOtp();
+        var otpResult = _otpProvider.GenerateOtp(OtpPurpose.EmailVerification);
 
         var otpHash = _otpProvider.HashOtp(otpResult);
         var otpCode = OtpCode.Create(

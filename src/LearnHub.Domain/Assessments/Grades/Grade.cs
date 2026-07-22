@@ -1,19 +1,23 @@
-using LearnHub.Domain.Common;
 using LearnHub.Domain.Common.Results;
 
 namespace LearnHub.Domain.Assessments.Grades;
 
-public sealed class Grade : AuditableEntity
+public sealed record Grade
 {
-    public decimal Score { get; private set; }
+    public decimal Score { get; init; }
 
-    public decimal TotalScore { get; private set; }
-    public decimal ScorePercentage { get; private set; }
-    public bool IsPassed { get; private set; }
+    public decimal TotalScore { get; init; }
 
-    private Grade() { }
+    public decimal ScorePercentage { get; init; }
 
-    private Grade(Guid id, decimal score, decimal totalScore, decimal scorePercentage, bool isPassed) : base(id)
+    public bool IsPassed { get; init; }
+
+
+    private Grade(
+        decimal score,
+        decimal totalScore,
+        decimal scorePercentage,
+        bool isPassed)
     {
         Score = score;
         TotalScore = totalScore;
@@ -21,43 +25,55 @@ public sealed class Grade : AuditableEntity
         IsPassed = isPassed;
     }
 
-    public static Result<Grade> Create(Guid id, decimal score, decimal totalScore, int passPercentage)
+
+    public static Result<Grade> Create(
+        decimal score,
+        decimal totalScore,
+        int passPercentage)
     {
-        if (score < 0m || totalScore < 0m)
+        if (score < 0 || totalScore < 0)
         {
             return GradeErrors.InvalidScore;
         }
 
-        if (totalScore > 0m && score > totalScore)
+        if (totalScore > 0 && score > totalScore)
         {
             return GradeErrors.InvalidScore;
         }
 
-        decimal percentage = 0m;
-        if (totalScore > 0m)
-        {
-            percentage = Math.Round((score / totalScore) * 100m, 2);
-        }
+        var percentage = totalScore == 0
+            ? 0
+            : Math.Round((score / totalScore) * 100m, 2);
 
-        if (percentage < 0m || percentage > 100m)
+
+        if (percentage < 0 || percentage > 100)
         {
             return GradeErrors.InvalidScore;
         }
 
-        var passed = percentage >= passPercentage;
-        return new Grade(id, score, totalScore, percentage, passed);
+
+        return new Grade(
+            score,
+            totalScore,
+            percentage,
+            percentage >= passPercentage);
     }
 
-    // Backwards-compatible overload: create from percentage (0-100).
-    public static Result<Grade> Create(Guid id, decimal scorePercentage, int passPercentage)
+
+    public static Result<Grade> CreateFromPercentage(
+        decimal scorePercentage,
+        int passPercentage)
     {
-        if (scorePercentage is < 0m or > 100m)
+        if (scorePercentage < 0 || scorePercentage > 100)
         {
             return GradeErrors.InvalidScore;
         }
 
-        var passed = scorePercentage >= passPercentage;
-        // Represent percentage as score out of 100
-        return new Grade(id, scorePercentage, 100m, scorePercentage, passed);
+
+        return new Grade(
+            scorePercentage,
+            100m,
+            scorePercentage,
+            scorePercentage >= passPercentage);
     }
 }

@@ -4,7 +4,7 @@ namespace LearnHub.Application.Common.Interfaces.Authentication;
 
 public interface IOtpProvider
 {
-    string GenerateOtp();
+    string GenerateOtp(OtpPurpose otpPurpose);
 
     bool ValidateOtp(
         string otp,

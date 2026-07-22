@@ -33,6 +33,7 @@ public class LoginCommandHandler(ITokenProvider tokenProvider,
 
         if (!user.IsEmailVerified)
         { 
+            
             return ApplicationErrors.EmailNotVerified;
         }
         var tokenResult = await _tokenProvider.GenerateJwtTokenAsync(

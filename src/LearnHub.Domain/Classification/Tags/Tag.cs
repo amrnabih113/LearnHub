@@ -1,5 +1,6 @@
 using LearnHub.Domain.Common;
 using LearnHub.Domain.Common.Results;
+using LearnHub.Domain.Courses;
 
 namespace LearnHub.Domain.Classification.Tags;
 
@@ -8,7 +9,7 @@ public sealed class Tag : AuditableEntity
     public string Name { get; private set; } = default!;
     public string Slug { get; private set; } = default!;
     public string? Description { get; private set; }
-
+    public ICollection<CourseTag> CourseTags { get; private set; } = [];
     private Tag() { }
 
     private Tag(Guid id, string name, string slug, string? description) : base(id)
@@ -35,7 +36,7 @@ public sealed class Tag : AuditableEntity
 
     public Result<Updated> Rename(string name, string slug, string? description = null)
     {
-        
+
 
         if (string.IsNullOrWhiteSpace(name))
         {
@@ -61,3 +62,4 @@ public sealed class Tag : AuditableEntity
         return value.Trim().ToLowerInvariant().Replace(' ', '-');
     }
 }
+

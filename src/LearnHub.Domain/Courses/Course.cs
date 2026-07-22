@@ -19,12 +19,11 @@ public sealed class Course : AuditableEntity
     public string? Description { get; private set; }
     public string? InstructorId { get; private set; }
     public Guid CategoryId { get; private set; }
+
     public User? Instructor { get; private set; }
     private readonly List<Guid> _tagIds = [];
     public IReadOnlyCollection<Guid> TagIds => _tagIds.AsReadOnly();
-    private readonly List<Tag> _tags = [];
-    public IReadOnlyCollection<Tag> Tags => _tags.AsReadOnly();
-    public Category? Category { get; private set; }
+    public ICollection<CourseTag> CourseTags { get; private set; } = []; public Category? Category { get; private set; }
     private readonly List<Section> _sections = [];
     public IEnumerable<Section> Sections => _sections.AsReadOnly();
     public string? ThumbnailUrl { get; private set; }

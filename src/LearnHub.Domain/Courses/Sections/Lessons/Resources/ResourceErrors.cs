@@ -4,6 +4,9 @@ namespace LearnHub.Domain.Courses.Sections.Lessons.Resources;
 
 public static class ResourceErrors
 {
+    public static Error LessonIdRequired
+        => Error.Validation(code: "DomainError.Resource.LessonIdRequired",
+            description: "Resource must be associated with a lesson");
     public static Error NameRequired
         => Error.Validation(code: "DomainError.Resource.NameRequired",
             description: "Resource name is required");

@@ -20,7 +20,9 @@ public class User : AuditableEntity
     public string Email { get; private set; } = default!;
 
     public bool IsEmailVerified { get; private set; } = false;
-    public List<Role> Roles { get; private set; } = [];
+    private readonly List<UserRole> _roles = [];
+
+    public IReadOnlyCollection<UserRole> Roles => _roles.AsReadOnly();
     public string? ImageUrl { get; private set; } = default!;
     public DateOnly? DateOfBirth { get; private set; }
     public string? Bio { get; private set; } = default!;
@@ -37,7 +39,7 @@ public class User : AuditableEntity
         PasswordHash = passwordHash;
         PhoneNumber = phoneNumber;
         IsEmailVerified = false;
-        Roles.Add(role);
+        _roles.Add(UserRole.Create(id, role));
         ImageUrl = imageUrl;
         DateOfBirth = dateOfBirth;
         Bio = bio;
@@ -129,7 +131,7 @@ public class User : AuditableEntity
         ImageUrl = imageUrl;
         DateOfBirth = dateOfBirth;
         Bio = bio;
-        Roles.Add(role);
+        _roles.Add(UserRole.Create(Id, role));
         Country = country;
 
         UpdatedAtUtc = DateTimeOffset.UtcNow;
@@ -207,16 +209,19 @@ public class User : AuditableEntity
     }
     public Result<Updated> AssignRole(Role role)
     {
-        if (!Enum.IsDefined(typeof(Role), role))
+        if (!Enum.IsDefined(role))
         {
             return UserErrors.InvalidRole;
         }
 
-        if (!Roles.Contains(role))
+        if (_roles.Any(x => x.Role == role))
         {
-            Roles.Add(role);
-            UpdatedAtUtc = DateTimeOffset.UtcNow;
+            return Result.Updated;
         }
+
+        _roles.Add(UserRole.Create(Id, role));
+
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
 
         return Result.Updated;
     }

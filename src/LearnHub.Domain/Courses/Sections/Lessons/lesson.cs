@@ -5,13 +5,13 @@ using LearnHub.Domain.Courses.Sections.Lessons.Resources;
 
 namespace LearnHub.Domain.Courses.Sections.Lessons;
 
-public class Lesson : AuditableEntity
+public sealed class Lesson : AuditableEntity
 {
     public string? Title { get; private set; }
     public string? Description { get; private set; }
     public string VideoUrl { get; private set; } = string.Empty;
     public bool IsPreview { get; private set; }
-    public readonly List<Resource> _resources = [];
+    private readonly List<Resource> _resources = [];
     public IEnumerable<Resource> Resources => _resources.AsReadOnly();
     private readonly List<SubtitleTrack> _subtitles = [];
     public IReadOnlyCollection<SubtitleTrack> Subtitles => _subtitles.AsReadOnly();
@@ -22,7 +22,7 @@ public class Lesson : AuditableEntity
     public int Order { get; private set; }
 
     public Guid SectionId { get; private set; }
-    public Section? Section { get; private set; }
+    public Section Section { get; private set; } = default!;
 
     private Lesson() { }
 

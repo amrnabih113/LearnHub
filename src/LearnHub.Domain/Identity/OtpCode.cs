@@ -14,6 +14,7 @@ public sealed class OtpCode : AuditableEntity
 
     public OtpPurpose Purpose { get; private set; }
 
+    public User User { get; private set; } = default!;
     private OtpCode() { }
 
     private OtpCode(Guid id, Guid userId, string codeHash, DateTimeOffset expiresAtUtc, OtpPurpose purpose)

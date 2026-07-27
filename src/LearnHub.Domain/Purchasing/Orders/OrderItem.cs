@@ -7,6 +7,10 @@ namespace LearnHub.Domain.Purchasing.Orders;
 public sealed class OrderItem : AuditableEntity
 {
     public Guid CourseId { get; private set; }
+
+    public Guid OrderId { get; private set; }
+
+    public Order Order { get; private set; } = default!;
     public string CourseTitle { get; private set; } = default!;
     public Money UnitPriceSnapshot { get; private set; } = default!;
 

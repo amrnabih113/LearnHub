@@ -10,7 +10,7 @@ public sealed record UserDto(
     string FullName,
     string Email,
     string PhoneNumber,
-    IEnumerable<Role> Roles,
+    IReadOnlyCollection<UserRole> Roles,
     string? ImageUrl = null,
     DateOnly? DateOfBirth = null,
     string? Bio = null,

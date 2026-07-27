@@ -11,9 +11,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using LearnHub.Application.Common.Models;
 
-public class SendVerificationEmailCommandHandler(IEmailQueue emailQueue, ILogger<SendVerificationEmailCommandHandler> logger, IAppDbContext context, IOtpProvider otpProvider) : IRequestHandler<SendVerificationEmailCommand, Result<Created>>
+public class SendVerificationEmailCommandHandler(IBackgroundJobService backgroundJobService, ILogger<SendVerificationEmailCommandHandler> logger, IAppDbContext context, IOtpProvider otpProvider) : IRequestHandler<SendVerificationEmailCommand, Result<Created>>
 {
-    private readonly IEmailQueue _emailQueue = emailQueue;
+    private readonly IBackgroundJobService _backgroundJobService = backgroundJobService;
     private readonly ILogger<SendVerificationEmailCommandHandler> _logger = logger;
     private readonly IAppDbContext _context = context;
     private readonly IOtpProvider _otpProvider = otpProvider;
@@ -61,17 +61,16 @@ public class SendVerificationEmailCommandHandler(IEmailQueue emailQueue, ILogger
         await _context.OtpCodes.AddAsync(otpCode.Value, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         // Send the OTP code to the user's email
-        await _emailQueue.QueueAsync(
-    new EmailMessage(
-        email,
-        "Verify your LearnHub account",
-        EmailTemplate.EmailVerification,
-        new Dictionary<string,string>
-        {
-            ["Name"] = user.FirstName,
-            ["Otp"] = otpResult
-        }),
-    cancellationToken);
+        _backgroundJobService.QueueEmail(
+      new EmailMessage(
+          email,
+          "Reset Your Password",
+          EmailTemplate.PasswordReset,
+          new Dictionary<string, string>
+          {
+              ["Name"] = user.FirstName,
+              ["Otp"] = otpResult
+          }));
 
         return Result.Created;
     }

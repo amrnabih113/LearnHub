@@ -6,8 +6,11 @@ public interface ICurrentUserService
 {
     Guid? UserId { get; }
 
-    Role? Role { get; }
+    IReadOnlyCollection<Role> Roles { get; }
+
     string? Email { get; }
 
     bool IsAuthenticated { get; }
+
+    bool IsInRole(Role role);
 }

@@ -8,6 +8,9 @@ public sealed class CartItem : AuditableEntity
 {
     public Guid CourseId { get; private set; }
 
+    public Guid CartId { get; private set; }
+    public Cart Cart { get; private set; } = null!;
+
     public string CourseTitle { get; private set; } = null!;
 
     public Money UnitPrice { get; private set; } = null!;

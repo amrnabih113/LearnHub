@@ -59,27 +59,23 @@ public sealed class CurrentUserService
         .FindFirstValue(
             ClaimTypes.Email);
 
-
-
-    public Role? Role
+    public IReadOnlyCollection<Role> Roles
     {
         get
         {
-            var role =
+            var roles =
                 User?
-                .FindFirstValue(
-                    ClaimTypes.Role);
+                .FindAll(ClaimTypes.Role)
+                .Select(x => x.Value)
+                .Where(x => Enum.TryParse<Role>(x, out _))
+                .Select(Enum.Parse<Role>)
+                .ToList();
 
-
-            if (Enum.TryParse<Role>(
-                role,
-                out var result))
-            {
-                return result;
-            }
-
-
-            return null;
+            return roles ?? [];
         }
+    }
+    public bool IsInRole(Role role)
+    {
+        return User?.IsInRole(role.ToString()) == true;
     }
 }

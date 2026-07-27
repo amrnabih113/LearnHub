@@ -13,7 +13,7 @@ public class AssignRoleCommandHandler(IAppDbContext context, ICurrentUserService
     public async Task<Result<Updated>> Handle(AssignRoleCommand request, CancellationToken cancellationToken)
     {
 
-        if (currentUser.Role != Role.Admin)
+        if (!currentUser.IsInRole(Role.Admin))
         {
             return ApplicationErrors.AdminRoleUnauthorized;
         }
@@ -21,8 +21,8 @@ public class AssignRoleCommandHandler(IAppDbContext context, ICurrentUserService
         if (user is null)
         {
             return ApplicationErrors.UserNotFound;
-        }   
-        if (user.Roles.Contains(request.Role))
+        }
+        if (user.Roles.Any(x => x.Role == request.Role))
         {
             return ApplicationErrors.RoleAlreadyAssigned;
         }

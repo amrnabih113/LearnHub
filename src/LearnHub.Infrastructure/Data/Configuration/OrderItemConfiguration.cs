@@ -27,17 +27,20 @@ public sealed class OrderItemConfiguration
 
 
 
-        builder.OwnsOne(x => x.UnitPrice, money =>
-        {
-            money.Property(x => x.Amount)
-                .HasColumnName("UnitPrice")
-                .HasPrecision(18, 2);
+        builder.OwnsOne(
+           x => x.UnitPriceSnapshot,
+           money =>
+           {
+               money.Property(x => x.Amount)
+                   .HasColumnName("UnitPriceAmount")
+                   .HasPrecision(18, 2);
 
-            money.Property(x => x.Currency)
-                .HasColumnName("Currency")
-                .HasMaxLength(3);
-        });
 
+               money.Property(x => x.Currency)
+                   .HasColumnName("UnitPriceCurrency")
+                   .HasMaxLength(3)
+                   .IsRequired();
+           });
 
 
         builder.Ignore(x => x.DomainEvents);

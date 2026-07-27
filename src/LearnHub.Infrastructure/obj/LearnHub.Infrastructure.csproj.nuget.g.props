@@ -21,5 +21,6 @@
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgMicrosoft_CodeAnalysis_Analyzers Condition=" '$(PkgMicrosoft_CodeAnalysis_Analyzers)' == '' ">C:\Users\Amany\.nuget\packages\microsoft.codeanalysis.analyzers\3.11.0</PkgMicrosoft_CodeAnalysis_Analyzers>
     <PkgMicrosoft_EntityFrameworkCore_Tools Condition=" '$(PkgMicrosoft_EntityFrameworkCore_Tools)' == '' ">C:\Users\Amany\.nuget\packages\microsoft.entityframeworkcore.tools\10.0.10</PkgMicrosoft_EntityFrameworkCore_Tools>
+    <PkgHangfire_SqlServer Condition=" '$(PkgHangfire_SqlServer)' == '' ">C:\Users\Amany\.nuget\packages\hangfire.sqlserver\1.8.24</PkgHangfire_SqlServer>
   </PropertyGroup>
 </Project>

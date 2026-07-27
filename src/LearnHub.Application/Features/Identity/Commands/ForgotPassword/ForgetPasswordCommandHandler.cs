@@ -9,12 +9,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LearnHub.Application.Features.Identity.Commands.ForgotPassword;
 
-public class ForgetPasswordCommandHandler(IAppDbContext context, IOtpProvider otpProvider, IEmailQueue _emailQueue
+public class ForgetPasswordCommandHandler(IAppDbContext context, IOtpProvider otpProvider, IBackgroundJobService backgroundJobService
 ) : IRequestHandler<ForgetPasswordCommand, Result<Created>>
 {
     private readonly IAppDbContext _context = context;
     private readonly IOtpProvider _otpProvider = otpProvider;
-    private readonly IEmailQueue _emailQueue = _emailQueue;
+    private readonly IBackgroundJobService _backgroundJobService = backgroundJobService;
 
     public async Task<Result<Created>> Handle(ForgetPasswordCommand request, CancellationToken cancellationToken)
     {
@@ -56,17 +56,16 @@ public class ForgetPasswordCommandHandler(IAppDbContext context, IOtpProvider ot
 
         await _context.SaveChangesAsync(cancellationToken);
 
-        await _emailQueue.QueueAsync(
-        new EmailMessage(
-            email,
-            "Reset Your Password",
-            EmailTemplate.PasswordReset,
-            new Dictionary<string, string>
-            {
-                ["Name"] = user.FirstName,
-                ["Otp"] = otpResult
-            }),
-        cancellationToken);
+        _backgroundJobService.QueueEmail(
+     new EmailMessage(
+         email,
+         "Reset Your Password",
+         EmailTemplate.PasswordReset,
+         new Dictionary<string, string>
+         {
+             ["Name"] = user.FirstName,
+             ["Otp"] = otpResult
+         }));
 
         return Result.Created;
     }

@@ -175,13 +175,12 @@ public sealed class Quiz : AuditableEntity
 
         var attemptNumber = previousAttemptsCount + 1;
         return QuizAttempt.Start(
-            attemptId,
-            Id,
-            CourseId,
-            studentId,
-            attemptNumber,
-            TimeLimitMinutes,
-            PassingPolicy.PassPercentage);
+     attemptId,
+     Id,
+     CourseId,
+     studentId,
+     attemptNumber,
+     TimeLimitMinutes);
     }
 
     public IReadOnlyDictionary<Guid, HashSet<Guid>> BuildAnswerKey()

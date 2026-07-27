@@ -4,8 +4,13 @@ namespace LearnHub.Domain.Purchasing.ValueObjects;
 
 public sealed record Money
 {
-    public decimal Amount { get; }
-    public string Currency { get; }
+    public decimal Amount { get; private set; }
+    public string Currency { get; private set; } = null!;
+
+    private Money()
+    {
+    }
+
 
     private Money(decimal amount, string currency)
     {
@@ -13,24 +18,26 @@ public sealed record Money
         Currency = currency;
     }
 
-    public static Result<Money> Create(decimal amount, string currency)
+
+    public static Result<Money> Create(
+        decimal amount,
+        string currency)
     {
         if (string.IsNullOrWhiteSpace(currency))
-        {
             return OrderErrors.CurrencyRequired;
-        }
+
 
         if (currency.Trim().Length != 3)
-        {
             return OrderErrors.InvalidCurrency;
-        }
+
 
         if (amount < 0)
-        {
             return OrderErrors.InvalidDiscount;
-        }
 
-        return new Money(amount, currency.Trim().ToUpperInvariant());
+
+        return new Money(
+            amount,
+            currency.Trim().ToUpperInvariant());
     }
 
     public static Money Zero(string currency) => new(0, currency.Trim().ToUpperInvariant());

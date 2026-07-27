@@ -17,6 +17,7 @@ using Microsoft.IdentityModel.Tokens;
 using LearnHub.Infrastructure.Email;
 using LearnHub.Infrastructure.BackgroundJobs;
 using LearnHub.Infrastructure.Email.Templates;
+using Hangfire;
 
 namespace LearnHub.Infrastructure;
 
@@ -158,7 +159,18 @@ public static class DependencyInjection
 
         services.AddAuthorization();
 
+        // ============================
+        // Background Jobs
+        // ============================
 
+        services.AddHangfire(config =>
+    {
+        config.UseSqlServerStorage(
+            configuration.GetConnectionString("DefaultConnection"));
+    });
+
+
+        services.AddHangfireServer();
 
         // ============================
         // Notifications
@@ -172,13 +184,16 @@ public static class DependencyInjection
         services.AddScoped<IEmailService, MailService>();
 
 
-        services.AddSingleton<IEmailQueue, BackgroundEmailQueue>();
+        services.AddTransient<IEmailJob, EmailJob>();
+
+        services.AddScoped<
+            IBackgroundJobService,
+            HangfireBackgroundJobService>();
 
 
         services.AddScoped<IEmailTemplateService, EmailTemplateService>();
 
 
-        services.AddHostedService<EmailBackgroundService>();
         // ============================
         // Storage
         // ============================

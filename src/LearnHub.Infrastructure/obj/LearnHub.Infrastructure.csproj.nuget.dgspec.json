@@ -760,6 +760,14 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "dependencies": {
+            "Hangfire.AspNetCore": {
+              "target": "Package",
+              "version": "[1.8.24, )"
+            },
+            "Hangfire.SqlServer": {
+              "target": "Package",
+              "version": "[1.8.24, )"
+            },
             "MailKit": {
               "target": "Package",
               "version": "[4.17.0, )"

@@ -2,7 +2,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using LearnHub.Application.common.Interfaces;
-using LearnHub.Application.Common.Interfaces;
 using LearnHub.Application.Features.Identity;
 using LearnHub.Domain.Common.Results;
 using LearnHub.Domain.Identity;
@@ -12,7 +11,6 @@ using Microsoft.IdentityModel.Tokens;
 
 
 namespace LearnHub.Infrastructure.Identity;
-
 
 public sealed class TokenProvider : ITokenProvider
 {
@@ -34,58 +32,71 @@ public sealed class TokenProvider : ITokenProvider
             _configuration.GetSection("JwtSettings");
 
 
+        var expirationMinutes =
+            int.Parse(
+                jwtSettings["ExpirationMinutes"]
+                ?? throw new InvalidOperationException(
+                    "JWT ExpirationMinutes missing"));
+
+
         var expiresOnUtc =
-            DateTime.UtcNow.AddMinutes(
-                int.Parse(jwtSettings["ExpirationMinutes"]!));
+            DateTime.UtcNow.AddMinutes(expirationMinutes);
 
 
 
         var claims = new List<Claim>
         {
             new(
-                JwtRegisteredClaimNames.Sub,
+                ClaimTypes.NameIdentifier,
                 user.Id.ToString()),
 
 
             new(
-                JwtRegisteredClaimNames.Email,
+                ClaimTypes.Email,
                 user.Email),
 
 
             new(
                 ClaimTypes.Name,
-                user.FullName)
+                user.FullName),
+
+
+            new(
+                JwtRegisteredClaimNames.Jti,
+                Guid.NewGuid().ToString())
         };
 
 
-        foreach (var userRole in user.Roles)
+
+        foreach (var role in user.Roles)
         {
             claims.Add(
                 new Claim(
                     ClaimTypes.Role,
-                    userRole.Role.ToString()));
+                    role.Role.ToString()));
         }
 
 
 
-        var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(
-                jwtSettings["Secret"]!));
-
-
-        var credentials =
-            new SigningCredentials(
-                key,
-                SecurityAlgorithms.HmacSha256);
+        var key =
+            new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(
+                    jwtSettings["Secret"]
+                    ?? throw new InvalidOperationException(
+                        "JWT Secret missing")));
 
 
 
-        var token = new JwtSecurityToken(
-            issuer: jwtSettings["Issuer"],
-            audience: jwtSettings["Audience"],
-            claims: claims,
-            expires: expiresOnUtc,
-            signingCredentials: credentials);
+        var token =
+            new JwtSecurityToken(
+                issuer: jwtSettings["Issuer"],
+                audience: jwtSettings["Audience"],
+                claims: claims,
+                expires: expiresOnUtc,
+                signingCredentials:
+                    new SigningCredentials(
+                        key,
+                        SecurityAlgorithms.HmacSha256));
 
 
 
@@ -95,22 +106,14 @@ public sealed class TokenProvider : ITokenProvider
 
 
 
-        var response = new TokenResponse
-        {
-            AccessToken = accessToken,
-
-            // implement refresh token later
-            RefreshToken = null,
-
-            ExpiresOnUtc = expiresOnUtc
-        };
-
-
-        return Task.FromResult<Result<TokenResponse>>(response);
-    
+        return Task.FromResult<Result<TokenResponse>>(
+            new TokenResponse
+            {
+                AccessToken = accessToken,
+                RefreshToken = null,
+                ExpiresOnUtc = expiresOnUtc
+            });
     }
-
-
 
 
 
@@ -121,25 +124,19 @@ public sealed class TokenProvider : ITokenProvider
             _configuration.GetSection("JwtSettings");
 
 
-        var validationParameters =
+        var parameters =
             new TokenValidationParameters
             {
                 ValidateIssuer = true,
-
                 ValidateAudience = true,
 
                 ValidateLifetime = false,
 
                 ValidateIssuerSigningKey = true,
 
+                ValidIssuer = jwtSettings["Issuer"],
 
-                ValidIssuer =
-                    jwtSettings["Issuer"],
-
-
-                ValidAudience =
-                    jwtSettings["Audience"],
-
+                ValidAudience = jwtSettings["Audience"],
 
                 IssuerSigningKey =
                     new SymmetricSecurityKey(
@@ -148,20 +145,13 @@ public sealed class TokenProvider : ITokenProvider
             };
 
 
-        var tokenHandler =
-            new JwtSecurityTokenHandler();
-
-
         try
         {
-            var principal =
-                tokenHandler.ValidateToken(
+            return new JwtSecurityTokenHandler()
+                .ValidateToken(
                     token,
-                    validationParameters,
+                    parameters,
                     out _);
-
-
-            return principal;
         }
         catch
         {

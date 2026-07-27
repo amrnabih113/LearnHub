@@ -3,17 +3,17 @@ namespace LearnHub.Application.Features.Identity.Commands.ResendVerificationEmai
 using LearnHub.Application.common.Errors;
 using LearnHub.Application.common.Interfaces;
 using LearnHub.Application.Common.Interfaces.Authentication;
-using LearnHub.Application.Common.Interfaces.Notifications;
+using LearnHub.Application.Common.Interfaces;
 using LearnHub.Domain.Common.Results;
 using LearnHub.Domain.Identity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using LearnHub.Application.Common.Models;
 
-
-public class SendVerificationEmailCommandHandler(IEmailService emailService, ILogger<SendVerificationEmailCommandHandler> logger, IAppDbContext context, IOtpProvider otpProvider) : IRequestHandler<SendVerificationEmailCommand, Result<Created>>
+public class SendVerificationEmailCommandHandler(IEmailQueue emailQueue, ILogger<SendVerificationEmailCommandHandler> logger, IAppDbContext context, IOtpProvider otpProvider) : IRequestHandler<SendVerificationEmailCommand, Result<Created>>
 {
-    private readonly IEmailService _emailService = emailService;
+    private readonly IEmailQueue _emailQueue = emailQueue;
     private readonly ILogger<SendVerificationEmailCommandHandler> _logger = logger;
     private readonly IAppDbContext _context = context;
     private readonly IOtpProvider _otpProvider = otpProvider;
@@ -43,7 +43,7 @@ public class SendVerificationEmailCommandHandler(IEmailService emailService, ILo
         _context.OtpCodes.RemoveRange(oldOtps);
 
         // Generate a new OTP code for email verification
-        var otpResult = _otpProvider.GenerateOtp(OtpPurpose.EmailVerification);
+        var otpResult = _otpProvider.GenerateOtp();
 
         var otpHash = _otpProvider.HashOtp(otpResult);
         var otpCode = OtpCode.Create(
@@ -61,10 +61,17 @@ public class SendVerificationEmailCommandHandler(IEmailService emailService, ILo
         await _context.OtpCodes.AddAsync(otpCode.Value, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
         // Send the OTP code to the user's email
-        await _emailService.SendAsync(
-            to: email,
-            subject: "Email Verification OTP",
-            body: $"Your OTP code for email verification is: {otpResult}");
+        await _emailQueue.QueueAsync(
+    new EmailMessage(
+        email,
+        "Verify your LearnHub account",
+        EmailTemplate.EmailVerification,
+        new Dictionary<string,string>
+        {
+            ["Name"] = user.FirstName,
+            ["Otp"] = otpResult
+        }),
+    cancellationToken);
 
         return Result.Created;
     }

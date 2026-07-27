@@ -1,4 +1,4 @@
-namespace LearnHub.Application.Common.Interfaces.Notifications;
+namespace LearnHub.Application.Common.Interfaces;
 
 public interface IEmailService
 {
@@ -8,3 +8,4 @@ public interface IEmailService
         string body,
         CancellationToken cancellationToken = default);
 }
+

@@ -1,20 +1,20 @@
 using LearnHub.Application.common.Interfaces;
+using LearnHub.Application.Common.Interfaces;
 using LearnHub.Application.Common.Interfaces.Authentication;
-using LearnHub.Application.Common.Interfaces.Notifications;
+using LearnHub.Application.Common.Models;
 using LearnHub.Domain.Common.Results;
-using LearnHub.Domain.Common.Results.Abstractions;
 using LearnHub.Domain.Identity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearnHub.Application.Features.Identity.Commands.ForgotPassword;
 
-public class ForgetPasswordCommandHandler(IAppDbContext context, IOtpProvider otpProvider, IEmailService emailService
+public class ForgetPasswordCommandHandler(IAppDbContext context, IOtpProvider otpProvider, IEmailQueue _emailQueue
 ) : IRequestHandler<ForgetPasswordCommand, Result<Created>>
 {
     private readonly IAppDbContext _context = context;
     private readonly IOtpProvider _otpProvider = otpProvider;
-    private readonly IEmailService _emailService = emailService;
+    private readonly IEmailQueue _emailQueue = _emailQueue;
 
     public async Task<Result<Created>> Handle(ForgetPasswordCommand request, CancellationToken cancellationToken)
     {
@@ -29,8 +29,9 @@ public class ForgetPasswordCommandHandler(IAppDbContext context, IOtpProvider ot
             return Result.Created;
         }
 
-        var otpResult = _otpProvider.GenerateOtp(OtpPurpose.PasswordReset);
 
+
+        var otpResult = _otpProvider.GenerateOtp();
         var otpHash = _otpProvider.HashOtp(otpResult);
         var otpCode = OtpCode.Create(
            id: Guid.NewGuid(),
@@ -45,12 +46,27 @@ public class ForgetPasswordCommandHandler(IAppDbContext context, IOtpProvider ot
         }
 
         await _context.OtpCodes.AddAsync(otpCode.Value, cancellationToken);
+
+        var oldOtps =
+        _context.OtpCodes.Where(x =>
+        x.UserId == user.Id &&
+        x.Purpose == OtpPurpose.PasswordReset);
+
+        _context.OtpCodes.RemoveRange(oldOtps);
+
         await _context.SaveChangesAsync(cancellationToken);
 
-        await _emailService.SendAsync(
-            to: email,
-            subject: "Password Reset OTP",
-            body: $"Your OTP code for password reset is: {otpResult}");
+        await _emailQueue.QueueAsync(
+        new EmailMessage(
+            email,
+            "Reset Your Password",
+            EmailTemplate.PasswordReset,
+            new Dictionary<string, string>
+            {
+                ["Name"] = user.FirstName,
+                ["Otp"] = otpResult
+            }),
+        cancellationToken);
 
         return Result.Created;
     }

@@ -1,12 +1,10 @@
-using System.Text;
 using Hangfire;
 using LearnHub.Application;
 using LearnHub.Infrastructure;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 namespace LearnHub.Api;
 
-public partial class Program
+public static class Program
 {
     private static void Main(string[] args)
     {
@@ -18,41 +16,20 @@ public partial class Program
         .AddApplication();
         builder.Services
         .AddInfrastructure(builder.Configuration);
-        builder.Services
-            .AddAuthentication()
-            .AddJwtBearer(options =>
-            {
-                options.TokenValidationParameters =
-                    new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-
-                        ValidateAudience = true,
-
-                        ValidateLifetime = true,
-
-                        ValidateIssuerSigningKey = true,
-
-
-                        ValidIssuer =
-                            configuration["JwtSettings:Issuer"],
-
-
-                        ValidAudience =
-                            configuration["JwtSettings:Audience"],
-
-
-                        IssuerSigningKey =
-                            new SymmetricSecurityKey(
-                                Encoding.UTF8.GetBytes(
-                                    configuration["JwtSettings:Secret"]!))
-                    };
-            });
-
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
+        builder.Services.AddSwaggerGen(options =>
+        {
+            options.AddSecurityDefinition("cookieAuth", new OpenApiSecurityScheme
+            {
+                Type = SecuritySchemeType.ApiKey,
+                In = ParameterLocation.Cookie,
+                Name = "accessToken", // Your cookie name
+                Description = "Authentication cookie"
+            });
 
+
+        });
 
 
         var app = builder.Build();

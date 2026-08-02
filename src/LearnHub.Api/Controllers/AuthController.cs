@@ -11,6 +11,9 @@ using MediatR;
 
 using Microsoft.AspNetCore.Mvc;
 using LearnHub.Application.Features.Identity.Commands.ForgotPassword;
+using Microsoft.AspNetCore.Authorization;
+using LearnHub.Application.Features.Identity.Queries.GetCurrentUser;
+using LearnHub.Application.Features.Identity.Queries.GetUserById;
 
 
 namespace LearnHub.Api.Controllers;
@@ -54,6 +57,33 @@ public sealed class AuthController(ISender sender) : BaseController
         {
             AppendRefreshTokenCookie(result.Value);
         }
+
+        return HandleResult(result);
+    }
+
+    [Authorize]
+    [HttpGet("get-current-user")]
+    public async Task<IActionResult> GetCurrentUser(
+        CancellationToken cancellationToken)
+    {
+        var result =
+            await _sender.Send(
+                new GetCurrentUserQuery(),
+                cancellationToken);
+
+        return HandleResult(result);
+    }
+
+    [HttpGet("get-user-by-id/{userId:guid}")]
+    [Authorize]
+    public async Task<IActionResult> GetUserById(
+        Guid userId,
+        CancellationToken cancellationToken)
+    {
+        var result =
+            await _sender.Send(
+                new GetUserByIdQuery(userId),
+                cancellationToken);
 
         return HandleResult(result);
     }
@@ -147,10 +177,6 @@ public sealed class AuthController(ISender sender) : BaseController
         [FromBody] RefreshTokenRequest request,
         CancellationToken cancellationToken)
     {
-        // if (!Request.Cookies.TryGetValue(RefreshTokenCookieName, out var refreshToken))
-        // {
-        //     return Unauthorized();
-        // }
 
         var command = new RefreshTokenCommand(request.RefreshToken, request.ExpiredToken);
 

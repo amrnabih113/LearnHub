@@ -3809,11 +3809,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Api\\LearnHub.Api.csproj",
+      "projectUniqueName": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Api\\LearnHub.Api.csproj",
       "projectName": "LearnHub.Api",
-      "projectPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Api\\LearnHub.Api.csproj",
+      "projectPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Api\\LearnHub.Api.csproj",
       "packagesPath": "C:\\Users\\Amany\\.nuget\\packages\\",
-      "outputPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Api\\obj\\",
+      "outputPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -3837,8 +3837,8 @@
             "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Application\\LearnHub.Application.csproj": {
               "projectPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Application\\LearnHub.Application.csproj"
             },
-            "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\LearnHub.Contracts.csproj": {
-              "projectPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\LearnHub.Contracts.csproj"
+            "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\LearnHub.Contracts.csproj": {
+              "projectPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\LearnHub.Contracts.csproj"
             },
             "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj": {
               "projectPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj"

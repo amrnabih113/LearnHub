@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\LearnHub.Contracts.csproj": {}
+    "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\LearnHub.Contracts.csproj": {}
   },
   "projects": {
-    "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\LearnHub.Contracts.csproj": {
+    "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\LearnHub.Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\LearnHub.Contracts.csproj",
+        "projectUniqueName": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\LearnHub.Contracts.csproj",
         "projectName": "LearnHub.Contracts",
-        "projectPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\LearnHub.Contracts.csproj",
+        "projectPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\LearnHub.Contracts.csproj",
         "packagesPath": "C:\\Users\\Amany\\.nuget\\packages\\",
-        "outputPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\obj\\",
+        "outputPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

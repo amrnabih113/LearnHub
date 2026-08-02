@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LearnHub.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ad96aa4f9a4fde34581dedab6822a1a30693ecd")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+66fd9582404451ff6924e715a9b13f292383fbf2")]
 [assembly: System.Reflection.AssemblyProductAttribute("LearnHub.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LearnHub.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

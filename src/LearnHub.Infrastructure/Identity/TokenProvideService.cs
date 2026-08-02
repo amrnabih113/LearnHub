@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using LearnHub.Application.common.Interfaces;
 using LearnHub.Application.Features.Identity;
@@ -111,9 +112,23 @@ public sealed class TokenProvider : ITokenProvider
             {
                 AccessToken = accessToken,
                 RefreshToken = null,
-                ExpiresOnUtc = expiresOnUtc
+                ExpiresOnUtc = expiresOnUtc,
+                RefreshTokenExpiresOnUtc = default
             });
     }
+
+    public string GenerateRefreshToken()
+    {
+        var bytes = RandomNumberGenerator.GetBytes(64);
+
+        return Convert.ToBase64String(bytes)
+            .Replace('+', '-')
+            .Replace('/', '_')
+            .TrimEnd('=');
+    }
+
+    public DateTimeOffset GetRefreshTokenExpiresOnUtc()
+        => DateTimeOffset.UtcNow.AddDays(7);
 
 
 

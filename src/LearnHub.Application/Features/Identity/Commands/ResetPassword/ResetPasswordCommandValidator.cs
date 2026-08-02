@@ -6,15 +6,11 @@ public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordComm
 {
     public ResetPasswordCommandValidator()
     {
-        RuleFor(x => x.Email)
-            .NotEmpty()
-            .EmailAddress();
-
-        RuleFor(x => x.Otp)
+        RuleFor(x => x.ResetToken)
             .NotEmpty();
 
         RuleFor(x => x.NewPassword)
             .NotEmpty()
             .MinimumLength(6);
     }
-} 
+}

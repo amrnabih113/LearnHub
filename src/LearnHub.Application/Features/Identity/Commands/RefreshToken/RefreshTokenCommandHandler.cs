@@ -3,6 +3,8 @@ using LearnHub.Application.common.Interfaces;
 using LearnHub.Domain.Common.Results;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using LearnHub.Domain.Identity;
+using RefreshTokenEntity = LearnHub.Domain.Identity.RefreshToken;
 
 namespace LearnHub.Application.Features.Identity.Commands.RefreshToken;
 
@@ -26,7 +28,7 @@ public class RefreshTokenCommandHandler(
             return ApplicationErrors.InvalidRefreshToken;
         }
 
-        var email = principal.Identity?.Name;
+        var email = principal.FindFirst(System.Security.Claims.ClaimTypes.Email)?.Value;
 
         if (string.IsNullOrWhiteSpace(email))
         {
@@ -73,6 +75,27 @@ public class RefreshTokenCommandHandler(
         {
             return tokenResult.Errors;
         }
+
+        var newRefreshTokenValue = _tokenProvider.GenerateRefreshToken();
+        var newRefreshTokenExpiresOnUtc = _tokenProvider.GetRefreshTokenExpiresOnUtc();
+
+        var newRefreshTokenResult = RefreshTokenEntity.Create(
+            Guid.NewGuid(),
+            newRefreshTokenValue,
+            user.Id,
+            newRefreshTokenExpiresOnUtc);
+
+        if (newRefreshTokenResult.IsError)
+        {
+            return newRefreshTokenResult.Errors;
+        }
+
+        tokenResult.Value.RefreshToken = newRefreshTokenValue;
+        tokenResult.Value.RefreshTokenExpiresOnUtc = newRefreshTokenExpiresOnUtc;
+
+        await _context.RefreshTokens.AddAsync(
+            newRefreshTokenResult.Value,
+            cancellationToken);
 
         await _context.SaveChangesAsync(cancellationToken);
 

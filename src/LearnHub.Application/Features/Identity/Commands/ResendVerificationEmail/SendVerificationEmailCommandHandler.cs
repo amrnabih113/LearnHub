@@ -64,8 +64,8 @@ public class SendVerificationEmailCommandHandler(IBackgroundJobService backgroun
         _backgroundJobService.QueueEmail(
       new EmailMessage(
           email,
-          "Reset Your Password",
-          EmailTemplate.PasswordReset,
+                    "Verify Your Email",
+                    EmailTemplate.EmailVerification,
           new Dictionary<string, string>
           {
               ["Name"] = user.FirstName,

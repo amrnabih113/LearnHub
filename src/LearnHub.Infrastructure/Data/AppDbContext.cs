@@ -25,6 +25,8 @@ public class AppDbContext(
 {
     private readonly IMediator? _mediator = mediator;
 
+    private bool _dispatchingDomainEvents;
+
     public DbSet<Course> Courses => Set<Course>();
 
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
@@ -32,6 +34,8 @@ public class AppDbContext(
     public DbSet<User> Users => Set<User>();
 
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
+
+    public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
 
     public DbSet<OtpCode> OtpCodes => Set<OtpCode>();
 
@@ -79,33 +83,41 @@ public class AppDbContext(
     private async Task DispatchDomainEventsAsync(
         CancellationToken cancellationToken)
     {
-        if (_mediator is null)
+        if (_mediator is null || _dispatchingDomainEvents)
             return;
 
 
-        var entities = ChangeTracker
+        _dispatchingDomainEvents = true;
+
+        try
+        {
+            var entities = ChangeTracker
             .Entries<Entity>()
             .Where(x => x.Entity.DomainEvents.Count != 0)
             .Select(x => x.Entity)
             .ToList();
 
 
-        var events = entities
-            .SelectMany(x => x.DomainEvents)
-            .ToList();
+            var events = entities
+                .SelectMany(x => x.DomainEvents)
+                .ToList();
+
+            foreach (var entity in entities)
+            {
+                entity.ClearDomainEvents();
+            }
 
 
-        foreach (var domainEvent in events)
-        {
-            await _mediator.Publish(
-                domainEvent,
-                cancellationToken);
+            foreach (var domainEvent in events)
+            {
+                await _mediator.Publish(
+                    domainEvent,
+                    cancellationToken);
+            }
         }
-
-
-        foreach (var entity in entities)
+        finally
         {
-            entity.ClearDomainEvents();
+            _dispatchingDomainEvents = false;
         }
     }
 }

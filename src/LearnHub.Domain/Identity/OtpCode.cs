@@ -46,4 +46,9 @@ public sealed class OtpCode : AuditableEntity
         }
         return new OtpCode(id, userId, codeHash, expiresAtUtc, purpose);
     }
+
+    public void MarkUsed()
+    {
+        UsedAtUtc = DateTimeOffset.UtcNow;
+    }
 }

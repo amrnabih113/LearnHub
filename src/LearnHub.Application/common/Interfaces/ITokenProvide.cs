@@ -9,5 +9,9 @@ public interface ITokenProvider
 {
     Task<Result<TokenResponse>> GenerateJwtTokenAsync(User user, CancellationToken ct = default);
 
+    string GenerateRefreshToken();
+
+    DateTimeOffset GetRefreshTokenExpiresOnUtc();
+
     ClaimsPrincipal? GetPrincipalFromExpiredToken(string token);
 }

@@ -38,6 +38,18 @@ public static class ApplicationErrors
         "Refresh token has expired."
     );
 
+    public static Error InvalidResetToken => Error.Validation(
+        code: "ApplicationError.User.InvalidResetToken",
+        description:
+        "Invalid reset token."
+    );
+
+    public static Error ResetTokenExpired => Error.Validation(
+        code: "ApplicationError.User.ExpiredResetToken",
+        description:
+        "Reset token has expired."
+    );
+
     public static Error EmailAlreadyExists => Error.Validation(
         code: "ApplicationError.User.EmailAlreadyExists",
         description:

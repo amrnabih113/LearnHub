@@ -96,9 +96,8 @@ public sealed class OrderConfiguration
         });
 
 
-
         builder.HasMany(x => x.Items)
-            .WithOne()
+            .WithOne(x => x.Order)
             .HasForeignKey(x => x.OrderId)
             .OnDelete(DeleteBehavior.Cascade);
 

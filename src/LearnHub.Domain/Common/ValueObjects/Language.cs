@@ -1,33 +1,63 @@
 using LearnHub.Domain.Common.Results;
-using LearnHub.Domain.Common;
 
 namespace LearnHub.Domain.Common.ValueObjects;
 
-
 public sealed record Language
 {
-    public string Code { get; init; }
+    public string Code { get; private set; } = default!;
 
-    private Language(string code)
+    public string Name { get; private set; } = default!;
+
+
+    private Language()
     {
-        Code = code;
+        // EF Core
     }
 
-    public static Result<Language> Create(string code)
+
+    private Language(
+        string code,
+        string name)
+    {
+        Code = code;
+        Name = name;
+    }
+
+
+    public static Result<Language> Create(
+        string code,
+        string name)
     {
         if (string.IsNullOrWhiteSpace(code))
         {
             return LanguageErrors.CodeRequired;
         }
 
-        var normalized = code.Trim().ToLowerInvariant();
-        if (normalized.Length < 2 || normalized.Length > 5)
+
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            return LanguageErrors.NameRequired;
+        }
+
+
+        var normalizedCode = code
+            .Trim()
+            .ToLowerInvariant();
+
+
+        if (normalizedCode.Length < 2 ||
+            normalizedCode.Length > 5)
         {
             return LanguageErrors.InvalidCode;
         }
 
-        return new Language(normalized);
+
+        return new Language(
+            normalizedCode,
+            name.Trim());
     }
 
-    public override string ToString() => Code;
+
+    public override string ToString()
+        => $"{Name} ({Code})";
 }

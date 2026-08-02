@@ -18,6 +18,9 @@ using LearnHub.Infrastructure.Email;
 using LearnHub.Infrastructure.BackgroundJobs;
 using LearnHub.Infrastructure.Email.Templates;
 using Hangfire;
+using Microsoft.Extensions.Options;
+using CloudinaryDotNet;
+using LearnHub.Infrastructure.Storage;
 
 namespace LearnHub.Infrastructure;
 
@@ -198,9 +201,28 @@ public static class DependencyInjection
         // Storage
         // ============================
 
-        // later:
-        // services.AddScoped<IFileStorageService, CloudinaryFileStorageService>();
 
+        services.Configure<CloudinarySettings>(
+            configuration.GetSection(CloudinarySettings.SectionName));
+
+        services.AddSingleton(sp =>
+        {
+            var settings = sp
+                .GetRequiredService<IOptions<CloudinarySettings>>()
+                .Value;
+
+            var account = new Account(
+                settings.CloudName,
+                settings.ApiKey,
+                settings.ApiSecret);
+
+            return new Cloudinary(account);
+        });
+
+        services.Configure<FileStorageOptions>(
+            configuration.GetSection(FileStorageOptions.SectionName));
+
+        services.AddScoped<IFileStorageService, FileStorageService>();
 
         // ============================
         // Caching

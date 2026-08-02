@@ -35,6 +35,10 @@ public sealed class SubscriptionConfiguration : IEntityTypeConfiguration<Subscri
         builder.Property(x => x.AutoRenewEnabled)
             .IsRequired();
 
+        builder.HasOne(x => x.Plan)
+                  .WithMany()
+                  .HasForeignKey(x => x.SubscriptionPlanId)
+                  .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasMany(x => x.Payments)
             .WithOne(x => x.Subscription)

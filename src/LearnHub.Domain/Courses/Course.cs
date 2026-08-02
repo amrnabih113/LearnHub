@@ -17,7 +17,7 @@ public sealed class Course : AuditableEntity
 {
     public string? Title { get; private set; }
     public string? Description { get; private set; }
-    public string? InstructorId { get; private set; }
+    public Guid? InstructorId { get; private set; }
     public Guid CategoryId { get; private set; }
 
     public User? Instructor { get; private set; }
@@ -38,7 +38,7 @@ public sealed class Course : AuditableEntity
 
     private Course() { }
 
-    private Course(Guid id, string title, string description, string instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, bool isIncludedInSubscription, SubscriptionTier requiredSubscriptionTier, Language language, string? country) : base(id)
+    private Course(Guid id, string title, string description, Guid instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, bool isIncludedInSubscription, SubscriptionTier requiredSubscriptionTier, Language language, string? country) : base(id)
     {
         Title = title;
         Description = description;
@@ -54,7 +54,7 @@ public sealed class Course : AuditableEntity
         Country = country;
     }
 
-    public static Result<Course> Create(Guid id, string title, string description, string instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, bool isIncludedInSubscription, SubscriptionTier requiredSubscriptionTier, string language, string? country)
+    public static Result<Course> Create(Guid id, string title, string description, Guid instructorId, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, bool isIncludedInSubscription, SubscriptionTier requiredSubscriptionTier, string language, string? languageName, string? country)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -64,7 +64,7 @@ public sealed class Course : AuditableEntity
         {
             return CourseErrors.DescriptionRequired;
         }
-        if (string.IsNullOrWhiteSpace(instructorId))
+        if (Guid.Empty.Equals(instructorId))
         {
             return CourseErrors.InstructorIdRequired;
         }
@@ -84,7 +84,7 @@ public sealed class Course : AuditableEntity
         {
             return CourseErrors.PriceRequired;
         }
-        var languageVoResult = LearnHub.Domain.Common.ValueObjects.Language.Create(language ?? string.Empty);
+        var languageVoResult = LearnHub.Domain.Common.ValueObjects.Language.Create(language ?? string.Empty, languageName ?? string.Empty);
         if (languageVoResult.IsError)
         {
             return languageVoResult.Errors;
@@ -98,7 +98,7 @@ public sealed class Course : AuditableEntity
         return new Course(id, title, description, instructorId, categoryId, thumbnailUrl, level, status, price, isIncludedInSubscription, requiredSubscriptionTier, languageVoResult.Value, country);
     }
 
-    public Result<Updated> Update(string title, string description, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, bool isIncludedInSubscription, SubscriptionTier requiredSubscriptionTier, string language, string? country)
+    public Result<Updated> Update(string title, string description, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, bool isIncludedInSubscription, SubscriptionTier requiredSubscriptionTier, string language, string? languageName, string? country)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
@@ -124,7 +124,7 @@ public sealed class Course : AuditableEntity
         {
             return CourseErrors.PriceRequired;
         }
-        var languageVoResult = LearnHub.Domain.Common.ValueObjects.Language.Create(language ?? string.Empty);
+        var languageVoResult = LearnHub.Domain.Common.ValueObjects.Language.Create(language ?? string.Empty, languageName ?? string.Empty);
         if (languageVoResult.IsError)
         {
             return languageVoResult.Errors;

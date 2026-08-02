@@ -1,12 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "ehgfn0g5TUI=",
+  "dgSpecHash": "61F8OLmej0A=",
   "success": true,
   "projectFilePath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Amany\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\bouncycastle.cryptography\\2.6.2\\bouncycastle.cryptography.2.6.2.nupkg.sha512",
+    "C:\\Users\\Amany\\.nuget\\packages\\cloudinarydotnet\\1.29.2\\cloudinarydotnet.1.29.2.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\fluentvalidation\\12.1.1\\fluentvalidation.12.1.1.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\hangfire.aspnetcore\\1.8.24\\hangfire.aspnetcore.1.8.24.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\hangfire.core\\1.8.24\\hangfire.core.1.8.24.nupkg.sha512",

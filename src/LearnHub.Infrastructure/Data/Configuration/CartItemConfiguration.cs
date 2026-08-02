@@ -24,7 +24,10 @@ public sealed class CartItemConfiguration
             .IsRequired()
             .HasMaxLength(200);
 
-
+        builder.HasOne(x => x.Cart)
+            .WithMany(x => x.Items)
+            .HasForeignKey(x => x.CartId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.OwnsOne(
        x => x.UnitPrice,

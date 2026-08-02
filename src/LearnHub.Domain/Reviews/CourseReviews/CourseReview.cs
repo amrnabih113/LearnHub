@@ -1,5 +1,7 @@
 using LearnHub.Domain.Common;
 using LearnHub.Domain.Common.Results;
+using LearnHub.Domain.Courses;
+using LearnHub.Domain.Identity;
 using LearnHub.Domain.Reviews.Enums;
 using LearnHub.Domain.Reviews.Events;
 using LearnHub.Domain.Reviews.ValueObjects;
@@ -9,7 +11,10 @@ namespace LearnHub.Domain.Reviews.CourseReviews;
 public sealed class CourseReview : AuditableEntity
 {
     public Guid CourseId { get; private set; }
-    public Guid StudentId { get; private set; }
+
+    public Course Course { get; private set; } = default!;
+    public User Student { get; private set; } = default!;
+    public Guid StudentId { get; private set; } 
     public Rating Rating { get; private set; } = default!;
     public string Comment { get; private set; } = default!;
     public ReviewStatus Status { get; private set; }

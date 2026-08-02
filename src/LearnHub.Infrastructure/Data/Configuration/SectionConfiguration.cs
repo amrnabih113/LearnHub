@@ -66,4 +66,3 @@ public sealed class SectionConfiguration
         builder.Ignore(x => x.DomainEvents);
     }
 }
-

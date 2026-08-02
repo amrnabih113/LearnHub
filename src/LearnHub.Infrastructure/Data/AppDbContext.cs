@@ -20,11 +20,10 @@ namespace LearnHub.Infrastructure.Data;
 
 public class AppDbContext(
     DbContextOptions<AppDbContext> options,
-    IMediator mediator)
+    IMediator? mediator = null)
     : DbContext(options), IAppDbContext
 {
-    private readonly IMediator _mediator = mediator;
-
+    private readonly IMediator? _mediator = mediator;
 
     public DbSet<Course> Courses => Set<Course>();
 
@@ -80,6 +79,10 @@ public class AppDbContext(
     private async Task DispatchDomainEventsAsync(
         CancellationToken cancellationToken)
     {
+        if (_mediator is null)
+            return;
+
+
         var entities = ChangeTracker
             .Entries<Entity>()
             .Where(x => x.Entity.DomainEvents.Count != 0)
@@ -106,3 +109,4 @@ public class AppDbContext(
         }
     }
 }
+

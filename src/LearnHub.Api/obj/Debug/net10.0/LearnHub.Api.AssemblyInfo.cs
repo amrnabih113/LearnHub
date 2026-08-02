@@ -10,10 +10,11 @@
 using System;
 using System.Reflection;
 
+[assembly: Microsoft.Extensions.Configuration.UserSecrets.UserSecretsIdAttribute("3ba91568-8d23-4345-aac6-09eb64be6d66")]
 [assembly: System.Reflection.AssemblyCompanyAttribute("LearnHub.Api")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b46f98b7e3e89450154c9e12f34c46bc822262a9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8ad96aa4f9a4fde34581dedab6822a1a30693ecd")]
 [assembly: System.Reflection.AssemblyProductAttribute("LearnHub.Api")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LearnHub.Api")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -25,9 +25,9 @@ public sealed class CartConfiguration
 
 
         builder.HasMany(x => x.Items)
-            .WithOne()
-            .HasForeignKey(x => x.CartId)
-            .OnDelete(DeleteBehavior.Cascade);
+      .WithOne(x => x.Cart)
+      .HasForeignKey(x => x.CartId)
+      .OnDelete(DeleteBehavior.Cascade);
 
 
 

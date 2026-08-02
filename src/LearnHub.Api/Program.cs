@@ -35,6 +35,11 @@ builder.Services
                             configuration["JwtSettings:Secret"]!))
             };
     });
+
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+
+
 var app = builder.Build();
 app.UseHangfireDashboard();
 app.MapGet("/", () => "Hello World!");

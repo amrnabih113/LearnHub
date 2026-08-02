@@ -7,6 +7,8 @@ public sealed class Subscription : AuditableEntity
 {
     public Guid StudentId { get; private set; }
     public SubscriptionTier Tier { get; private set; }
+    public Guid SubscriptionPlanId { get; private set; }
+    public SubscriptionPlan Plan { get; private set; } = default!;
     public BillingCycle BillingCycle { get; private set; }
     public SubscriptionStatus Status { get; private set; }
     public DateTimeOffset StartedAtUtc { get; private set; }

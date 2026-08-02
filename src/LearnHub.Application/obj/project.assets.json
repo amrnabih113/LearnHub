@@ -15,6 +15,23 @@
           }
         }
       },
+      "FluentValidation.DependencyInjectionExtensions/12.1.1": {
+        "type": "package",
+        "dependencies": {
+          "FluentValidation": "12.1.1",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "2.1.0"
+        },
+        "compile": {
+          "lib/net8.0/FluentValidation.DependencyInjectionExtensions.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/FluentValidation.DependencyInjectionExtensions.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "MediatR/14.1.0": {
         "type": "package",
         "dependencies": {
@@ -351,6 +368,21 @@
         "fluentvalidation.nuspec",
         "lib/net8.0/FluentValidation.dll",
         "lib/net8.0/FluentValidation.xml"
+      ]
+    },
+    "FluentValidation.DependencyInjectionExtensions/12.1.1": {
+      "sha512": "D0VXh4dtjjX2aQizuaa0g6R8X3U1JaVqJPfGCvLwZX9t/O2h7tkpbitbadQMfwcgSPdDbI2vDxuwRMv/Uf9dHA==",
+      "type": "package",
+      "path": "fluentvalidation.dependencyinjectionextensions/12.1.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "fluent-validation-icon.png",
+        "fluentvalidation.dependencyinjectionextensions.12.1.1.nupkg.sha512",
+        "fluentvalidation.dependencyinjectionextensions.nuspec",
+        "lib/net8.0/FluentValidation.DependencyInjectionExtensions.dll",
+        "lib/net8.0/FluentValidation.DependencyInjectionExtensions.xml"
       ]
     },
     "MediatR/14.1.0": {
@@ -866,6 +898,7 @@
   "projectFileDependencyGroups": {
     "net10.0": [
       "FluentValidation >= 12.1.1",
+      "FluentValidation.DependencyInjectionExtensions >= 12.1.1",
       "LearnHub.Domain >= 1.0.0",
       "MediatR >= 14.1.0",
       "Microsoft.EntityFrameworkCore >= 10.0.8",
@@ -879,11 +912,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Application\\LearnHub.Application.csproj",
+      "projectUniqueName": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Application\\LearnHub.Application.csproj",
       "projectName": "LearnHub.Application",
-      "projectPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Application\\LearnHub.Application.csproj",
+      "projectPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Application\\LearnHub.Application.csproj",
       "packagesPath": "C:\\Users\\Amany\\.nuget\\packages\\",
-      "outputPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Application\\obj\\",
+      "outputPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Application\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -927,6 +960,10 @@
         "targetAlias": "net10.0",
         "dependencies": {
           "FluentValidation": {
+            "target": "Package",
+            "version": "[12.1.1, )"
+          },
+          "FluentValidation.DependencyInjectionExtensions": {
             "target": "Package",
             "version": "[12.1.1, )"
           },

@@ -555,8 +555,68 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "Course",
-									"value": "{\n  \"title\": \"Complete C# & .NET Masterclass\",\n  \"description\": \"Master modern C# 13 and .NET 10 building production applications.\",\n  \"instructorId\": \"55555555-5555-5555-5555-555555555555\",\n  \"categoryId\": \"11111111-1111-1111-1111-111111111111\",\n  \"level\": \"Beginner\",\n  \"status\": \"Published\",\n  \"priceAmount\": 49.99,\n  \"currency\": \"USD\",\n  \"isIncludedInSubscription\": true,\n  \"requiredSubscriptionTier\": \"Free\",\n  \"languageCode\": \"en\",\n  \"languageName\": \"English\",\n  \"country\": \"USA\"\n}",
+									"key": "Title",
+									"value": "Complete C# & .NET Masterclass",
+									"type": "text"
+								},
+								{
+									"key": "Description",
+									"value": "Master modern C# 13 and .NET 10 building production applications.",
+									"type": "text"
+								},
+								{
+									"key": "InstructorId",
+									"value": "55555555-5555-5555-5555-555555555555",
+									"type": "text"
+								},
+								{
+									"key": "CategoryId",
+									"value": "11111111-1111-1111-1111-111111111111",
+									"type": "text"
+								},
+								{
+									"key": "Level",
+									"value": "Beginner",
+									"type": "text"
+								},
+								{
+									"key": "Status",
+									"value": "Published",
+									"type": "text"
+								},
+								{
+									"key": "PriceAmount",
+									"value": "49.99",
+									"type": "text"
+								},
+								{
+									"key": "Currency",
+									"value": "USD",
+									"type": "text"
+								},
+								{
+									"key": "IsIncludedInSubscription",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "RequiredSubscriptionTier",
+									"value": "Free",
+									"type": "text"
+								},
+								{
+									"key": "LanguageCode",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "LanguageName",
+									"value": "English",
+									"type": "text"
+								},
+								{
+									"key": "Country",
+									"value": "USA",
 									"type": "text"
 								},
 								{
@@ -587,14 +647,64 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "Course",
-									"value": "{\n  \"title\": \"Updated Complete C# Masterclass\",\n  \"description\": \"Updated course description with new modules.\",\n  \"categoryId\": \"11111111-1111-1111-1111-111111111111\",\n  \"level\": \"Intermediate\",\n  \"status\": \"Published\",\n  \"priceAmount\": 59.99,\n  \"currency\": \"USD\",\n  \"isIncludedInSubscription\": true,\n  \"requiredSubscriptionTier\": \"Pro\",\n  \"languageCode\": \"en\",\n  \"languageName\": \"English\",\n  \"country\": \"USA\"\n}",
+									"key": "Title",
+									"value": "Updated Complete C# Masterclass",
 									"type": "text"
 								},
 								{
-									"key": "Thumbnail",
-									"type": "file",
-									"src": []
+									"key": "Description",
+									"value": "Updated course description with new modules.",
+									"type": "text"
+								},
+								{
+									"key": "CategoryId",
+									"value": "11111111-1111-1111-1111-111111111111",
+									"type": "text"
+								},
+								{
+									"key": "Level",
+									"value": "Intermediate",
+									"type": "text"
+								},
+								{
+									"key": "Status",
+									"value": "Published",
+									"type": "text"
+								},
+								{
+									"key": "PriceAmount",
+									"value": "59.99",
+									"type": "text"
+								},
+								{
+									"key": "Currency",
+									"value": "USD",
+									"type": "text"
+								},
+								{
+									"key": "IsIncludedInSubscription",
+									"value": "true",
+									"type": "text"
+								},
+								{
+									"key": "RequiredSubscriptionTier",
+									"value": "Pro",
+									"type": "text"
+								},
+								{
+									"key": "LanguageCode",
+									"value": "en",
+									"type": "text"
+								},
+								{
+									"key": "LanguageName",
+									"value": "English",
+									"type": "text"
+								},
+								{
+									"key": "Country",
+									"value": "USA",
+									"type": "text"
 								}
 							]
 						},

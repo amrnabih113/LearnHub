@@ -17,5 +17,5 @@ public sealed record CreateCourseRequest(
     SubscriptionTier RequiredSubscriptionTier,
     string LanguageCode,
     string LanguageName,
-    string? Country
-    );
+    string? Country,
+    IFormFile? Thumbnail);

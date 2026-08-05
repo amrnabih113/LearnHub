@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj": {}
+    "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj": {}
   },
   "projects": {
     "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Application\\LearnHub.Application.csproj": {
@@ -714,14 +714,14 @@
         }
       }
     },
-    "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj": {
+    "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj",
+        "projectUniqueName": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj",
         "projectName": "LearnHub.Infrastructure",
-        "projectPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj",
+        "projectPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\Amany\\.nuget\\packages\\",
-        "outputPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\obj\\",
+        "outputPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

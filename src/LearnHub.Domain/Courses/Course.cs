@@ -21,9 +21,9 @@ public sealed class Course : AuditableEntity
     public Guid CategoryId { get; private set; }
 
     public User? Instructor { get; private set; }
-    private readonly List<Guid> _tagIds = [];
-    public IReadOnlyCollection<Guid> TagIds => _tagIds.AsReadOnly();
-    public ICollection<CourseTag> CourseTags { get; private set; } = []; public Category? Category { get; private set; }
+    public IReadOnlyCollection<Guid> TagIds => CourseTags.Select(x => x.TagId).ToArray();
+    public ICollection<CourseTag> CourseTags { get; private set; } = [];
+    public Category? Category { get; private set; }
     private readonly List<Section> _sections = [];
     public IEnumerable<Section> Sections => _sections.AsReadOnly();
     public string? ThumbnailUrl { get; private set; }
@@ -95,7 +95,10 @@ public sealed class Course : AuditableEntity
             return CourseErrors.InvalidSubscriptionTier;
         }
 
-        return new Course(id, title, description, instructorId, categoryId, thumbnailUrl, level, status, price, isIncludedInSubscription, requiredSubscriptionTier, languageVoResult.Value, country);
+        var course = new Course(id, title, description, instructorId, categoryId, thumbnailUrl, level, status, price, isIncludedInSubscription, requiredSubscriptionTier, languageVoResult.Value, country);
+
+        course.AddDomainEvent(new CourseCreatedDomainEvent(course.Id, instructorId));
+        return course;
     }
 
     public Result<Updated> Update(string title, string description, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, bool isIncludedInSubscription, SubscriptionTier requiredSubscriptionTier, string language, string? languageName, string? country)
@@ -138,7 +141,6 @@ public sealed class Course : AuditableEntity
         Title = title;
         Description = description;
         CategoryId = categoryId;
-        ThumbnailUrl = thumbnailUrl;
         Level = level;
         IsIncludedInSubscription = isIncludedInSubscription;
         RequiredSubscriptionTier = requiredSubscriptionTier;
@@ -150,10 +152,37 @@ public sealed class Course : AuditableEntity
                 return statusChangeResult.Errors;
             }
         }
+
+        if (!string.Equals(ThumbnailUrl, thumbnailUrl, StringComparison.Ordinal))
+        {
+            var thumbnailResult = UpdateThumbnail(thumbnailUrl);
+            if (thumbnailResult.IsError)
+            {
+                return thumbnailResult.Errors;
+            }
+        }
+
         Price = price;
         Language = languageVoResult.Value;
         Country = country;
         UpdatedAtUtc = DateTimeOffset.UtcNow;
+
+        AddDomainEvent(new CourseUpdatedDomainEvent(Id));
+
+        return Result.Updated;
+    }
+
+    public Result<Updated> UpdateThumbnail(string? thumbnailUrl)
+    {
+        if (string.Equals(ThumbnailUrl, thumbnailUrl, StringComparison.Ordinal))
+        {
+            return Result.Updated;
+        }
+
+        var oldThumbnailUrl = ThumbnailUrl;
+        ThumbnailUrl = thumbnailUrl;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+        AddDomainEvent(new CourseThumbnailUpdatedDomainEvent(Id, oldThumbnailUrl, thumbnailUrl));
 
         return Result.Updated;
     }
@@ -182,17 +211,17 @@ public sealed class Course : AuditableEntity
             return CourseClassificationErrors.TagIdRequired;
         }
 
-        if (_tagIds.Contains(tagId))
+        if (CourseTags.Any(x => x.TagId == tagId))
         {
             return CourseClassificationErrors.TagAlreadyAssigned;
         }
 
-        if (_tagIds.Count >= maxTags)
+        if (CourseTags.Count >= maxTags)
         {
             return CourseClassificationErrors.TagLimitReached;
         }
 
-        _tagIds.Add(tagId);
+        CourseTags.Add(CourseTag.Create(Id, tagId));
         UpdatedAtUtc = DateTimeOffset.UtcNow;
 
         return Result.Updated;
@@ -205,10 +234,13 @@ public sealed class Course : AuditableEntity
             return CourseClassificationErrors.TagIdRequired;
         }
 
-        if (!_tagIds.Remove(tagId))
+        var courseTag = CourseTags.FirstOrDefault(x => x.TagId == tagId);
+        if (courseTag is null)
         {
             return CourseClassificationErrors.TagNotFound;
         }
+
+        CourseTags.Remove(courseTag);
 
         UpdatedAtUtc = DateTimeOffset.UtcNow;
         return Result.Updated;

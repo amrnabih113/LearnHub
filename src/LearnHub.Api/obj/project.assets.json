@@ -1443,12 +1443,18 @@
       "LearnHub.Contracts/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "LearnHub.Domain": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/LearnHub.Contracts.dll": {}
         },
         "runtime": {
           "bin/placeholder/LearnHub.Contracts.dll": {}
-        }
+        },
+        "frameworkReferences": [
+          "Microsoft.AspNetCore.App"
+        ]
       },
       "LearnHub.Domain/1.0.0": {
         "type": "project",
@@ -4396,8 +4402,8 @@
             "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\LearnHub.Contracts.csproj": {
               "projectPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Contracts\\LearnHub.Contracts.csproj"
             },
-            "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj": {
-              "projectPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj"
+            "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj": {
+              "projectPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj"
             }
           }
         }

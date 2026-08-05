@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/auth/login"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "email": "instructor@learnhub.com",
+      "password": "Instructor@123"
+    }
+auth:
+  type: noauth
+scripts:
+  - type: afterResponse
+    code: |-
+      var jsonData = pm.response.json();
+      if (jsonData.accessToken) {
+          pm.collectionVariables.set("token", jsonData.accessToken);
+      }
+    language: text/javascript
+order: 2000

@@ -1,4 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <ProjectReference Include="..\LearnHub.Domain\LearnHub.Domain.csproj" />
+  </ItemGroup>
+
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>
@@ -7,3 +13,4 @@
   </PropertyGroup>
 
 </Project>
+

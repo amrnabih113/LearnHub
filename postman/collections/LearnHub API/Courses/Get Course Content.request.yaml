@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/courses/:id/content"
+method: GET
+pathVariables:
+  id: your-course-id
+order: 4000

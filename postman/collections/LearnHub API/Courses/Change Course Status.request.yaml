@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/courses/:id/status"
+method: PATCH
+headers:
+  Content-Type: application/json
+pathVariables:
+  id: your-course-id
+body:
+  type: text
+  content: |-
+    {
+      "status": "Published"
+    }
+order: 9000

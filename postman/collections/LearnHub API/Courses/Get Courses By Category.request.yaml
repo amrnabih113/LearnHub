@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/courses/category/:categoryId?pageNumber=1&pageSize=10"
+method: GET
+queryParams:
+  pageNumber: "1"
+  pageSize: "10"
+pathVariables:
+  categoryId: 11111111-1111-1111-1111-111111111111
+auth:
+  type: noauth
+order: 5000

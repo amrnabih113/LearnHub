@@ -1,4 +1,5 @@
 using FluentValidation;
+using LearnHub.Application.Common.Validators;
 
 namespace LearnHub.Application.Features.Identity.Commands.ResetPassword;
 
@@ -7,10 +8,9 @@ public class ResetPasswordCommandValidator : AbstractValidator<ResetPasswordComm
     public ResetPasswordCommandValidator()
     {
         RuleFor(x => x.ResetToken)
-            .NotEmpty();
+            .NotEmpty().WithMessage("Reset token is required.");
 
         RuleFor(x => x.NewPassword)
-            .NotEmpty()
-            .MinimumLength(6);
+            .ValidPassword();
     }
-}
+}

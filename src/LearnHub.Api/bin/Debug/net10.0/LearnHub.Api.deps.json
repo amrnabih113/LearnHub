@@ -1027,6 +1027,9 @@
         }
       },
       "LearnHub.Contracts/1.0.0": {
+        "dependencies": {
+          "LearnHub.Domain": "1.0.0"
+        },
         "runtime": {
           "LearnHub.Contracts.dll": {
             "assemblyVersion": "1.0.0.0",

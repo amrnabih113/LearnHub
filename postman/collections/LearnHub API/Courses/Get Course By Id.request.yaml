@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/courses/:id"
+method: GET
+pathVariables:
+  id: your-course-id
+auth:
+  type: noauth
+order: 3000

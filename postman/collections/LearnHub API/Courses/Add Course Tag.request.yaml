@@ -1,0 +1,7 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/courses/:id/tags/:tagId"
+method: POST
+pathVariables:
+  id: your-course-id
+  tagId: your-tag-id
+order: 10000

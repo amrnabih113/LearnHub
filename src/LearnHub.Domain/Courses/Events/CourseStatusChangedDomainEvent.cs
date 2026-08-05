@@ -5,14 +5,18 @@ namespace LearnHub.Domain.Courses.Events;
 
 public sealed class CourseStatusChangedDomainEvent : DomainEvent
 {
-    public CourseStatusChangedDomainEvent(Guid courseId, CourseStatus previousStatus, CourseStatus currentStatus)
+    public CourseStatusChangedDomainEvent(Guid courseId, CourseStatus oldStatus, CourseStatus newStatus)
     {
         CourseId = courseId;
-        PreviousStatus = previousStatus;
-        CurrentStatus = currentStatus;
+        OldStatus = oldStatus;
+        NewStatus = newStatus;
     }
 
     public Guid CourseId { get; }
-    public CourseStatus PreviousStatus { get; }
-    public CourseStatus CurrentStatus { get; }
+    public CourseStatus OldStatus { get; }
+    public CourseStatus NewStatus { get; }
+
+    public CourseStatus PreviousStatus => OldStatus;
+
+    public CourseStatus CurrentStatus => NewStatus;
 }

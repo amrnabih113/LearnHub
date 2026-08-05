@@ -1,4 +1,6 @@
 using FluentValidation;
+using LearnHub.Application.Common.Validators;
+
 
 namespace LearnHub.Application.Features.Identity.Commands.Register;
 
@@ -20,8 +22,8 @@ public class RegisterCommandValidator : AbstractValidator<RegisterCommand>
             .EmailAddress().WithMessage("Invalid email format.");
 
         RuleFor(x => x.Password)
-            .NotEmpty().WithMessage("Password is required.")
-            .MinimumLength(6).WithMessage("Password must be at least 6 characters long.");
+            .ValidPassword();
+
 
         RuleFor(x => x.ConfirmPassword)
             .Equal(x => x.Password).WithMessage("Passwords do not match.");

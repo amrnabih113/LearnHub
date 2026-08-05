@@ -1,0 +1,23 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/courses?pageNumber=1&pageSize=10"
+method: GET
+queryParams:
+  - key: pageNumber
+    value: "1"
+  - key: pageSize
+    value: "10"
+  - key: categoryId
+    value: null
+    disabled: true
+  - key: instructorId
+    value: null
+    disabled: true
+  - key: level
+    value: Beginner
+    disabled: true
+  - key: status
+    value: Published
+    disabled: true
+auth:
+  type: noauth
+order: 1000

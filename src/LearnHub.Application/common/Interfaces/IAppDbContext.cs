@@ -1,6 +1,9 @@
 using LearnHub.Domain.Classification.Categories;
 using LearnHub.Domain.Classification.Tags;
 using LearnHub.Domain.Courses;
+using LearnHub.Domain.Courses.Sections;
+using LearnHub.Domain.Courses.Sections.Lessons;
+using LearnHub.Domain.Courses.Sections.Lessons.Resources;
 using LearnHub.Domain.Enrollments;
 using LearnHub.Domain.Identity;
 using LearnHub.Domain.Purchasing.Carts;
@@ -18,6 +21,9 @@ public interface IAppDbContext
 {
 
     public DbSet<Course> Courses { get; }
+    public DbSet<Section> Sections { get; }
+    public DbSet<Lesson> Lessons { get; }
+    public DbSet<Resource> Resources { get; }
 
     public DbSet<Enrollment> Enrollments { get; }
 

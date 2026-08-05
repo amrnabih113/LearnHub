@@ -1,0 +1,12 @@
+$kind: collection
+name: LearnHub API
+description: Complete Postman Collection for LearnHub API (Auth, Courses, Sections, Lessons, Resources)
+variables:
+  baseUrl: https://localhost:7098
+  token: ""
+auth:
+  - id: c4c49e66-0303-4f88-b3c9-5484b727ad2b
+    type: bearer
+    name: bearer auth
+    credentials:
+      token: "{{token}}"

@@ -3,6 +3,7 @@ using System.Text;
 using LearnHub.Application.Common.Interfaces;
 using LearnHub.Application.Common.Interfaces.Authentication;
 using LearnHub.Application.common.Interfaces;
+using LearnHub.Application.Features.Courses.Options;
 
 using LearnHub.Infrastructure.Identity;
 using LearnHub.Infrastructure.Data;
@@ -68,6 +69,9 @@ public static class DependencyInjection
         services.AddScoped<IAppDbContext>(
             provider =>
                 provider.GetRequiredService<AppDbContext>());
+
+        services.AddScoped<AppDbContextInitializar>();
+
 
 
 
@@ -221,6 +225,9 @@ public static class DependencyInjection
 
         services.Configure<FileStorageOptions>(
             configuration.GetSection(FileStorageOptions.SectionName));
+
+        services.Configure<CourseThumbnailOptions>(
+            configuration.GetSection(CourseThumbnailOptions.SectionName));
 
         services.AddScoped<IFileStorageService, FileStorageService>();
 

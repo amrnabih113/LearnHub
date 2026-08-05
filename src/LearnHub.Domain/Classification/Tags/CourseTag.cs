@@ -18,4 +18,13 @@ public sealed class CourseTag
     private CourseTag()
     {
     }
+
+    private CourseTag(Guid courseId, Guid tagId)
+    {
+        CourseId = courseId;
+        TagId = tagId;
+    }
+
+    public static CourseTag Create(Guid courseId, Guid tagId)
+        => new(courseId, tagId);
 }

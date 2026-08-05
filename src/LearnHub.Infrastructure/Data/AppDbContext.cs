@@ -4,6 +4,9 @@ using LearnHub.Domain.Classification.Categories;
 using LearnHub.Domain.Classification.Tags;
 using LearnHub.Domain.Common;
 using LearnHub.Domain.Courses;
+using LearnHub.Domain.Courses.Sections;
+using LearnHub.Domain.Courses.Sections.Lessons;
+using LearnHub.Domain.Courses.Sections.Lessons.Resources;
 using LearnHub.Domain.Enrollments;
 using LearnHub.Domain.Identity;
 using LearnHub.Domain.Purchasing.Carts;
@@ -28,6 +31,9 @@ public class AppDbContext(
     private bool _dispatchingDomainEvents;
 
     public DbSet<Course> Courses => Set<Course>();
+    public DbSet<Section> Sections => Set<Section>();
+    public DbSet<Lesson> Lessons => Set<Lesson>();
+    public DbSet<Resource> Resources => Set<Resource>();
 
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
 

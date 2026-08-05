@@ -28,7 +28,8 @@ public sealed class CoursesController(ISender sender) : BaseController
     [HttpPost]
     [Authorize]
     public async Task<IActionResult> CreateCourse(
-        [FromForm] CreateCourseRequest request,
+        [FromBody] CreateCourseRequest request,
+        [FromForm] IFormFile? thumbnail,
         CancellationToken cancellationToken)
     {
         var priceResult = Money.Create(request.PriceAmount, string.IsNullOrWhiteSpace(request.Currency) ? "USD" : request.Currency);
@@ -42,7 +43,7 @@ public sealed class CoursesController(ISender sender) : BaseController
             request.Description,
             request.InstructorId,
             request.CategoryId,
-            request.Thumbnail != null ? new FormFileData(request.Thumbnail) : null,
+            thumbnail != null ? new FormFileData(thumbnail) : null,
             request.Level,
             request.Status,
             priceResult.Value,
@@ -62,7 +63,8 @@ public sealed class CoursesController(ISender sender) : BaseController
     [Authorize]
     public async Task<IActionResult> UpdateCourse(
         Guid id,
-        [FromForm] UpdateCourseRequest request,
+        [FromBody] UpdateCourseRequest request,
+        [FromForm] IFormFile? thumbnail,
         CancellationToken cancellationToken)
     {
         var priceResult = Money.Create(request.PriceAmount, string.IsNullOrWhiteSpace(request.Currency) ? "USD" : request.Currency);
@@ -76,7 +78,7 @@ public sealed class CoursesController(ISender sender) : BaseController
             request.Title,
             request.Description,
             request.CategoryId,
-            request.Thumbnail != null ? new FormFileData(request.Thumbnail) : null,
+            thumbnail != null ? new FormFileData(thumbnail) : null,
             request.Level,
             request.Status,
             priceResult.Value,

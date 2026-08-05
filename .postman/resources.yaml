@@ -1,13 +1,8 @@
-# Use this workspace to collaborate
 workspace:
   id: 2332b157-66a0-41a5-8f11-2c711126f781
-
 localResources:
   collections:
     - ../LearnHub.postman_collection.json
-
-# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
-
 cloudResources:
   collections:
-    ../postman/collections/LearnHub API: 3ea63c09-2735-47e8-b6ba-154b2100fe95
+    ../postman/collections/LearnHub API: 52880973-9b76eb53-1b63-40a8-9720-d401ac6fc636

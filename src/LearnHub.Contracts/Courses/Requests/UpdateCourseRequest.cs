@@ -16,5 +16,4 @@ public sealed record UpdateCourseRequest(
     SubscriptionTier RequiredSubscriptionTier,
     string LanguageCode,
     string LanguageName,
-    string? Country,
-    IFormFile? Thumbnail);
+    string? Country);

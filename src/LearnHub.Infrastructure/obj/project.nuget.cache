@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "hIO79bBGliY=",
+  "dgSpecHash": "DGjqK2FfI5w=",
   "success": true,
   "projectFilePath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -63,7 +63,6 @@
     "C:\\Users\\Amany\\.nuget\\packages\\mimekit\\4.17.0\\mimekit.4.17.0.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512",
-    "C:\\Users\\Amany\\.nuget\\packages\\stripe.net\\48.1.0\\stripe.net.48.1.0.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\system.clientmodel\\1.5.1\\system.clientmodel.1.5.1.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\system.codedom\\6.0.0\\system.codedom.6.0.0.nupkg.sha512",
     "C:\\Users\\Amany\\.nuget\\packages\\system.composition\\9.0.0\\system.composition.9.0.0.nupkg.sha512",

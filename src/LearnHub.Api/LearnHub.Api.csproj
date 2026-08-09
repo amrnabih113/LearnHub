@@ -4,6 +4,7 @@
     <ProjectReference Include="..\LearnHub.Contracts\LearnHub.Contracts.csproj" />
     <ProjectReference Include="..\LearnHub.Application\LearnHub.Application.csproj" />
     <ProjectReference Include="..\LearnHub.Infrastructure\LearnHub.Infrastructure.csproj" />
+    <ProjectReference Include="..\LearnHub.Domain\LearnHub.Domain.csproj" />
 
   </ItemGroup>
 

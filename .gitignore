@@ -1,3 +1,7 @@
+<<<<<<< HEAD
 **/appsettings.Local.json
 **/bin/
 **/obj/
+=======
+**/appsettings.json
+>>>>>>> 23987eb (Remove secrets from configuration)

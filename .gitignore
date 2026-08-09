@@ -1,4 +1,5 @@
-**/appsettings.Local.json
-**/appsettings.Development.json
+**/appsettings.json
+**/appsettings.*.json
+!**/appsettings.example.json
 **/bin/
 **/obj/

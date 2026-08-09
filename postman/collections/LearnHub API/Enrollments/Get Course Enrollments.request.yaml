@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/enrollments/course/:courseId?pageNumber=1&pageSize=10"
+method: GET
+queryParams:
+  pageNumber: "1"
+  pageSize: "10"
+pathVariables:
+  courseId: your-course-id
+order: 6000

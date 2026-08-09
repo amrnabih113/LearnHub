@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/enrollments/student/:studentId?pageNumber=1&pageSize=10"
+method: GET
+queryParams:
+  pageNumber: "1"
+  pageSize: "10"
+pathVariables:
+  studentId: 33333333-3333-3333-3333-333333333333
+order: 5000

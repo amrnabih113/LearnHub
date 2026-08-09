@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/subscriptions/webhook"
+method: POST
+headers:
+  Content-Type: application/json
+  Stripe-Signature: t=123,v1=abc
+body:
+  type: text
+  content: |-
+    {
+      "type": "customer.subscription.updated"
+    }
+auth:
+  type: noauth
+order: 7000

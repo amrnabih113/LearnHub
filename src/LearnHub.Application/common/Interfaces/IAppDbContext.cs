@@ -51,6 +51,11 @@ public interface IAppDbContext
 
     public DbSet<SubscriptionPlan> SubscriptionPlans { get; }
 
+    public DbSet<SubscriptionPayment> SubscriptionPayments { get; }
+
+
+    Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;
+
     Task<int> SaveChangesAsync(
         CancellationToken cancellationToken = default);
-}
+}

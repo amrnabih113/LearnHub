@@ -32,8 +32,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Domain\\LearnHub.Domain.csproj": {
-                "projectPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Domain\\LearnHub.Domain.csproj"
+              "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Domain\\LearnHub.Domain.csproj": {
+                "projectPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Domain\\LearnHub.Domain.csproj"
               }
             }
           }
@@ -490,14 +490,14 @@
         }
       }
     },
-    "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Domain\\LearnHub.Domain.csproj": {
+    "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Domain\\LearnHub.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Domain\\LearnHub.Domain.csproj",
+        "projectUniqueName": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Domain\\LearnHub.Domain.csproj",
         "projectName": "LearnHub.Domain",
-        "projectPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Domain\\LearnHub.Domain.csproj",
+        "projectPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Domain\\LearnHub.Domain.csproj",
         "packagesPath": "C:\\Users\\Amany\\.nuget\\packages\\",
-        "outputPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Domain\\obj\\",
+        "outputPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

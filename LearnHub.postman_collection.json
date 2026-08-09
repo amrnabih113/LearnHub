@@ -46,7 +46,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"instructor@learnhub.com\",\n  \"password\": \"Instructor@123\",\n  \"confirmPassword\": \"Instructor@123\",\n  \"role\": \"Instructor\",\n  \"phoneNumber\": \"+1234567890\"\n}"
+							"raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"email\": \"instructor@learnhub.com\",\n  \"password\": \"Amr.Nabih.112.Ins\",\n  \"confirmPassword\": \"Instructor@123\",\n  \"role\": \"Instructor\",\n  \"phoneNumber\": \"+1234567890\"\n}"
 						},
 						"url": {
 							"raw": "{{baseUrl}}/api/v1/auth/register",
@@ -1137,6 +1137,581 @@
 									"key": "id",
 									"value": "your-resource-id"
 								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Enrollments",
+			"item": [
+				{
+					"name": "Create Enrollment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"studentId\": \"33333333-3333-3333-3333-333333333333\",\n  \"courseId\": \"your-course-id\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/enrollments",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"enrollments"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Course Access",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/enrollments/courses/:courseId/access?studentId=33333333-3333-3333-3333-333333333333",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"enrollments",
+								"courses",
+								":courseId",
+								"access"
+							],
+							"query": [
+								{
+									"key": "studentId",
+									"value": "33333333-3333-3333-3333-333333333333"
+								}
+							],
+							"variable": [
+								{
+									"key": "courseId",
+									"value": "your-course-id"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Sync User Enrollments",
+					"request": {
+						"method": "POST",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/enrollments/sync?studentId=33333333-3333-3333-3333-333333333333",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"enrollments",
+								"sync"
+							],
+							"query": [
+								{
+									"key": "studentId",
+									"value": "33333333-3333-3333-3333-333333333333"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Enrollment By Id",
+
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/enrollments/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"enrollments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "your-enrollment-id"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Student Enrollments",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/enrollments/student/:studentId?pageNumber=1&pageSize=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"enrollments",
+								"student",
+								":studentId"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							],
+							"variable": [
+								{
+									"key": "studentId",
+									"value": "33333333-3333-3333-3333-333333333333"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Course Enrollments",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/enrollments/course/:courseId?pageNumber=1&pageSize=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"enrollments",
+								"course",
+								":courseId"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							],
+							"variable": [
+								{
+									"key": "courseId",
+									"value": "your-course-id"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Enrollment Progress",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"lessonId\": \"your-lesson-id\",\n  \"watchDurationSeconds\": 300,\n  \"totalLessons\": 10,\n  \"lessonDurationSeconds\": 600\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/enrollments/:id/progress",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"enrollments",
+								":id",
+								"progress"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "your-enrollment-id"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Complete Enrollment",
+					"request": {
+						"method": "PUT",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/enrollments/:id/complete",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"enrollments",
+								":id",
+								"complete"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "your-enrollment-id"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Cancel Enrollment",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/enrollments/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"enrollments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "your-enrollment-id"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Payments",
+			"item": [
+				{
+					"name": "Course Checkout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"courseId\": \"your-course-id\",\n  \"successUrl\": \"https://localhost:7098/checkout/success\",\n  \"cancelUrl\": \"https://localhost:7098/checkout/cancel\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/payments/course/checkout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"course",
+								"checkout"
+							]
+						}
+					}
+				},
+				{
+					"name": "Subscription Checkout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"subscriptionPlanId\": \"your-subscription-plan-id\",\n  \"successUrl\": \"https://localhost:7098/checkout/success\",\n  \"cancelUrl\": \"https://localhost:7098/checkout/cancel\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/payments/subscription/checkout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"subscription",
+								"checkout"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Payment By Id",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/payments/:id",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								":id"
+							],
+							"variable": [
+								{
+									"key": "id",
+									"value": "your-payment-id"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get My Payments",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/payments/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"me"
+							]
+						}
+					}
+				},
+				{
+					"name": "Stripe Webhook",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Stripe-Signature",
+								"value": "t=123,v1=abc"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"checkout.session.completed\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/payments/webhook",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"payments",
+								"webhook"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Subscriptions",
+			"item": [
+				{
+					"name": "Subscription Checkout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"subscriptionPlanId\": \"your-subscription-plan-id\",\n  \"successUrl\": \"https://localhost:7098/checkout/success\",\n  \"cancelUrl\": \"https://localhost:7098/checkout/cancel\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/subscriptions/checkout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subscriptions",
+								"checkout"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Current Subscription",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/subscriptions/current",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subscriptions",
+								"current"
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Subscription History",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/subscriptions/history",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subscriptions",
+								"history"
+							]
+						}
+					}
+				},
+				{
+					"name": "Cancel Subscription",
+					"request": {
+						"method": "POST",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/subscriptions/cancel",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subscriptions",
+								"cancel"
+							]
+						}
+					}
+				},
+				{
+					"name": "Resume Subscription",
+					"request": {
+						"method": "POST",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/subscriptions/resume",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subscriptions",
+								"resume"
+							]
+						}
+					}
+				},
+				{
+					"name": "Change Plan",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"newPlanId\": \"your-new-plan-id\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/subscriptions/change-plan",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subscriptions",
+								"change-plan"
+							]
+						}
+					}
+				},
+				{
+					"name": "Subscription Webhook",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Stripe-Signature",
+								"value": "t=123,v1=abc"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"type\": \"customer.subscription.updated\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/subscriptions/webhook",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"subscriptions",
+								"webhook"
 							]
 						}
 					}

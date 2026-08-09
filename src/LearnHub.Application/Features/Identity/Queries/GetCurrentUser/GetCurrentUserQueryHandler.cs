@@ -24,7 +24,9 @@ public class GetCurrentUserQueryHandler(IAppDbContext context,
         }
         var userId = _currentUserService.UserId;
 
-        var user = await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
+        var user = await _context.Users.AsNoTracking()
+            .Include(u => u.Roles)
+            .FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
 
         if (user is null)
         {

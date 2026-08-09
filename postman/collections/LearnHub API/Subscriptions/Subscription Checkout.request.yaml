@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/subscriptions/checkout"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "subscriptionPlanId": "your-subscription-plan-id",
+      "successUrl": "https://localhost:7098/checkout/success",
+      "cancelUrl": "https://localhost:7098/checkout/cancel"
+    }
+order: 1000

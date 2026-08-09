@@ -17,6 +17,8 @@ using LearnHub.Domain.Purchasing.ValueObjects;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using LearnHub.Domain.Identity;
+using LearnHub.Domain.Common.Results;
 
 namespace LearnHub.Api.Controllers;
 
@@ -26,7 +28,7 @@ public sealed class CoursesController(ISender sender) : BaseController
     private readonly ISender _sender = sender;
 
     [HttpPost]
-    [Authorize]
+    [Authorize(Roles = $"{nameof(Role.Instructor)},{nameof(Role.Admin)}")]
     public async Task<IActionResult> CreateCourse(
         [FromForm] CreateCourseRequest request,
         CancellationToken cancellationToken)
@@ -66,7 +68,7 @@ public sealed class CoursesController(ISender sender) : BaseController
         CancellationToken cancellationToken)
     {
         var priceResult = Money.Create(request.PriceAmount, string.IsNullOrWhiteSpace(request.Currency) ? "USD" : request.Currency);
-        if (priceResult.IsError)
+        if (priceResult.IsError || priceResult.Errors != null)
         {
             return priceResult.Errors.ToProblem();
         }

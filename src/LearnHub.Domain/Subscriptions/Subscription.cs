@@ -66,6 +66,7 @@ public sealed class Subscription : AuditableEntity
 
         Status = SubscriptionStatus.Active;
         UpdatedAtUtc = activatedAtUtc;
+        AddDomainEvent(new Events.SubscriptionActivatedEvent(Id, StudentId, Tier, StartedAtUtc, ExpiresAtUtc));
         return Result.Updated;
     }
 
@@ -81,6 +82,7 @@ public sealed class Subscription : AuditableEntity
         TrialEndsAtUtc = trialEndsAtUtc;
         ExpiresAtUtc = trialEndsAtUtc;
         UpdatedAtUtc = startedAtUtc;
+        AddDomainEvent(new Events.TrialStartedEvent(Id, StudentId, Tier, startedAtUtc, trialEndsAtUtc));
         return Result.Updated;
     }
 
@@ -100,6 +102,7 @@ public sealed class Subscription : AuditableEntity
 
         Status = SubscriptionStatus.Active;
         UpdatedAtUtc = renewedAtUtc;
+        AddDomainEvent(new Events.SubscriptionActivatedEvent(Id, StudentId, Tier, StartedAtUtc, ExpiresAtUtc));
         return Result.Updated;
     }
 
@@ -108,6 +111,7 @@ public sealed class Subscription : AuditableEntity
         Status = SubscriptionStatus.Cancelled;
         CancelledAtUtc = cancelledAtUtc;
         UpdatedAtUtc = cancelledAtUtc;
+        AddDomainEvent(new Events.SubscriptionCancelledEvent(Id, StudentId, cancelledAtUtc));
         return Result.Updated;
     }
 
@@ -120,6 +124,7 @@ public sealed class Subscription : AuditableEntity
 
         Status = SubscriptionStatus.Expired;
         UpdatedAtUtc = expiredAtUtc;
+        AddDomainEvent(new Events.SubscriptionExpiredEvent(Id, StudentId, expiredAtUtc));
         return Result.Updated;
     }
 
@@ -135,8 +140,10 @@ public sealed class Subscription : AuditableEntity
             return Result.Updated;
         }
 
+        var oldTier = Tier;
         Tier = tier;
         UpdatedAtUtc = upgradedAtUtc;
+        AddDomainEvent(new Events.SubscriptionUpgradedEvent(Id, StudentId, oldTier, tier, upgradedAtUtc));
         return Result.Updated;
     }
 

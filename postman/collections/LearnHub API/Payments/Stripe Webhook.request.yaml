@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/payments/webhook"
+method: POST
+headers:
+  Content-Type: application/json
+  Stripe-Signature: t=123,v1=abc
+body:
+  type: text
+  content: |-
+    {
+      "type": "checkout.session.completed"
+    }
+auth:
+  type: noauth
+order: 5000

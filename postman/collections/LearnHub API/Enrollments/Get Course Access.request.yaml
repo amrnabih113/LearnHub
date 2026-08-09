@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/enrollments/courses/:courseId/access?studentId=33333333-3333-3333-3333-333333333333"
+method: GET
+queryParams:
+  studentId: 33333333-3333-3333-3333-333333333333
+pathVariables:
+  courseId: your-course-id
+order: 2000

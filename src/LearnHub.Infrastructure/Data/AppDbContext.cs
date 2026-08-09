@@ -65,6 +65,9 @@ public class AppDbContext(
 
     public DbSet<SubscriptionPlan> SubscriptionPlans => Set<SubscriptionPlan>();
 
+    public DbSet<SubscriptionPayment> SubscriptionPayments => Set<SubscriptionPayment>();
+
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Hangfire;
+using LearnHub.Api.Infrastructure;
 using LearnHub.Application;
 using LearnHub.Infrastructure;
 using LearnHub.Infrastructure.Data;
@@ -19,6 +20,9 @@ public static class Program
         .AddApplication();
         builder.Services
         .AddInfrastructure(builder.Configuration);
+        builder.Services.AddProblemDetails();
+
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
         builder.Services.AddControllers()
             .AddJsonOptions(options =>
@@ -54,10 +58,8 @@ public static class Program
             options.AddSecurityRequirement((document) => new OpenApiSecurityRequirement
             {
                 { new OpenApiSecuritySchemeReference("Bearer"), new List<string>() },
-                { new OpenApiSecuritySchemeReference("cookieAuth"), new List<string>() }
             });
         });
-
 
 
 
@@ -74,7 +76,23 @@ public static class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+        app.UseExceptionHandler();
+        app.UseStatusCodePages(async context =>
+{
+    var response = context.HttpContext.Response;
 
+    if (response.StatusCode == 404)
+    {
+        response.ContentType = "application/problem+json";
+
+        await response.WriteAsJsonAsync(new
+        {
+            title = "Not Found",
+            detail = "The requested resource was not found.",
+            status = 404
+        });
+    }
+});
         app.UseHttpsRedirection();
 
         app.UseAuthentication();
@@ -86,4 +104,4 @@ public static class Program
         await app.RunAsync();
     }
 }
-
+

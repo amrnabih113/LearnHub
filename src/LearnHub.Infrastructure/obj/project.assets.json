@@ -1311,6 +1311,23 @@
           }
         }
       },
+      "Stripe.net/48.1.0": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.3",
+          "System.Configuration.ConfigurationManager": "8.0.0"
+        },
+        "compile": {
+          "lib/net8.0/Stripe.net.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Stripe.net.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "System.ClientModel/1.5.1": {
         "type": "package",
         "dependencies": {
@@ -1461,7 +1478,7 @@
           "System.Security.Cryptography.ProtectedData": "9.0.4"
         },
         "compile": {
-          "lib/net9.0/_._": {
+          "lib/net9.0/System.Configuration.ConfigurationManager.dll": {
             "related": ".xml"
           }
         },
@@ -1477,7 +1494,7 @@
       "System.Diagnostics.EventLog/9.0.4": {
         "type": "package",
         "compile": {
-          "lib/net9.0/_._": {
+          "lib/net9.0/System.Diagnostics.EventLog.dll": {
             "related": ".xml"
           }
         },
@@ -4075,6 +4092,34 @@
         "packageIcon.png"
       ]
     },
+    "Stripe.net/48.1.0": {
+      "sha512": "xrc6KfpzBphA1EIqF9ALgxaJf7LSJVQUefH3j0+5RS5Mn0NrEmIk4g7VfoqGQot73CH7RomiOGNnGVmLcN9mtg==",
+      "type": "package",
+      "path": "stripe.net/48.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE",
+        "README.md",
+        "icon.png",
+        "lib/net461/Stripe.net.dll",
+        "lib/net461/Stripe.net.xml",
+        "lib/net5.0/Stripe.net.dll",
+        "lib/net5.0/Stripe.net.xml",
+        "lib/net6.0/Stripe.net.dll",
+        "lib/net6.0/Stripe.net.xml",
+        "lib/net7.0/Stripe.net.dll",
+        "lib/net7.0/Stripe.net.xml",
+        "lib/net8.0/Stripe.net.dll",
+        "lib/net8.0/Stripe.net.xml",
+        "lib/netcoreapp3.1/Stripe.net.dll",
+        "lib/netcoreapp3.1/Stripe.net.xml",
+        "lib/netstandard2.0/Stripe.net.dll",
+        "lib/netstandard2.0/Stripe.net.xml",
+        "stripe.net.48.1.0.nupkg.sha512",
+        "stripe.net.nuspec"
+      ]
+    },
     "System.ClientModel/1.5.1": {
       "sha512": "k2jKSO0X45IqhVOT9iQB4xralNN9foRQsRvXBTyRpAVxyzCJlG895T9qYrQWbcJ6OQXxOouJQ37x5nZH5XKK+A==",
       "type": "package",
@@ -4490,6 +4535,7 @@
       "Microsoft.EntityFrameworkCore.Design >= 10.0.10",
       "Microsoft.EntityFrameworkCore.SqlServer >= 10.0.10",
       "Microsoft.EntityFrameworkCore.Tools >= 10.0.10",
+      "Stripe.net >= 48.1.0",
       "System.IdentityModel.Tokens.Jwt >= 8.21.0"
     ]
   },
@@ -4500,11 +4546,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj",
+      "projectUniqueName": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj",
       "projectName": "LearnHub.Infrastructure",
-      "projectPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj",
+      "projectPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\LearnHub.Infrastructure.csproj",
       "packagesPath": "C:\\Users\\Amany\\.nuget\\packages\\",
-      "outputPath": "D:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\obj\\",
+      "outputPath": "d:\\Amr\\C#_projects\\LearnHub\\src\\LearnHub.Infrastructure\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -4582,6 +4628,10 @@
             "suppressParent": "All",
             "target": "Package",
             "version": "[10.0.10, )"
+          },
+          "Stripe.net": {
+            "target": "Package",
+            "version": "[48.1.0, )"
           },
           "System.IdentityModel.Tokens.Jwt": {
             "target": "Package",

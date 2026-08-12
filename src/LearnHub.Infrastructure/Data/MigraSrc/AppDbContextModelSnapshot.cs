@@ -1144,6 +1144,8 @@ namespace LearnHub.Infrastructure.Data.MigraSrc
 
                     b.HasKey("Id");
 
+                    b.HasIndex("StudentId");
+
                     b.ToTable("Orders", (string)null);
                 });
 
@@ -1242,6 +1244,10 @@ namespace LearnHub.Infrastructure.Data.MigraSrc
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("ProviderReference");
+
+                    b.HasIndex("TransactionId");
 
                     b.ToTable("Payments", (string)null);
                 });
@@ -1454,6 +1460,8 @@ namespace LearnHub.Infrastructure.Data.MigraSrc
 
                     b.HasKey("Id");
 
+                    b.HasIndex("GatewayTransactionId");
+
                     b.HasIndex("SubscriptionId");
 
                     b.ToTable("SubscriptionPayments", (string)null);
@@ -1644,14 +1652,17 @@ namespace LearnHub.Infrastructure.Data.MigraSrc
                                 .HasColumnName("GradePassed");
 
                             b1.Property<decimal>("Score")
+                                .HasPrecision(18, 2)
                                 .HasColumnType("decimal(18,2)")
                                 .HasColumnName("GradeScore");
 
                             b1.Property<decimal>("ScorePercentage")
+                                .HasPrecision(18, 2)
                                 .HasColumnType("decimal(18,2)")
                                 .HasColumnName("GradePercentage");
 
                             b1.Property<decimal>("TotalScore")
+                                .HasPrecision(18, 2)
                                 .HasColumnType("decimal(18,2)")
                                 .HasColumnName("GradeTotalScore");
 

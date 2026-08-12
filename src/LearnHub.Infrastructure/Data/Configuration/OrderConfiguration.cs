@@ -19,6 +19,8 @@ public sealed class OrderConfiguration
         builder.Property(x => x.StudentId)
             .IsRequired();
 
+        builder.HasIndex(x => x.StudentId);
+
 
 
         builder.Property(x => x.Currency)

@@ -53,19 +53,22 @@ public sealed class QuizAttemptConfiguration
 
 
         builder.OwnsOne(x => x.Grade, grade =>
-  {
-      grade.Property(g => g.Score)
-          .HasColumnName("GradeScore");
+        {
+            grade.Property(g => g.Score)
+                .HasPrecision(18, 2)
+                .HasColumnName("GradeScore");
 
-      grade.Property(g => g.TotalScore)
-          .HasColumnName("GradeTotalScore");
+            grade.Property(g => g.TotalScore)
+                .HasPrecision(18, 2)
+                .HasColumnName("GradeTotalScore");
 
-      grade.Property(g => g.ScorePercentage)
-          .HasColumnName("GradePercentage");
+            grade.Property(g => g.ScorePercentage)
+                .HasPrecision(18, 2)
+                .HasColumnName("GradePercentage");
 
-      grade.Property(g => g.IsPassed)
-          .HasColumnName("GradePassed");
-  });
+            grade.Property(g => g.IsPassed)
+                .HasColumnName("GradePassed");
+        });
 
         builder.Ignore(x => x.DomainEvents);
     }

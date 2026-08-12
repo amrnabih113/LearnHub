@@ -62,7 +62,6 @@ public sealed class CourseAccessService(IAppDbContext context) : ICourseAccessSe
             && activeSubscription is not null
             && activePlanTier >= course.RequiredSubscriptionTier;
 
-
         var enrollment = await _context.Enrollments
             .AsNoTracking()
             .FirstOrDefaultAsync(e => e.StudentId == studentId && e.CourseId == courseId, cancellationToken);
@@ -133,6 +132,52 @@ public sealed class CourseAccessService(IAppDbContext context) : ICourseAccessSe
         Guid courseId,
         CancellationToken cancellationToken = default)
     {
+        var result = await EnsureEnrollmentInternalAsync(studentId, courseId, cancellationToken);
+        if (result.IsError)
+        {
+            return result.Errors;
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
+        return result.Value;
+    }
+
+    public async Task<Result<Updated>> ProcessOrderPaymentSucceededAsync(
+        Guid orderId,
+        CancellationToken cancellationToken = default)
+    {
+        var order = await _context.Orders
+            .Include(o => o.Items)
+            .FirstOrDefaultAsync(o => o.Id == orderId, cancellationToken);
+
+        if (order is null || order.Status != OrderStatus.Paid)
+        {
+            return Error.NotFound("Order.NotFoundOrNotPaid", "Order not found or payment is not completed.");
+        }
+
+        foreach (var item in order.Items)
+        {
+            await EnsureEnrollmentInternalAsync(order.StudentId, item.CourseId, cancellationToken);
+        }
+
+        var cart = await _context.Carts
+            .Include(c => c.Items)
+            .FirstOrDefaultAsync(c => c.StudentId == order.StudentId, cancellationToken);
+
+        if (cart is not null)
+        {
+            cart.Clear();
+        }
+
+        await _context.SaveChangesAsync(cancellationToken);
+        return Result.Updated;
+    }
+
+    private async Task<Result<Guid>> EnsureEnrollmentInternalAsync(
+        Guid studentId,
+        Guid courseId,
+        CancellationToken cancellationToken)
+    {
         var accessResult = await EvaluateAccessAsync(studentId, courseId, cancellationToken);
         if (accessResult.IsError)
         {
@@ -158,41 +203,9 @@ public sealed class CourseAccessService(IAppDbContext context) : ICourseAccessSe
 
             enrollment = createResult.Value;
             _context.Enrollments.Add(enrollment);
-            await _context.SaveChangesAsync(cancellationToken);
             return enrollment.Id;
         }
 
         return enrollment.Id;
-    }
-
-    public async Task<Result<Updated>> ProcessOrderPaymentSucceededAsync(
-        Guid orderId,
-        CancellationToken cancellationToken = default)
-    {
-        var order = await _context.Orders
-            .Include(o => o.Items)
-            .FirstOrDefaultAsync(o => o.Id == orderId, cancellationToken);
-
-        if (order is null || order.Status != OrderStatus.Paid)
-        {
-            return Error.NotFound("Order.NotFoundOrNotPaid", "Order not found or payment is not completed.");
-        }
-
-        foreach (var item in order.Items)
-        {
-            await EnsureEnrollmentForCourseAccessAsync(order.StudentId, item.CourseId, cancellationToken);
-        }
-
-        var cart = await _context.Carts
-            .Include(c => c.Items)
-            .FirstOrDefaultAsync(c => c.StudentId == order.StudentId, cancellationToken);
-
-        if (cart is not null)
-        {
-            cart.Clear();
-        }
-
-        await _context.SaveChangesAsync(cancellationToken);
-        return Result.Updated;
     }
 }

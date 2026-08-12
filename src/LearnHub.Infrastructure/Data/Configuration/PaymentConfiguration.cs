@@ -19,6 +19,8 @@ public sealed class PaymentConfiguration
         builder.Property(x => x.OrderId)
             .IsRequired();
 
+        builder.HasIndex(x => x.OrderId);
+
 
 
         builder.Property(x => x.Provider)
@@ -52,9 +54,13 @@ public sealed class PaymentConfiguration
         builder.Property(x => x.TransactionId)
             .HasMaxLength(200);
 
+        builder.HasIndex(x => x.TransactionId);
+
 
         builder.Property(x => x.ProviderReference)
             .HasMaxLength(200);
+
+        builder.HasIndex(x => x.ProviderReference);
 
 
         builder.Property(x => x.FailureReason)

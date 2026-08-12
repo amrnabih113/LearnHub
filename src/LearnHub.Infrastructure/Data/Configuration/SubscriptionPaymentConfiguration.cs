@@ -18,6 +18,8 @@ public sealed class SubscriptionPaymentConfiguration
         builder.Property(x => x.SubscriptionId)
             .IsRequired();
 
+        builder.HasIndex(x => x.SubscriptionId);
+
 
         builder.Property(x => x.Status)
             .HasConversion<string>()
@@ -30,6 +32,8 @@ public sealed class SubscriptionPaymentConfiguration
 
         builder.Property(x => x.GatewayTransactionId)
             .HasMaxLength(200);
+
+        builder.HasIndex(x => x.GatewayTransactionId);
 
 
         builder.Property(x => x.FailureReason)

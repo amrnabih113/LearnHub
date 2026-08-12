@@ -19,4 +19,20 @@ public static class CategoryErrors
     public static Error HierarchyInvalid
     => Error.Conflict(code: "DomainError.Category.HierarchyInvalid",
     description: "Category hierarchy is invalid");
+
+    public static Error CategoryNotFound
+    => Error.NotFound(code: "DomainError.Category.CategoryNotFound",
+    description: "Category was not found");
+
+    public static Error DuplicateName
+    => Error.Conflict(code: "DomainError.Category.DuplicateName",
+    description: "A category with this name or slug already exists");
+
+    public static Error CategoryHasSubcategories
+    => Error.Conflict(code: "DomainError.Category.HasSubcategories",
+    description: "Cannot delete category that contains subcategories");
+
+    public static Error CategoryHasCourses
+    => Error.Conflict(code: "DomainError.Category.HasCourses",
+    description: "Cannot delete category that contains assigned courses");
 }

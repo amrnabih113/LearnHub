@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LearnHub.Api.Infrastructure;
 
-public class GlobalExceptionHandler(IProblemDetailsService problemDetailsService) : IExceptionHandler
+public class GlobalExceptionHandler(
+    IProblemDetailsService problemDetailsService,
+    IHostEnvironment env) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(
         HttpContext httpContext,
@@ -12,15 +14,20 @@ public class GlobalExceptionHandler(IProblemDetailsService problemDetailsService
     {
         httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
+        var detail = env.IsDevelopment()
+            ? exception.Message
+            : "An unexpected error occurred. Please try again later.";
+
         return await problemDetailsService.TryWriteAsync(new ProblemDetailsContext
         {
             HttpContext = httpContext,
             Exception = exception,
             ProblemDetails = new ProblemDetails
             {
-                Type = exception.GetType().Name,
+                Type = env.IsDevelopment() ? exception.GetType().Name : "ServerError",
                 Title = "Application error",
-                Detail = exception.Message,
+                Detail = detail,
+                Status = StatusCodes.Status500InternalServerError
             }
         });
     }

@@ -5,30 +5,28 @@ namespace LearnHub.Api.Extensions;
 
 public static class ProblemExtensions
 {
-    public static IActionResult ToProblem(
-        this List<Error> errors)
+    public static IActionResult ToProblem(this List<Error> errors)
     {
-        if (errors.Count == 0)
+        if (errors is null || errors.Count == 0)
         {
-            return new ObjectResult(
-                new ProblemDetails())
+            return new ObjectResult(new ProblemDetails
             {
-                StatusCode = 500
-            
+                Title = "Error",
+                Detail = "An unexpected error occurred.",
+                Status = StatusCodes.Status500InternalServerError
+            })
+            {
+                StatusCode = StatusCodes.Status500InternalServerError
             };
         }
 
-
-        if (errors.All(
-            error => error.Type == ErrorKind.Validation))
+        if (errors.All(error => error.Type == ErrorKind.Validation))
         {
             return ValidationProblem(errors);
         }
 
-
         return Problem(errors[0]);
     }
-
 
     private static IActionResult Problem(Error error)
     {
@@ -42,39 +40,36 @@ public static class ProblemExtensions
             _ => StatusCodes.Status500InternalServerError
         };
 
-        return new ObjectResult(new
+        var problemDetails = new ProblemDetails
         {
-            title = error.Code,
-            detail = error.Description,
-            status = statusCode
-        })
+            Title = error.Code,
+            Detail = error.Description,
+            Status = statusCode
+        };
+
+        return new ObjectResult(problemDetails)
         {
             StatusCode = statusCode
         };
     }
 
-
-    private static IActionResult ValidationProblem(
-        List<Error> errors)
+    private static IActionResult ValidationProblem(List<Error> errors)
     {
-        var errorsDictionary =
-            errors
+        var errorsDictionary = errors
             .GroupBy(x => x.Code)
             .ToDictionary(
                 x => x.Key,
                 x => x.Select(e => e.Description).ToArray());
 
-
-        return new ObjectResult(
-            new ValidationProblemDetails(errorsDictionary)
-            {
-                Status =
-                    StatusCodes.Status400BadRequest
-                 
-            })
+        var validationProblemDetails = new ValidationProblemDetails(errorsDictionary)
         {
-            StatusCode =
-                StatusCodes.Status400BadRequest
+            Title = "One or more validation errors occurred.",
+            Status = StatusCodes.Status400BadRequest
+        };
+
+        return new ObjectResult(validationProblemDetails)
+        {
+            StatusCode = StatusCodes.Status400BadRequest
         };
     }
 }

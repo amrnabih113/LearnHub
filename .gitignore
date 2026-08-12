@@ -1,7 +1,5 @@
-<<<<<<< HEAD
-**/appsettings.Local.json
+**/appsettings.json
+**/appsettings.*.json
+!**/appsettings.example.json
 **/bin/
 **/obj/
-=======
-**/appsettings.json
->>>>>>> 23987eb (Remove secrets from configuration)

@@ -17,12 +17,15 @@ public sealed class CreateCourseCommandHandler(
 
     public async Task<Result<Guid>> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
     {
-        var instructorExists = await _context.Users.AnyAsync(x => x.Id == request.InstructorId, cancellationToken);
-        if (!instructorExists)
+        var instructorExists = await _context.Users.FirstOrDefaultAsync(x => x.Id == request.InstructorId, cancellationToken);
+        if (instructorExists == null)
         {
             return ApplicationErrors.UserNotFound;
         }
-
+        if (!instructorExists.Roles.Any(r => r.Role == Domain.Identity.Role.Instructor))
+        {
+            return Error.Forbidden("ApplicationError.Course.NotInstructor", "User is not an instructor.");
+        }
         var categoryExists = await _context.Categories.AnyAsync(x => x.Id == request.CategoryId, cancellationToken);
         if (!categoryExists)
         {

@@ -41,6 +41,7 @@ public sealed class Enrollment : AuditableEntity
         CourseId = courseId;
         Status = EnrollmentStatus.Active;
         ProgressPercentage = 0;
+        AddDomainEvent(new EnrollmentCreatedDomainEvent(id, studentId, courseId));
     }
 
     public static Result<Enrollment> Create(Guid id, Guid studentId, Guid courseId)

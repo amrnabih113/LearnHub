@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/subscriptions/resume"
+method: POST
+order: 5000

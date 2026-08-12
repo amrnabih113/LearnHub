@@ -2,6 +2,8 @@ using LearnHub.Application.common.Interfaces;
 using LearnHub.Domain.Classification.Categories;
 using LearnHub.Domain.Classification.Tags;
 using LearnHub.Domain.Identity;
+using LearnHub.Domain.Purchasing.ValueObjects;
+using LearnHub.Domain.Subscriptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -96,7 +98,42 @@ public class AppDbContextInitializar(
             _logger.LogInformation("Seeded default tags.");
         }
 
-        // 3. Seed Instructor User if missing
+        // 3. Seed Subscription Plans if empty
+        if (!await _context.SubscriptionPlans.AnyAsync())
+        {
+            var plans = new List<SubscriptionPlan>();
+
+            var freePlan = SubscriptionPlan.Create(
+                id: Guid.Parse("10101010-1010-1010-1010-101010101010"),
+                name: "Free Plan",
+                tier: SubscriptionTier.Free,
+                billingCycle: BillingCycle.Monthly,
+                price: Money.Create(0, "USD").Value).Value;
+
+            var proPlan = SubscriptionPlan.Create(
+                id: Guid.Parse("20202020-2020-2020-2020-202020202020"),
+                name: "Pro Plan",
+                tier: SubscriptionTier.Pro,
+                billingCycle: BillingCycle.Monthly,
+                price: Money.Create(19.99m, "USD").Value).Value;
+
+            var premiumPlan = SubscriptionPlan.Create(
+                id: Guid.Parse("30303030-3030-3030-3030-303030303030"),
+                name: "Premium Plan",
+                tier: SubscriptionTier.Premium,
+                billingCycle: BillingCycle.Monthly,
+                price: Money.Create(39.99m, "USD").Value).Value;
+
+            plans.Add(freePlan);
+            plans.Add(proPlan);
+            plans.Add(premiumPlan);
+
+            await _context.SubscriptionPlans.AddRangeAsync(plans);
+            await _context.SaveChangesAsync();
+            _logger.LogInformation("Seeded Subscription Plans (Free, Pro, Premium).");
+        }
+
+        // 4. Seed Instructor User if missing
         if (!await _context.Users.AnyAsync(u => u.Email == "instructor@learnhub.com"))
         {
             var hashResult = _passwordHasher.HashPassword("Instructor@123");
@@ -127,7 +164,7 @@ public class AppDbContextInitializar(
             }
         }
 
-        // 4. Seed Admin User if missing
+        // 5. Seed Admin User if missing
         if (!await _context.Users.AnyAsync(u => u.Email == "admin@learnhub.com"))
         {
             var hashResult = _passwordHasher.HashPassword("Admin@123");
@@ -156,7 +193,7 @@ public class AppDbContextInitializar(
             }
         }
 
-        // 5. Seed Student User if missing
+        // 6. Seed Student User if missing
         if (!await _context.Users.AnyAsync(u => u.Email == "student@learnhub.com"))
         {
             var hashResult = _passwordHasher.HashPassword("Student@123");

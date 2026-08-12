@@ -14,6 +14,7 @@ public static class ProblemExtensions
                 new ProblemDetails())
             {
                 StatusCode = 500
+            
             };
         }
 
@@ -29,44 +30,28 @@ public static class ProblemExtensions
     }
 
 
-
-    private static IActionResult Problem(
-        Error error)
+    private static IActionResult Problem(Error error)
     {
         var statusCode = error.Type switch
         {
-            ErrorKind.Conflict =>
-                StatusCodes.Status409Conflict,
-
-            ErrorKind.Validation =>
-                StatusCodes.Status400BadRequest,
-
-            ErrorKind.NotFound =>
-                StatusCodes.Status404NotFound,
-
-            ErrorKind.Unauthorized =>
-                StatusCodes.Status401Unauthorized,
-
-            ErrorKind.Forbidden =>
-                StatusCodes.Status403Forbidden,
-
-            _ =>
-                StatusCodes.Status500InternalServerError
+            ErrorKind.Conflict => StatusCodes.Status409Conflict,
+            ErrorKind.Validation => StatusCodes.Status400BadRequest,
+            ErrorKind.NotFound => StatusCodes.Status404NotFound,
+            ErrorKind.Unauthorized => StatusCodes.Status401Unauthorized,
+            ErrorKind.Forbidden => StatusCodes.Status403Forbidden,
+            _ => StatusCodes.Status500InternalServerError
         };
 
-
-        return new ObjectResult(
-            new ProblemDetails
-            {
-                Title = error.Code,
-                Detail = error.Description,
-                Status = statusCode
-            })
+        return new ObjectResult(new
+        {
+            title = error.Code,
+            detail = error.Description,
+            status = statusCode
+        })
         {
             StatusCode = statusCode
         };
     }
-
 
 
     private static IActionResult ValidationProblem(
@@ -85,6 +70,7 @@ public static class ProblemExtensions
             {
                 Status =
                     StatusCodes.Status400BadRequest
+                 
             })
         {
             StatusCode =

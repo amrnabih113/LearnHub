@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/enrollments/:id/progress"
+method: PUT
+headers:
+  Content-Type: application/json
+pathVariables:
+  id: your-enrollment-id
+body:
+  type: text
+  content: |-
+    {
+      "lessonId": "your-lesson-id",
+      "watchDurationSeconds": 300,
+      "totalLessons": 10,
+      "lessonDurationSeconds": 600
+    }
+order: 7000

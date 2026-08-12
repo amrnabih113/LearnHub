@@ -22,6 +22,7 @@ using Hangfire;
 using Microsoft.Extensions.Options;
 using CloudinaryDotNet;
 using LearnHub.Infrastructure.Storage;
+using Microsoft.AspNetCore.Http;
 
 namespace LearnHub.Infrastructure;
 
@@ -130,6 +131,37 @@ public static class DependencyInjection
                                 Encoding.UTF8.GetBytes(
                                     jwtSettings["Secret"]!))
                     };
+                options.Events = new JwtBearerEvents
+                {
+                    OnChallenge = async context =>
+                    {
+                        context.HandleResponse();
+
+                        context.Response.StatusCode = 401;
+                        context.Response.ContentType = "application/problem+json";
+
+                        await context.Response.WriteAsJsonAsync(
+                            new
+                            {
+                                title = "Unauthorized",
+                                detail = "Authentication token is missing or invalid.",
+                                status = 401
+                            });
+                    }
+                }; options.Events.OnForbidden = async context =>
+{
+    context.Response.StatusCode = 403;
+    context.Response.ContentType = "application/problem+json";
+
+    await context.Response.WriteAsJsonAsync(
+        new
+        {
+            title = "Forbidden",
+            detail = "You do not have permission to access this resource.",
+            status = 403
+        });
+};
+
             });
 
 
@@ -235,11 +267,25 @@ public static class DependencyInjection
         // Caching
         // ============================
 
-        // later:
-        // services.AddHybridCache();
+        // ============================
+        // Course Access Service
+        // ============================
 
+        services.AddScoped<ICourseAccessService, LearnHub.Infrastructure.Services.CourseAccessService>();
 
+        // ============================
+        // Payments & Stripe
+        // ============================
+
+        services.Configure<LearnHub.Infrastructure.Services.StripeSettings>(
+            configuration.GetSection(LearnHub.Infrastructure.Services.StripeSettings.SectionName));
+
+        services.AddScoped<IStripeService, LearnHub.Infrastructure.Services.StripeService>();
+        services.AddScoped<IPaymentGatewayService>(sp => sp.GetRequiredService<IStripeService>());
+        services.AddScoped<IStripeWebhookService, LearnHub.Infrastructure.Services.StripeWebhookService>();
 
         return services;
+
+
     }
 }

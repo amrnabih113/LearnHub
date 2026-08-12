@@ -15,8 +15,8 @@ namespace LearnHub.Domain.Courses;
 
 public sealed class Course : AuditableEntity
 {
-    public string? Title { get; private set; }
-    public string? Description { get; private set; }
+    public string Title { get; private set; } = default!;
+    public string Description { get; private set; } = default!;
     public Guid? InstructorId { get; private set; }
     public Guid CategoryId { get; private set; }
 

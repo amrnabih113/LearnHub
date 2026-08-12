@@ -71,9 +71,9 @@ public sealed class InstructorReview : AuditableEntity
 
     public Result<Updated> Update(int rating, string comment)
     {
-        if (Status != ReviewStatus.Draft)
+        if (Status == ReviewStatus.Removed)
         {
-            return ReviewErrors.NotDraft;
+            return ReviewErrors.NotPublished;
         }
 
         if (string.IsNullOrWhiteSpace(comment))

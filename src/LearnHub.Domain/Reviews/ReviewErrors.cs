@@ -35,4 +35,24 @@ public static class ReviewErrors
     public static Error InvalidTargetType
     => Error.Validation(code: "DomainError.Review.InvalidTargetType",
     description: "Review target type is invalid");
+
+    public static Error ReviewNotFound
+    => Error.NotFound(code: "DomainError.Review.ReviewNotFound",
+    description: "Review was not found");
+
+    public static Error DuplicateReview
+    => Error.Conflict(code: "DomainError.Review.DuplicateReview",
+    description: "You have already submitted a review for this item");
+
+    public static Error NotEnrolledInCourse
+    => Error.Validation(code: "DomainError.Review.NotEnrolledInCourse",
+    description: "You must be enrolled in this course to submit a review");
+
+    public static Error NotEnrolledWithInstructor
+    => Error.Validation(code: "DomainError.Review.NotEnrolledWithInstructor",
+    description: "You must be enrolled in at least one course taught by this instructor to submit a review");
+
+    public static Error UnauthorizedToModifyReview
+    => Error.Forbidden(code: "DomainError.Review.UnauthorizedToModifyReview",
+    description: "You are not authorized to modify this review");
 }

@@ -10,6 +10,8 @@ public sealed class Cart : AuditableEntity
 
     public string Currency { get; private set; } = null!;
 
+    public string? CouponCode { get; private set; }
+
     private readonly List<CartItem> _items = [];
     public IReadOnlyCollection<CartItem> Items => _items.AsReadOnly();
 
@@ -87,7 +89,24 @@ public sealed class Cart : AuditableEntity
         return Result.Updated;
     }
 
+    public Result<Updated> ApplyCoupon(string couponCode)
+    {
+        if (string.IsNullOrWhiteSpace(couponCode))
+        {
+            return CartErrors.CouponCodeRequired;
+        }
 
+        CouponCode = couponCode.Trim().ToUpperInvariant();
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+        return Result.Updated;
+    }
+
+    public Result<Updated> RemoveCoupon()
+    {
+        CouponCode = null;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+        return Result.Updated;
+    }
 
     public Result<Money> GetTotal()
     {
@@ -110,6 +129,7 @@ public sealed class Cart : AuditableEntity
     public Result<Updated> Clear()
     {
         _items.Clear();
+        CouponCode = null;
         UpdatedAtUtc = DateTimeOffset.UtcNow;
         return Result.Updated;
     }

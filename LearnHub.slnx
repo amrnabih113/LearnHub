@@ -6,4 +6,7 @@
     <Project Path="src/LearnHub.Domain/LearnHub.Domain.csproj" />
     <Project Path="src/LearnHub.Infrastructure/LearnHub.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/LearnHub.UnitTests/LearnHub.UnitTests.csproj" />
+  </Folder>
 </Solution>

@@ -1231,7 +1231,6 @@
 				},
 				{
 					"name": "Get Enrollment By Id",
-
 					"request": {
 						"method": "GET",
 						"url": {
@@ -1712,6 +1711,618 @@
 								"v1",
 								"subscriptions",
 								"webhook"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Cart & Checkout",
+			"item": [
+				{
+					"name": "Get Cart",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/cart",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cart"
+							]
+						}
+					}
+				},
+				{
+					"name": "Add Item to Cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"courseId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/cart/items",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cart",
+								"items"
+							]
+						}
+					}
+				},
+				{
+					"name": "Remove Item from Cart",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/cart/items/:courseId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cart",
+								"items",
+								":courseId"
+							],
+							"variable": [
+								{
+									"key": "courseId",
+									"value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Apply Coupon to Cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"couponCode\": \"SUMMER2026\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/cart/coupon",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cart",
+								"coupon"
+							]
+						}
+					}
+				},
+				{
+					"name": "Remove Coupon from Cart",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/cart/coupon",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cart",
+								"coupon"
+							]
+						}
+					}
+				},
+				{
+					"name": "Clear Cart",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/cart",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"cart"
+							]
+						}
+					}
+				},
+				{
+					"name": "Checkout Cart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"successUrl\": \"https://localhost:7098/checkout/success\",\n  \"cancelUrl\": \"https://localhost:7098/checkout/cancel\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/checkout",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"checkout"
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Course Reviews",
+			"item": [
+				{
+					"name": "Create Course Review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rating\": 5,\n  \"comment\": \"Excellent course! Very clear explanation.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/courses/:courseId/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"courses",
+								":courseId",
+								"reviews"
+							],
+							"variable": [
+								{
+									"key": "courseId",
+									"value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Course Reviews",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/courses/:courseId/reviews?pageNumber=1&pageSize=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"courses",
+								":courseId",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							],
+							"variable": [
+								{
+									"key": "courseId",
+									"value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Course Review Summary",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/courses/:courseId/reviews/summary",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"courses",
+								":courseId",
+								"reviews",
+								"summary"
+							],
+							"variable": [
+								{
+									"key": "courseId",
+									"value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get My Course Review",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/courses/:courseId/reviews/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"courses",
+								":courseId",
+								"reviews",
+								"me"
+							],
+							"variable": [
+								{
+									"key": "courseId",
+									"value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Course Review",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rating\": 4,\n  \"comment\": \"Updated comment: Still great content!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/courses/:courseId/reviews/:reviewId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"courses",
+								":courseId",
+								"reviews",
+								":reviewId"
+							],
+							"variable": [
+								{
+									"key": "courseId",
+									"value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+								},
+								{
+									"key": "reviewId",
+									"value": "7fa85f64-5717-4562-b3fc-2c963f66afa7"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Course Review",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/courses/:courseId/reviews/:reviewId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"courses",
+								":courseId",
+								"reviews",
+								":reviewId"
+							],
+							"variable": [
+								{
+									"key": "courseId",
+									"value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+								},
+								{
+									"key": "reviewId",
+									"value": "7fa85f64-5717-4562-b3fc-2c963f66afa7"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Moderate Course Review",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"status\": \"Published\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/courses/:courseId/reviews/:reviewId/status",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"courses",
+								":courseId",
+								"reviews",
+								":reviewId",
+								"status"
+							],
+							"variable": [
+								{
+									"key": "courseId",
+									"value": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+								},
+								{
+									"key": "reviewId",
+									"value": "7fa85f64-5717-4562-b3fc-2c963f66afa7"
+								}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Instructor Reviews",
+			"item": [
+				{
+					"name": "Create Instructor Review",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rating\": 5,\n  \"comment\": \"Great instructor, answers all questions quickly!\",\n  \"courseId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/instructors/:instructorId/reviews",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instructors",
+								":instructorId",
+								"reviews"
+							],
+							"variable": [
+								{
+									"key": "instructorId",
+									"value": "55555555-5555-5555-5555-555555555555"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Instructor Reviews",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/instructors/:instructorId/reviews?pageNumber=1&pageSize=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instructors",
+								":instructorId",
+								"reviews"
+							],
+							"query": [
+								{
+									"key": "pageNumber",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "10"
+								}
+							],
+							"variable": [
+								{
+									"key": "instructorId",
+									"value": "55555555-5555-5555-5555-555555555555"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get Instructor Review Summary",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/instructors/:instructorId/reviews/summary",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instructors",
+								":instructorId",
+								"reviews",
+								"summary"
+							],
+							"variable": [
+								{
+									"key": "instructorId",
+									"value": "55555555-5555-5555-5555-555555555555"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Get My Instructor Review",
+					"request": {
+						"method": "GET",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/instructors/:instructorId/reviews/me",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instructors",
+								":instructorId",
+								"reviews",
+								"me"
+							],
+							"variable": [
+								{
+									"key": "instructorId",
+									"value": "55555555-5555-5555-5555-555555555555"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Update Instructor Review",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"rating\": 5,\n  \"comment\": \"Updated instructor feedback.\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/instructors/:instructorId/reviews/:reviewId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instructors",
+								":instructorId",
+								"reviews",
+								":reviewId"
+							],
+							"variable": [
+								{
+									"key": "instructorId",
+									"value": "55555555-5555-5555-5555-555555555555"
+								},
+								{
+									"key": "reviewId",
+									"value": "7fa85f64-5717-4562-b3fc-2c963f66afa7"
+								}
+							]
+						}
+					}
+				},
+				{
+					"name": "Delete Instructor Review",
+					"request": {
+						"method": "DELETE",
+						"url": {
+							"raw": "{{baseUrl}}/api/v1/instructors/:instructorId/reviews/:reviewId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"instructors",
+								":instructorId",
+								"reviews",
+								":reviewId"
+							],
+							"variable": [
+								{
+									"key": "instructorId",
+									"value": "55555555-5555-5555-5555-555555555555"
+								},
+								{
+									"key": "reviewId",
+									"value": "7fa85f64-5717-4562-b3fc-2c963f66afa7"
+								}
 							]
 						}
 					}

@@ -22,6 +22,10 @@ public sealed class CartConfiguration
             .IsRequired()
             .HasMaxLength(3);
 
+        builder.Property(x => x.CouponCode)
+            .HasMaxLength(50)
+            .IsRequired(false);
+
 
 
         builder.HasMany(x => x.Items)

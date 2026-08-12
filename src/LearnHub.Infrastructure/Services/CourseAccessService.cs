@@ -183,6 +183,15 @@ public sealed class CourseAccessService(IAppDbContext context) : ICourseAccessSe
             await EnsureEnrollmentForCourseAccessAsync(order.StudentId, item.CourseId, cancellationToken);
         }
 
+        var cart = await _context.Carts
+            .Include(c => c.Items)
+            .FirstOrDefaultAsync(c => c.StudentId == order.StudentId, cancellationToken);
+
+        if (cart is not null)
+        {
+            cart.Clear();
+        }
+
         await _context.SaveChangesAsync(cancellationToken);
         return Result.Updated;
     }

@@ -959,6 +959,10 @@ namespace LearnHub.Infrastructure.Data.MigraSrc
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("CouponCode")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<DateTimeOffset>("CreatedAtUtc")
                         .HasColumnType("datetimeoffset");
 
@@ -1018,7 +1022,8 @@ namespace LearnHub.Infrastructure.Data.MigraSrc
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CartId");
+                    b.HasIndex("CartId", "CourseId")
+                        .IsUnique();
 
                     b.ToTable("CartItems", (string)null);
                 });

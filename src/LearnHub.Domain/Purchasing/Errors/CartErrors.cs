@@ -31,4 +31,24 @@ public static class CartErrors
     public static Error ItemAlreadyAdded
     => Error.Conflict(code: "DomainError.Cart.ItemAlreadyAdded",
     description: "Item is already present in the cart");
+
+    public static Error CourseAlreadyEnrolled
+    => Error.Conflict(code: "DomainError.Cart.CourseAlreadyEnrolled",
+    description: "You are already enrolled in this course.");
+
+    public static Error EmptyCart
+    => Error.Validation(code: "DomainError.Cart.EmptyCart",
+    description: "Cart is empty.");
+
+    public static Error CouponCodeRequired
+    => Error.Validation(code: "DomainError.Cart.CouponCodeRequired",
+    description: "Coupon code is required.");
+
+    public static Error CouponNotFound
+    => Error.NotFound(code: "DomainError.Cart.CouponNotFound",
+    description: "Coupon was not found.");
+
+    public static Error CouponNotApplicable
+    => Error.Validation(code: "DomainError.Cart.CouponNotApplicable",
+    description: "Coupon is not applicable to any item in your cart.");
 }

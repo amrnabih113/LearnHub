@@ -45,6 +45,9 @@ public sealed class CartItemConfiguration
 
 
 
+        builder.HasIndex(x => new { x.CartId, x.CourseId })
+            .IsUnique();
+
         builder.Ignore(x => x.DomainEvents);
     }
 }

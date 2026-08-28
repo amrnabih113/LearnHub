@@ -20,10 +20,13 @@ using LearnHub.Application.Features.Admin.Queries.GetTagByIdAdmin;
 using LearnHub.Application.Features.Admin.Queries.GetTagsAdmin;
 using LearnHub.Application.Features.Admin.Queries.GetUserByIdAdmin;
 using LearnHub.Application.Features.Admin.Queries.GetUsersAdmin;
+using LearnHub.Application.Features.Certificates.Commands.ReissueCertificate;
+using LearnHub.Application.Features.Certificates.Commands.RevokeCertificate;
 using LearnHub.Application.Features.Courses.Commands.ChangeCourseStatus;
 using LearnHub.Application.Features.Reviews.Commands.ModerateCourseReview;
 using LearnHub.Contracts.Admin.Requests;
 using LearnHub.Contracts.Admin.Responses;
+using LearnHub.Contracts.Certificates.Requests;
 using LearnHub.Contracts.Courses.Requests;
 using LearnHub.Contracts.Reviews.Requests;
 using LearnHub.Domain.Courses.Enums;
@@ -32,6 +35,8 @@ using LearnHub.Domain.Reviews.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+
+using LearnHub.Application.Features.Admin.Queries.GetAdminAnalytics;
 
 namespace LearnHub.Api.Controllers;
 
@@ -48,6 +53,16 @@ public sealed class AdminController(ISender sender) : BaseController
         CancellationToken cancellationToken)
     {
         var query = new GetAdminDashboardQuery(range);
+        var result = await _sender.Send(query, cancellationToken);
+        return HandleResult(result);
+    }
+
+    [HttpGet("analytics")]
+    public async Task<IActionResult> GetAnalytics(
+        [FromQuery] int monthsBack = 6,
+        CancellationToken cancellationToken = default)
+    {
+        var query = new GetAdminAnalyticsQuery(monthsBack);
         var result = await _sender.Send(query, cancellationToken);
         return HandleResult(result);
     }
@@ -403,6 +418,44 @@ public sealed class AdminController(ISender sender) : BaseController
         }
 
         var command = new ModerateCourseReviewCommand(reviewId, reviewStatus);
+        var result = await _sender.Send(command, cancellationToken);
+        return HandleResult(result);
+    }
+    #endregion
+
+    #region Certificates
+    [HttpGet("certificates")]
+    public async Task<IActionResult> GetCertificates(
+        [FromQuery] string? search,
+        [FromQuery] Guid? courseId,
+        [FromQuery] Guid? studentId,
+        [FromQuery] int pageNumber = 1,
+        [FromQuery] int pageSize = 10,
+        CancellationToken cancellationToken = default)
+    {
+        var query = new LearnHub.Application.Features.Admin.Queries.GetCertificatesAdmin.GetCertificatesAdminQuery(
+            search, courseId, studentId, pageNumber, pageSize);
+        var result = await _sender.Send(query, cancellationToken);
+        return HandleResult(result);
+    }
+
+    [HttpPost("certificates/{id:guid}/revoke")]
+    public async Task<IActionResult> RevokeCertificate(
+        Guid id,
+        [FromBody] RevokeCertificateRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new RevokeCertificateCommand(id, request.Reason);
+        var result = await _sender.Send(command, cancellationToken);
+        return HandleResult(result);
+    }
+
+    [HttpPost("certificates/{id:guid}/reissue")]
+    public async Task<IActionResult> ReissueCertificate(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var command = new ReissueCertificateCommand(id);
         var result = await _sender.Send(command, cancellationToken);
         return HandleResult(result);
     }

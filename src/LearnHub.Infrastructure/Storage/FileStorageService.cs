@@ -76,6 +76,42 @@ public sealed class FileStorageService(
         return result.SecureUrl.ToString();
     }
 
+    public async Task<Result<string>> UploadRawFileAsync(
+        byte[] content,
+        string fileName,
+        string folder,
+        string contentType,
+        CancellationToken cancellationToken = default)
+    {
+        if (content is null || content.Length == 0)
+        {
+            return StorageErrors.EmptyFile;
+        }
+
+        using var stream = new MemoryStream(content);
+        var uploadParams = new RawUploadParams
+        {
+            File = new FileDescription(fileName, stream),
+            Folder = folder,
+            UseFilename = true,
+            UniqueFilename = true,
+            Overwrite = false
+        };
+
+        var result = await _cloudinary.UploadAsync(uploadParams, "raw");
+        if (result.Error is not null)
+        {
+            // Local file storage fallback if Cloudinary fails/unconfigured
+            var localDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", folder);
+            Directory.CreateDirectory(localDir);
+            var localPath = Path.Combine(localDir, fileName);
+            await File.WriteAllBytesAsync(localPath, content, cancellationToken);
+            return $"/uploads/{folder}/{fileName}";
+        }
+
+        return result.SecureUrl.ToString();
+    }
+
 
 
 

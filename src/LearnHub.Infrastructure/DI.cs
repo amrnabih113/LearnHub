@@ -263,6 +263,11 @@ public static class DependencyInjection
 
         services.AddScoped<IFileStorageService, FileStorageService>();
 
+        // Certificate Options & Generator
+        services.Configure<LearnHub.Application.common.Options.CertificateOptions>(
+            configuration.GetSection(LearnHub.Application.common.Options.CertificateOptions.SectionName));
+        services.AddScoped<ICertificateGenerator, LearnHub.Infrastructure.Services.CertificateGenerator>();
+
         // ============================
         // Caching
         // ============================

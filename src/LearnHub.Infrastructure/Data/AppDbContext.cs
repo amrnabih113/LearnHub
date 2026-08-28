@@ -8,7 +8,10 @@ using LearnHub.Domain.Courses.Sections;
 using LearnHub.Domain.Courses.Sections.Lessons;
 using LearnHub.Domain.Courses.Sections.Lessons.Resources;
 using LearnHub.Domain.Enrollments;
+using LearnHub.Domain.Enrollments.Certificates;
+using LearnHub.Domain.Enrollments.LessonProgress;
 using LearnHub.Domain.Identity;
+using LearnHub.Domain.LearningPaths;
 using LearnHub.Domain.Purchasing.Carts;
 using LearnHub.Domain.Purchasing.Coupons;
 using LearnHub.Domain.Purchasing.Orders;
@@ -36,6 +39,10 @@ public class AppDbContext(
     public DbSet<Resource> Resources => Set<Resource>();
 
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
+    public DbSet<LessonProgress> LessonProgresses => Set<LessonProgress>();
+    public DbSet<Certificate> Certificates => Set<Certificate>();
+    public DbSet<LearningPath> LearningPaths => Set<LearningPath>();
+    public DbSet<LearningPathCourse> LearningPathCourses => Set<LearningPathCourse>();
 
     public DbSet<User> Users => Set<User>();
 

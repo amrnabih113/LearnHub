@@ -21,6 +21,12 @@ public static class DependencyInjection
             cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(CachingBehavior<,>));
         });
 
+        services.AddSingleton<Features.Search.Services.ISearchQueryNormalizer, Features.Search.Services.SearchQueryNormalizer>();
+        services.AddSingleton<Features.Search.Services.IFuzzyMatcher, Features.Search.Services.FuzzyMatcher>();
+        services.AddSingleton<Features.Search.Services.ISynonymProvider, Features.Search.Services.SynonymProvider>();
+        services.AddSingleton<Features.Search.Services.ISemanticSearchProvider, Features.Search.Services.NullSemanticSearchProvider>();
+        services.AddSingleton<Features.Search.Services.ISearchRankingService, Features.Search.Services.SearchRankingService>();
+
         return services;
     }
 }

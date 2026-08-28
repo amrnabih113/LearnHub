@@ -125,7 +125,14 @@ public sealed class CourseConfiguration
         builder.Property(x => x.IsIncludedInSubscription)
             .IsRequired();
 
-
+        // Search Indexes
+        builder.HasIndex(x => x.CategoryId);
+        builder.HasIndex(x => x.InstructorId);
+        builder.HasIndex(x => x.Status);
+        builder.HasIndex(x => x.Level);
+        builder.HasIndex(x => x.CreatedAtUtc);
+        builder.HasIndex(x => new { x.Status, x.CategoryId });
+        builder.HasIndex(x => new { x.Status, x.Level });
 
         // Ignore domain-only properties
 

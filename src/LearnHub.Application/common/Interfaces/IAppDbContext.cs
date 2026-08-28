@@ -5,7 +5,10 @@ using LearnHub.Domain.Courses.Sections;
 using LearnHub.Domain.Courses.Sections.Lessons;
 using LearnHub.Domain.Courses.Sections.Lessons.Resources;
 using LearnHub.Domain.Enrollments;
+using LearnHub.Domain.Enrollments.Certificates;
+using LearnHub.Domain.Enrollments.LessonProgress;
 using LearnHub.Domain.Identity;
+using LearnHub.Domain.LearningPaths;
 using LearnHub.Domain.Purchasing.Carts;
 using LearnHub.Domain.Purchasing.Coupons;
 using LearnHub.Domain.Purchasing.Orders;
@@ -26,6 +29,10 @@ public interface IAppDbContext
     public DbSet<Resource> Resources { get; }
 
     public DbSet<Enrollment> Enrollments { get; }
+    public DbSet<LessonProgress> LessonProgresses { get; }
+    public DbSet<Certificate> Certificates { get; }
+    public DbSet<LearningPath> LearningPaths { get; }
+    public DbSet<LearningPathCourse> LearningPathCourses { get; }
 
     public DbSet<User> Users { get; }
     public DbSet<RefreshToken> RefreshTokens { get; }

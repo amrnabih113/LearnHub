@@ -9,6 +9,13 @@ public interface IFileStorageService
        string folder,
        CancellationToken cancellationToken = default);
 
+    Task<Result<string>> UploadRawFileAsync(
+       byte[] content,
+       string fileName,
+       string folder,
+       string contentType,
+       CancellationToken cancellationToken = default);
+
     Task<Result<Updated>> DeleteImageAsync(
         string imageUrl,
         CancellationToken cancellationToken = default);

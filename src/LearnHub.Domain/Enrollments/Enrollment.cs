@@ -152,7 +152,6 @@ public sealed class Enrollment : AuditableEntity
         Status = EnrollmentStatus.Completed;
         CompletedAtUtc = DateTimeOffset.UtcNow;
         ProgressPercentage = 100;
-        EnsureCertificate();
         UpdatedAtUtc = DateTimeOffset.UtcNow;
         AddDomainEvent(new CourseCompletedDomainEvent(Id, CourseId, StudentId));
 
@@ -191,27 +190,6 @@ public sealed class Enrollment : AuditableEntity
         }
 
         return Result.Updated;
-    }
-
-    private void EnsureCertificate()
-    {
-        if (Certificate is not null)
-        {
-            return;
-        }
-        var code = $"CERT-{CourseId:N}-{Id:N}";
-
-        code = code[..Math.Min(code.Length, 32)];
-        var certificateResult = Certificate.Create(
-            Guid.NewGuid(),
-            Id,
-            StudentId,
-           code);
-
-        if (certificateResult.IsSuccess)
-        {
-            Certificate = certificateResult.Value;
-        }
     }
 }
 

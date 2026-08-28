@@ -112,6 +112,40 @@ public sealed class FileStorageService(
         return result.SecureUrl.ToString();
     }
 
+    public async Task<Result<string>> UploadVideoAsync(
+        IFileData file,
+        string folder,
+        CancellationToken cancellationToken = default)
+    {
+        if (file is null || file.Length == 0)
+        {
+            return StorageErrors.EmptyFile;
+        }
+
+        await using var stream = file.OpenReadStream();
+        var uploadParams = new VideoUploadParams
+        {
+            File = new FileDescription(file.FileName, stream),
+            Folder = folder,
+            UseFilename = true,
+            UniqueFilename = true,
+            Overwrite = false
+        };
+
+        var result = await _cloudinary.UploadAsync(uploadParams, cancellationToken);
+        if (result.Error is not null)
+        {
+            var localDir = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads", folder);
+            Directory.CreateDirectory(localDir);
+            var localPath = Path.Combine(localDir, file.FileName);
+            await using var outStream = File.Create(localPath);
+            await stream.CopyToAsync(outStream, cancellationToken);
+            return $"/uploads/{folder}/{file.FileName}";
+        }
+
+        return result.SecureUrl.ToString();
+    }
+
 
 
 

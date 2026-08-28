@@ -16,6 +16,11 @@ public interface IFileStorageService
        string contentType,
        CancellationToken cancellationToken = default);
 
+    Task<Result<string>> UploadVideoAsync(
+       IFileData file,
+       string folder,
+       CancellationToken cancellationToken = default);
+
     Task<Result<Updated>> DeleteImageAsync(
         string imageUrl,
         CancellationToken cancellationToken = default);

@@ -20,6 +20,7 @@ public class User : AuditableEntity
     public string Email { get; private set; } = default!;
 
     public bool IsEmailVerified { get; private set; } = false;
+    public LearnHub.Domain.Identity.Enums.AccountStatus Status { get; private set; } = LearnHub.Domain.Identity.Enums.AccountStatus.Active;
     private readonly List<UserRole> _roles = [];
 
     public IReadOnlyCollection<UserRole> Roles => _roles.AsReadOnly();
@@ -131,13 +132,17 @@ public class User : AuditableEntity
         ImageUrl = imageUrl;
         DateOfBirth = dateOfBirth;
         Bio = bio;
-        _roles.Add(UserRole.Create(Id, role));
+        if (!_roles.Any(r => r.Role == role))
+        {
+            _roles.Add(UserRole.Create(Id, role));
+        }
         Country = country;
 
         UpdatedAtUtc = DateTimeOffset.UtcNow;
 
         return Result.Updated;
     }
+
     public Result<Updated> UpdateProfile(
         string firstName,
         string lastName,
@@ -169,6 +174,7 @@ public class User : AuditableEntity
 
         return Result.Updated;
     }
+
     public Result<Updated> ChangePassword(string newPasswordHash)
     {
         if (string.IsNullOrWhiteSpace(newPasswordHash))
@@ -207,6 +213,7 @@ public class User : AuditableEntity
 
         return Result.Updated;
     }
+
     public Result<Updated> AssignRole(Role role)
     {
         if (!Enum.IsDefined(role))
@@ -220,9 +227,41 @@ public class User : AuditableEntity
         }
 
         _roles.Add(UserRole.Create(Id, role));
-
         UpdatedAtUtc = DateTimeOffset.UtcNow;
 
+        return Result.Updated;
+    }
+
+    public Result<Updated> RemoveRole(Role role)
+    {
+        if (!Enum.IsDefined(role))
+        {
+            return UserErrors.InvalidRole;
+        }
+
+        var existingRole = _roles.FirstOrDefault(x => x.Role == role);
+        if (existingRole is null)
+        {
+            return Result.Updated;
+        }
+
+        _roles.Remove(existingRole);
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+
+        return Result.Updated;
+    }
+
+    public Result<Updated> Suspend()
+    {
+        Status = LearnHub.Domain.Identity.Enums.AccountStatus.Suspended;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+        return Result.Updated;
+    }
+
+    public Result<Updated> Restore()
+    {
+        Status = LearnHub.Domain.Identity.Enums.AccountStatus.Active;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
         return Result.Updated;
     }
 }

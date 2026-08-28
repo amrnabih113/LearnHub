@@ -1,5 +1,4 @@
 using LearnHub.Domain.Common;
-
 using LearnHub.Domain.Common.Results;
 using LearnHub.Domain.Courses.Sections.Lessons;
 
@@ -12,6 +11,7 @@ public sealed class Section : AuditableEntity
     public int LessonCount => Lessons.Count();
     public int DurationInMinutes => Lessons.Sum(l => l.DurationInMinutes);
     public int Order { get; private set; }
+    public bool IsPublished { get; private set; }
     public Guid CourseId { get; private set; }
     public Course Course { get; private set; } = default!;
 
@@ -20,23 +20,20 @@ public sealed class Section : AuditableEntity
 
     private Section() { }
 
-    private Section(Guid id, string title, string description, int order, Guid courseId) : base(id)
+    private Section(Guid id, string title, string description, int order, Guid courseId, bool isPublished = true) : base(id)
     {
         Title = title;
         Description = description;
         Order = order;
         CourseId = courseId;
+        IsPublished = isPublished;
     }
 
-    public static Result<Section> Create(Guid id, string title, string description, int order, Guid courseId)
+    public static Result<Section> Create(Guid id, string title, string description, int order, Guid courseId, bool isPublished = true)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
             return SectionErrors.TitleRequired;
-        }
-        if (string.IsNullOrWhiteSpace(description))
-        {
-            return SectionErrors.DescriptionRequired;
         }
         if (order <= 0)
         {
@@ -47,7 +44,7 @@ public sealed class Section : AuditableEntity
             return SectionErrors.CourseIdRequired;
         }
 
-        return new Section(id, title, description, order, courseId);
+        return new Section(id, title, description ?? string.Empty, order, courseId, isPublished);
     }
 
     public Result<Updated> Update(string title, string description, int order)
@@ -56,18 +53,40 @@ public sealed class Section : AuditableEntity
         {
             return SectionErrors.TitleRequired;
         }
-        if (string.IsNullOrWhiteSpace(description))
-        {
-            return SectionErrors.DescriptionRequired;
-        }
         if (order <= 0)
         {
             return SectionErrors.InvalidOrder;
         }
 
         Title = title;
-        Description = description;
+        Description = description ?? string.Empty;
         Order = order;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+        return Result.Updated;
+    }
+
+    public Result<Updated> UpdateOrder(int newOrder)
+    {
+        if (newOrder <= 0)
+        {
+            return SectionErrors.InvalidOrder;
+        }
+
+        Order = newOrder;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+        return Result.Updated;
+    }
+
+    public Result<Updated> Publish()
+    {
+        IsPublished = true;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+        return Result.Updated;
+    }
+
+    public Result<Updated> Unpublish()
+    {
+        IsPublished = false;
         UpdatedAtUtc = DateTimeOffset.UtcNow;
         return Result.Updated;
     }

@@ -22,22 +22,55 @@ public sealed class AuthController(ISender sender) : BaseController
     private const string RefreshTokenCookieName = "refreshToken";
     private readonly ISender _sender = sender;
 
-    [HttpPost("register")]
-    public async Task<IActionResult> Register(
-        [FromBody] RegisterRequest request,
+    [HttpPost("register/student")]
+    public async Task<IActionResult> RegisterStudent(
+        [FromBody] LearnHub.Contracts.Auth.Requests.RegisterRequest request,
         CancellationToken cancellationToken)
     {
-        var command = new RegisterCommand(
+        var command = new LearnHub.Application.Features.Identity.Commands.RegisterStudent.RegisterStudentCommand(
             request.FirstName,
             request.LastName,
             request.Email,
             request.Password,
             request.ConfirmPassword,
-            request.Role,
             request.PhoneNumber);
 
         var result = await _sender.Send(command, cancellationToken);
+        return HandleResult(result);
+    }
 
+    [HttpPost("register/instructor")]
+    public async Task<IActionResult> RegisterInstructor(
+        [FromBody] LearnHub.Contracts.Auth.Requests.RegisterRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new LearnHub.Application.Features.Identity.Commands.RegisterInstructor.RegisterInstructorCommand(
+            request.FirstName,
+            request.LastName,
+            request.Email,
+            request.Password,
+            request.ConfirmPassword,
+            PhoneNumber: request.PhoneNumber);
+
+        var result = await _sender.Send(command, cancellationToken);
+        return HandleResult(result);
+    }
+
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(
+        [FromBody] RegisterRequest request,
+        CancellationToken cancellationToken)
+    {
+        // Safe default boundary: legacy register defaults to Student role
+        var command = new LearnHub.Application.Features.Identity.Commands.RegisterStudent.RegisterStudentCommand(
+            request.FirstName,
+            request.LastName,
+            request.Email,
+            request.Password,
+            request.ConfirmPassword,
+            request.PhoneNumber);
+
+        var result = await _sender.Send(command, cancellationToken);
         return HandleResult(result);
     }
 

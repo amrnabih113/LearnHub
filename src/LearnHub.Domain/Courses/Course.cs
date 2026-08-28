@@ -101,6 +101,53 @@ public sealed class Course : AuditableEntity
         return course;
     }
 
+    public static Result<Course> CreateDraft(
+        Guid id,
+        string title,
+        Guid instructorId,
+        Guid categoryId,
+        string? description = null,
+        Money? price = null,
+        CourseLevel level = CourseLevel.Beginner,
+        string? language = "en",
+        string? languageName = "English")
+    {
+        if (string.IsNullOrWhiteSpace(title))
+        {
+            return CourseErrors.TitleRequired;
+        }
+        if (instructorId == Guid.Empty)
+        {
+            return CourseErrors.InstructorIdRequired;
+        }
+        if (categoryId == Guid.Empty)
+        {
+            return CourseClassificationErrors.CategoryIdRequired;
+        }
+
+        var defaultPrice = price ?? Money.Create(0, "USD").Value;
+        var languageVoResult = LearnHub.Domain.Common.ValueObjects.Language.Create(language ?? "en", languageName ?? "English");
+        var languageVo = languageVoResult.IsSuccess ? languageVoResult.Value : LearnHub.Domain.Common.ValueObjects.Language.Create("en", "English").Value;
+
+        var course = new Course(
+            id,
+            title.Trim(),
+            description?.Trim() ?? string.Empty,
+            instructorId,
+            categoryId,
+            null,
+            level,
+            CourseStatus.Draft,
+            defaultPrice,
+            false,
+            SubscriptionTier.Free,
+            languageVo,
+            null);
+
+        course.AddDomainEvent(new CourseCreatedDomainEvent(course.Id, instructorId));
+        return course;
+    }
+
     public Result<Updated> Update(string title, string description, Guid categoryId, string? thumbnailUrl, CourseLevel level, CourseStatus status, Money price, bool isIncludedInSubscription, SubscriptionTier requiredSubscriptionTier, string language, string? languageName, string? country)
     {
         if (string.IsNullOrWhiteSpace(title))
@@ -264,6 +311,40 @@ public sealed class Course : AuditableEntity
         AddDomainEvent(new CourseStatusChangedDomainEvent(Id, previousStatus, status));
 
         return Result.Updated;
+    }
+
+    public bool CanPublish(out List<string> missingRequirements)
+    {
+        missingRequirements = [];
+        if (string.IsNullOrWhiteSpace(Title))
+            missingRequirements.Add("Title is required.");
+        if (string.IsNullOrWhiteSpace(Description))
+            missingRequirements.Add("Description is required.");
+        if (string.IsNullOrWhiteSpace(ThumbnailUrl))
+            missingRequirements.Add("Thumbnail URL is required.");
+        if (Price is null)
+            missingRequirements.Add("Price is required.");
+        if (CategoryId == Guid.Empty)
+            missingRequirements.Add("Category is required.");
+        if (!_sections.Any())
+            missingRequirements.Add("Course must contain at least one section.");
+        else
+        {
+            if (!_sections.Any(s => s.Lessons.Any()))
+                missingRequirements.Add("At least one section must contain lessons.");
+        }
+
+        return missingRequirements.Count == 0;
+    }
+
+    public Result<Updated> Publish()
+    {
+        if (!CanPublish(out var missingRequirements))
+        {
+            return Error.Validation("Course.CannotPublish", $"Cannot publish course. Missing requirements: {string.Join("; ", missingRequirements)}");
+        }
+
+        return ChangeStatus(CourseStatus.Published);
     }
 
     public Result<Updated> UpsertSections(List<Section> upcomingSections)

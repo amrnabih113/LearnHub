@@ -460,4 +460,37 @@ public sealed class AdminController(ISender sender) : BaseController
         return HandleResult(result);
     }
     #endregion
+
+    #region Security & Role Management
+    [HttpPost("users/{userId:guid}/roles")]
+    public async Task<IActionResult> AssignRole(
+        Guid userId,
+        [FromBody] AssignRoleRequest request,
+        CancellationToken cancellationToken)
+    {
+        var adminId = GetCurrentUserId();
+        var command = new LearnHub.Application.Features.Admin.Commands.AssignRole.AssignRoleCommand(adminId, userId, request.Role);
+        var result = await _sender.Send(command, cancellationToken);
+        return HandleResult(result);
+    }
+
+    [HttpPost("instructors/{instructorUserId:guid}/approve")]
+    public async Task<IActionResult> ApproveInstructor(
+        Guid instructorUserId,
+        CancellationToken cancellationToken)
+    {
+        var adminId = GetCurrentUserId();
+        var command = new LearnHub.Application.Features.Admin.Commands.ApproveInstructor.ApproveInstructorCommand(adminId, instructorUserId);
+        var result = await _sender.Send(command, cancellationToken);
+        return HandleResult(result);
+    }
+
+    private Guid GetCurrentUserId()
+    {
+        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        return Guid.TryParse(userIdClaim, out var id) ? id : Guid.Empty;
+    }
+    #endregion
 }
+
+public sealed record AssignRoleRequest(Role Role);

@@ -15,6 +15,7 @@ using LearnHub.Domain.Enrollments;
 using LearnHub.Domain.Enrollments.Certificates;
 using LearnHub.Domain.Enrollments.LessonProgress;
 using LearnHub.Domain.Identity;
+using LearnHub.Domain.Instructor;
 using LearnHub.Domain.LearningPaths;
 using LearnHub.Domain.Purchasing.Carts;
 using LearnHub.Domain.Purchasing.Coupons;
@@ -22,6 +23,7 @@ using LearnHub.Domain.Purchasing.Orders;
 using LearnHub.Domain.Purchasing.Payments;
 using LearnHub.Domain.Reviews.CourseReviews;
 using LearnHub.Domain.Reviews.InstructorReviews;
+using LearnHub.Domain.Security;
 using LearnHub.Domain.Subscriptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -41,6 +43,7 @@ public class AppDbContext(
     public DbSet<Section> Sections => Set<Section>();
     public DbSet<Lesson> Lessons => Set<Lesson>();
     public DbSet<Resource> Resources => Set<Resource>();
+    public DbSet<SecurityAuditLog> SecurityAuditLogs { get; }
 
     public DbSet<Quiz> Quizzes => Set<Quiz>();
     public DbSet<Question> Questions => Set<Question>();
@@ -55,6 +58,14 @@ public class AppDbContext(
     public DbSet<LearningPathCourse> LearningPathCourses => Set<LearningPathCourse>();
 
     public DbSet<User> Users => Set<User>();
+    public DbSet<InstructorProfile> InstructorProfiles => Set<InstructorProfile>();
+    public DbSet<InstructorExperience> InstructorExperiences => Set<InstructorExperience>();
+    public DbSet<InstructorEducation> InstructorEducations => Set<InstructorEducation>();
+    public DbSet<InstructorCertification> InstructorCertifications => Set<InstructorCertification>();
+    public DbSet<InstructorSkill> InstructorSkills => Set<InstructorSkill>();
+    public DbSet<InstructorLanguage> InstructorLanguages => Set<InstructorLanguage>();
+    public DbSet<InstructorLink> InstructorLinks => Set<InstructorLink>();
+    public DbSet<SecurityAuditLog> SecurityAuditLogs => Set<SecurityAuditLog>();
 
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 

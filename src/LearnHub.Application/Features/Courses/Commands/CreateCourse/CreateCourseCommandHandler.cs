@@ -2,6 +2,7 @@ using LearnHub.Application.common.Errors;
 using LearnHub.Application.common.Interfaces;
 using LearnHub.Domain.Common.Results;
 using LearnHub.Domain.Courses;
+using LearnHub.Domain.Courses.Enums;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -32,21 +33,38 @@ public sealed class CreateCourseCommandHandler(
             return Error.NotFound("ApplicationError.Course.CategoryNotFound", "Category not found.");
         }
 
-        var courseResult = Course.Create(
-            id: Guid.NewGuid(),
-            title: request.Title,
-            description: request.Description,
-            instructorId: request.InstructorId,
-            categoryId: request.CategoryId,
-            thumbnailUrl: null,
-            level: request.Level,
-            status: request.Status,
-            price: request.Price,
-            isIncludedInSubscription: request.IsIncludedInSubscription,
-            requiredSubscriptionTier: request.RequiredSubscriptionTier,
-            language: request.Language,
-            languageName: request.LanguageName,
-            country: request.Country);
+        Result<Course> courseResult;
+        if (request.Status == CourseStatus.Draft)
+        {
+            courseResult = Course.CreateDraft(
+                id: Guid.NewGuid(),
+                title: request.Title,
+                instructorId: request.InstructorId,
+                categoryId: request.CategoryId,
+                description: request.Description,
+                price: request.Price,
+                level: request.Level,
+                language: request.Language,
+                languageName: request.LanguageName);
+        }
+        else
+        {
+            courseResult = Course.Create(
+                id: Guid.NewGuid(),
+                title: request.Title,
+                description: request.Description,
+                instructorId: request.InstructorId,
+                categoryId: request.CategoryId,
+                thumbnailUrl: null,
+                level: request.Level,
+                status: request.Status,
+                price: request.Price,
+                isIncludedInSubscription: request.IsIncludedInSubscription,
+                requiredSubscriptionTier: request.RequiredSubscriptionTier,
+                language: request.Language,
+                languageName: request.LanguageName,
+                country: request.Country);
+        }
 
         if (courseResult.IsError)
         {

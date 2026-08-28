@@ -35,4 +35,8 @@ public static class LessonErrors
     public static Error ResourcesRequired
         => Error.Validation(code: "DomainError.Lesson.ResourcesRequired",
             description: "Lesson resources are required");
+
+    public static Error NotFound
+        => Error.NotFound(code: "DomainError.Lesson.NotFound",
+            description: "Lesson not found");
 }

@@ -70,7 +70,15 @@ public sealed class GetCourseContentQueryHandler(
             }
         }
 
-        var sortedSections = course.Sections.OrderBy(s => s.Order).ToList();
+        var currentUserId = _currentUserService.UserId;
+        bool isInstructorOwner = currentUserId.HasValue && course.InstructorId == currentUserId.Value;
+
+        // Filter sections based on visibility: students only see published sections
+        var sortedSections = course.Sections
+            .Where(s => isInstructorOwner || s.IsPublished)
+            .OrderBy(s => s.Order)
+            .ToList();
+
         var sectionDtos = new List<SectionDto>();
         bool previousSectionPassed = true; // Section 1 is unlocked by default
 
@@ -78,9 +86,14 @@ public sealed class GetCourseContentQueryHandler(
         {
             bool isSectionLocked = !previousSectionPassed;
 
-            // Map lessons
-            var lessonDtos = section.Lessons
+            // Filter lessons based on visibility: students only see published lessons
+            var visibleLessons = section.Lessons
+                .Where(l => isInstructorOwner || l.IsPublished)
                 .OrderBy(l => l.Order)
+                .ToList();
+
+            // Map lessons
+            var lessonDtos = visibleLessons
                 .Select(l => new LessonDto(
                     l.Id,
                     l.Title ?? string.Empty,

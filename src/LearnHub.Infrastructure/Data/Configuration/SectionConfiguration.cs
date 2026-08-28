@@ -23,11 +23,13 @@ public sealed class SectionConfiguration
 
 
         builder.Property(x => x.Description)
-            .IsRequired()
             .HasMaxLength(1000);
 
-
         builder.Property(x => x.Order)
+            .IsRequired();
+
+        builder.Property(x => x.IsPublished)
+            .HasDefaultValue(true)
             .IsRequired();
 
 

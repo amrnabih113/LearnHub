@@ -24,29 +24,24 @@ public sealed class LessonConfiguration
 
 
         builder.Property(x => x.Description)
-            .IsRequired()
             .HasMaxLength(1000);
 
-
         builder.Property(x => x.VideoUrl)
-            .IsRequired()
             .HasMaxLength(500);
 
-
-        builder.Property(x => x.Content)
-            .IsRequired();
-
+        builder.Property(x => x.Content);
 
         builder.Property(x => x.DurationInMinutes)
             .IsRequired();
 
-
         builder.Property(x => x.Order)
             .IsRequired();
 
-
-
         builder.Property(x => x.IsPreview)
+            .IsRequired();
+
+        builder.Property(x => x.IsPublished)
+            .HasDefaultValue(true)
             .IsRequired();
 
 

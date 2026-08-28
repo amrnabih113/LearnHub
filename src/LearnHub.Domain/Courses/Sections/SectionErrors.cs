@@ -23,4 +23,8 @@ public static class SectionErrors
     public static Error LessonsRequired
         => Error.Validation(code: "DomainError.Section.LessonsRequired",
             description: "Section lessons are required");
+
+    public static Error NotFound
+        => Error.NotFound(code: "DomainError.Section.NotFound",
+            description: "Section not found");
 }

@@ -31,6 +31,11 @@ public sealed class CourseReviewsController(
         [FromBody] CreateCourseReviewRequest request,
         CancellationToken cancellationToken)
     {
+        if (request.Rating < 1 || request.Rating > 5)
+        {
+            return BadRequest(new { message = "Rating must be between 1 and 5." });
+        }
+
         var studentId = _currentUserService.UserId ?? Guid.Empty;
         var command = new CreateCourseReviewCommand(courseId, studentId, request.Rating, request.Comment);
 

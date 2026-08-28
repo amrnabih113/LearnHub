@@ -20,6 +20,7 @@ public sealed class Lesson : AuditableEntity
     public string? Content { get; private set; }
     public int DurationInMinutes { get; private set; }
     public int Order { get; private set; }
+    public bool IsPublished { get; private set; }
 
     public Guid SectionId { get; private set; }
     public Section Section { get; private set; } = default!;
@@ -34,7 +35,8 @@ public sealed class Lesson : AuditableEntity
                    string content,
                    int durationInMinutes,
                    int order,
-                   Guid sectionId) : base(id)
+                   Guid sectionId,
+                   bool isPublished = true) : base(id)
     {
         Title = title;
         Description = description;
@@ -44,29 +46,14 @@ public sealed class Lesson : AuditableEntity
         DurationInMinutes = durationInMinutes;
         Order = order;
         SectionId = sectionId;
+        IsPublished = isPublished;
     }
 
-    public static Result<Lesson> Create(Guid id, string title, string description, string videoUrl, bool isPreview, string content, int durationInMinutes, int order, Guid sectionId)
+    public static Result<Lesson> Create(Guid id, string title, string? description, string? videoUrl, bool isPreview, string? content, int durationInMinutes, int order, Guid sectionId, bool isPublished = true)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
             return LessonErrors.TitleRequired;
-        }
-        if (string.IsNullOrWhiteSpace(description))
-        {
-            return LessonErrors.DescriptionRequired;
-        }
-        if (string.IsNullOrWhiteSpace(videoUrl))
-        {
-            return LessonErrors.VideoUrlRequired;
-        }
-        if (string.IsNullOrWhiteSpace(content))
-        {
-            return LessonErrors.ContentRequired;
-        }
-        if (durationInMinutes <= 0)
-        {
-            return LessonErrors.InvalidDuration;
         }
         if (order <= 0)
         {
@@ -77,45 +64,72 @@ public sealed class Lesson : AuditableEntity
             return LessonErrors.SectionIdRequired;
         }
 
-        return new Lesson(id, title, description, videoUrl, isPreview, content, durationInMinutes, order, sectionId);
+        return new Lesson(id, title.Trim(), description?.Trim() ?? string.Empty, videoUrl?.Trim() ?? string.Empty, isPreview, content?.Trim() ?? string.Empty, durationInMinutes, order, sectionId, isPublished);
     }
 
-    public Result<Updated> Update(string title, string description, string videoUrl, bool isPreview, string content, int durationInMinutes, int order)
+    public Result<Updated> Update(string title, string? description, string? videoUrl, bool isPreview, string? content, int durationInMinutes, int order)
     {
         if (string.IsNullOrWhiteSpace(title))
         {
             return LessonErrors.TitleRequired;
-        }
-        if (string.IsNullOrWhiteSpace(description))
-        {
-            return LessonErrors.DescriptionRequired;
-        }
-        if (string.IsNullOrWhiteSpace(videoUrl))
-        {
-            return LessonErrors.VideoUrlRequired;
-        }
-        if (string.IsNullOrWhiteSpace(content))
-        {
-            return LessonErrors.ContentRequired;
-        }
-        if (durationInMinutes <= 0)
-        {
-            return LessonErrors.InvalidDuration;
         }
         if (order <= 0)
         {
             return LessonErrors.InvalidOrder;
         }
 
-        Title = title;
-        Description = description;
-        VideoUrl = videoUrl;
+        Title = title.Trim();
+        Description = description?.Trim() ?? string.Empty;
+        if (videoUrl != null) VideoUrl = videoUrl.Trim();
         IsPreview = isPreview;
-        Content = content;
-        DurationInMinutes = durationInMinutes;
+        Content = content?.Trim() ?? string.Empty;
+        if (durationInMinutes > 0) DurationInMinutes = durationInMinutes;
         Order = order;
         UpdatedAtUtc = DateTimeOffset.UtcNow;
 
+        return Result.Updated;
+    }
+
+    public Result<Updated> UpdateVideo(string videoUrl, int durationInMinutes)
+    {
+        if (string.IsNullOrWhiteSpace(videoUrl))
+        {
+            return LessonErrors.VideoUrlRequired;
+        }
+        if (durationInMinutes <= 0)
+        {
+            return LessonErrors.InvalidDuration;
+        }
+
+        VideoUrl = videoUrl.Trim();
+        DurationInMinutes = durationInMinutes;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+        return Result.Updated;
+    }
+
+    public Result<Updated> UpdateOrder(int newOrder)
+    {
+        if (newOrder <= 0)
+        {
+            return LessonErrors.InvalidOrder;
+        }
+
+        Order = newOrder;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+        return Result.Updated;
+    }
+
+    public Result<Updated> Publish()
+    {
+        IsPublished = true;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+        return Result.Updated;
+    }
+
+    public Result<Updated> Unpublish()
+    {
+        IsPublished = false;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
         return Result.Updated;
     }
 

@@ -12,6 +12,7 @@ using LearnHub.Domain.Enrollments;
 using LearnHub.Domain.Enrollments.Certificates;
 using LearnHub.Domain.Enrollments.LessonProgress;
 using LearnHub.Domain.Identity;
+using LearnHub.Domain.Instructor;
 using LearnHub.Domain.LearningPaths;
 using LearnHub.Domain.Purchasing.Carts;
 using LearnHub.Domain.Purchasing.Coupons;
@@ -19,6 +20,7 @@ using LearnHub.Domain.Purchasing.Orders;
 using LearnHub.Domain.Purchasing.Payments;
 using LearnHub.Domain.Reviews.CourseReviews;
 using LearnHub.Domain.Reviews.InstructorReviews;
+using LearnHub.Domain.Security;
 using LearnHub.Domain.Subscriptions;
 using Microsoft.EntityFrameworkCore;
 
@@ -45,6 +47,14 @@ public interface IAppDbContext
     public DbSet<LearningPathCourse> LearningPathCourses { get; }
 
     public DbSet<User> Users { get; }
+    public DbSet<InstructorProfile> InstructorProfiles { get; }
+    public DbSet<InstructorExperience> InstructorExperiences { get; }
+    public DbSet<InstructorEducation> InstructorEducations { get; }
+    public DbSet<InstructorCertification> InstructorCertifications { get; }
+    public DbSet<InstructorSkill> InstructorSkills { get; }
+    public DbSet<InstructorLanguage> InstructorLanguages { get; }
+    public DbSet<InstructorLink> InstructorLinks { get; }
+    public DbSet<SecurityAuditLog> SecurityAuditLogs { get; }
     public DbSet<RefreshToken> RefreshTokens { get; }
     public DbSet<PasswordResetToken> PasswordResetTokens { get; }
     public DbSet<OtpCode> OtpCodes { get; }

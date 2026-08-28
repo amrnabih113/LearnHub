@@ -273,10 +273,11 @@ public static class DependencyInjection
         // ============================
 
         // ============================
-        // Course Access Service
+        // Course Access & Security Audit Services
         // ============================
 
         services.AddScoped<ICourseAccessService, LearnHub.Infrastructure.Services.CourseAccessService>();
+        services.AddScoped<ISecurityAuditService, LearnHub.Infrastructure.Services.SecurityAuditService>();
 
         // ============================
         // Payments & Stripe

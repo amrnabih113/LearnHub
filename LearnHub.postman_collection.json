@@ -4351,6 +4351,426 @@
           }
         }
       ]
+    },
+    {
+      "name": "Incremental Course Creation & Publishing",
+      "item": [
+        {
+          "name": "1. Create Draft Course",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Incremental Draft Course\",\n  \"categoryId\": \"{{categoryId}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/courses",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "courses"
+              ]
+            }
+          }
+        },
+        {
+          "name": "2. Get Course Readiness",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/courses/{{courseId}}/readiness",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "courses",
+                "{{courseId}}",
+                "readiness"
+              ]
+            }
+          }
+        },
+        {
+          "name": "3. Create Section",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Section 1: Getting Started\",\n  \"description\": \"Basic intro section\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/courses/{{courseId}}/sections",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "courses",
+                "{{courseId}}",
+                "sections"
+              ]
+            }
+          }
+        },
+        {
+          "name": "4. Reorder Sections",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"items\": [\n    { \"sectionId\": \"{{sectionId1}}\", \"order\": 2 },\n    { \"sectionId\": \"{{sectionId2}}\", \"order\": 1 }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/courses/{{courseId}}/sections/reorder",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "courses",
+                "{{courseId}}",
+                "sections",
+                "reorder"
+              ]
+            }
+          }
+        },
+        {
+          "name": "5. Create Lesson (Without Video)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Lesson 1.1: Environment Setup\",\n  \"description\": \"Setting up IDE\",\n  \"content\": \"Follow setup instructions.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/sections/{{sectionId}}/lessons",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "sections",
+                "{{sectionId}}",
+                "lessons"
+              ]
+            }
+          }
+        },
+        {
+          "name": "6. Upload Lesson Video",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                },
+                {
+                  "key": "durationInMinutes",
+                  "value": "15",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/lessons/{{lessonId}}/video",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "lessons",
+                "{{lessonId}}",
+                "video"
+              ]
+            }
+          }
+        },
+        {
+          "name": "7. Publish Lesson",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/lessons/{{lessonId}}/publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "lessons",
+                "{{lessonId}}",
+                "publish"
+              ]
+            }
+          }
+        },
+        {
+          "name": "8. Publish Section",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/sections/{{sectionId}}/publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "sections",
+                "{{sectionId}}",
+                "publish"
+              ]
+            }
+          }
+        },
+        {
+          "name": "9. Publish Course",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/courses/{{courseId}}/publish",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "courses",
+                "{{courseId}}",
+                "publish"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Security & Instructor Profile",
+      "item": [
+        {
+          "name": "1. Register Student",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Alice\",\n  \"lastName\": \"Student\",\n  \"email\": \"alice.student@example.com\",\n  \"password\": \"Password123!\",\n  \"confirmPassword\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register/student",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register",
+                "student"
+              ]
+            }
+          }
+        },
+        {
+          "name": "2. Register Instructor",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Bob\",\n  \"lastName\": \"Instructor\",\n  \"email\": \"bob.instructor@example.com\",\n  \"password\": \"Password123!\",\n  \"confirmPassword\": \"Password123!\",\n  \"professionalTitle\": \"Senior Software Engineer\",\n  \"headline\": \"ASP.NET Core & Clean Architecture Specialist\",\n  \"biography\": \"Passionate educator with 10+ years of industry experience.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/register/instructor",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register",
+                "instructor"
+              ]
+            }
+          }
+        },
+        {
+          "name": "3. Get Instructor Profile",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/instructors/{{instructorUserId}}/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "instructors",
+                "{{instructorUserId}}",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "4. Update Instructor Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"professionalTitle\": \"Lead Principal Architect\",\n  \"headline\": \"Domain-Driven Design & Microservices Expert\",\n  \"biography\": \"Updated professional bio.\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/instructors/profile",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "instructors",
+                "profile"
+              ]
+            }
+          }
+        },
+        {
+          "name": "5. Add Instructor Link",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"LinkedIn\",\n  \"url\": \"https://linkedin.com/in/instructor\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/instructors/profile/links",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "instructors",
+                "profile",
+                "links"
+              ]
+            }
+          }
+        },
+        {
+          "name": "6. Admin - Assign Role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"role\": \"Instructor\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/users/{{userId}}/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "users",
+                "{{userId}}",
+                "roles"
+              ]
+            }
+          }
+        },
+        {
+          "name": "7. Admin - Approve Instructor",
+          "request": {
+            "method": "POST",
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/admin/instructors/{{instructorUserId}}/approve",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "admin",
+                "instructors",
+                "{{instructorUserId}}",
+                "approve"
+              ]
+            }
+          }
+        }
+      ]
     }
   ]
 }

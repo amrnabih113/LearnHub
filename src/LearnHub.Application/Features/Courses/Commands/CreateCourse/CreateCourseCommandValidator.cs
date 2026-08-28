@@ -15,7 +15,6 @@ public sealed class CreateCourseCommandValidator : AbstractValidator<CreateCours
             .MaximumLength(200);
 
         RuleFor(x => x.Description)
-            .NotEmpty()
             .MaximumLength(2000);
 
         RuleFor(x => x.InstructorId)
@@ -23,17 +22,6 @@ public sealed class CreateCourseCommandValidator : AbstractValidator<CreateCours
 
         RuleFor(x => x.CategoryId)
             .NotEmpty();
-
-        RuleFor(x => x.Price.Amount)
-            .GreaterThanOrEqualTo(0);
-
-        RuleFor(x => x.Language)
-            .NotEmpty()
-            .MaximumLength(5);
-
-        RuleFor(x => x.LanguageName)
-            .NotEmpty()
-            .MaximumLength(100);
 
         RuleFor(x => x.Thumbnail)
             .Must(file => file is null || file.Length > 0)

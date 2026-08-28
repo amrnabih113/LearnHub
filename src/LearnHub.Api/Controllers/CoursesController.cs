@@ -218,4 +218,33 @@ public sealed class CoursesController(ISender sender) : BaseController
 
         return HandleResult(result);
     }
+
+    [HttpGet("{id:guid}/readiness")]
+    [Authorize(Roles = $"{nameof(Role.Instructor)},{nameof(Role.Admin)}")]
+    public async Task<IActionResult> GetCourseReadiness(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var query = new LearnHub.Application.Features.Courses.Queries.GetCourseReadiness.GetCourseReadinessQuery(id);
+        var result = await _sender.Send(query, cancellationToken);
+        return HandleResult(result);
+    }
+
+    [HttpPost("{id:guid}/publish")]
+    [Authorize(Roles = $"{nameof(Role.Instructor)},{nameof(Role.Admin)}")]
+    public async Task<IActionResult> PublishCourse(
+        Guid id,
+        CancellationToken cancellationToken)
+    {
+        var instructorId = GetCurrentUserId();
+        var command = new LearnHub.Application.Features.Courses.Commands.PublishCourse.PublishCourseCommand(id, instructorId);
+        var result = await _sender.Send(command, cancellationToken);
+        return HandleResult(result);
+    }
+
+    private Guid GetCurrentUserId()
+    {
+        var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        return Guid.TryParse(userIdClaim, out var id) ? id : Guid.Empty;
+    }
 }

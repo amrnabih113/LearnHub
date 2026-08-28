@@ -47,4 +47,16 @@ public static class QuizAttemptErrors
     public static Error InvalidScore
     => Error.Validation(code: "DomainError.QuizAttempt.InvalidScore",
     description: "Score must be between 0 and 100");
+
+    public static Error AttemptNotFound
+    => Error.NotFound(code: "DomainError.QuizAttempt.AttemptNotFound",
+    description: "Quiz attempt was not found");
+
+    public static Error StudentMismatch
+    => Error.Forbidden(code: "DomainError.QuizAttempt.StudentMismatch",
+    description: "Quiz attempt belongs to another student");
+
+    public static Error OptionRequired
+    => Error.Validation(code: "DomainError.QuizAttempt.OptionRequired",
+    description: "Choice ID or text answer is required");
 }

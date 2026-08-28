@@ -7,4 +7,6 @@ public sealed record SectionDto(
     int Order,
     int LessonCount,
     int DurationInMinutes,
-    IReadOnlyCollection<LessonDto> Lessons);
+    IReadOnlyCollection<LessonDto> Lessons,
+    AssessmentContentDto? Assessment = null,
+    bool IsLocked = false);

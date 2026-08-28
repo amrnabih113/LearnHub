@@ -29,12 +29,24 @@ public sealed class QuizConfiguration : IEntityTypeConfiguration<Quiz>
             .HasForeignKey(x => x.CourseId)
             .OnDelete(DeleteBehavior.Cascade);
 
-
+        // Section relationship
+        builder.HasOne<LearnHub.Domain.Courses.Sections.Section>()
+            .WithMany()
+            .HasForeignKey(x => x.SectionId)
+            .OnDelete(DeleteBehavior.Cascade)
+            .IsRequired(false);
 
         // Enums
         builder.Property(x => x.Status)
             .HasConversion<string>()
             .HasMaxLength(50);
+
+        builder.Property(x => x.Type)
+            .HasConversion<string>()
+            .HasMaxLength(50)
+            .IsRequired();
+
+        builder.HasIndex(x => new { x.CourseId, x.SectionId, x.Type });
 
 
 

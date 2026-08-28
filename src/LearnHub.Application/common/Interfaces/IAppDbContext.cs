@@ -1,3 +1,7 @@
+using LearnHub.Domain.Assessments;
+using LearnHub.Domain.Assessments.Attempts;
+using LearnHub.Domain.Assessments.Questions;
+using LearnHub.Domain.Assessments.Questions.Choices;
 using LearnHub.Domain.Classification.Categories;
 using LearnHub.Domain.Classification.Tags;
 using LearnHub.Domain.Courses;
@@ -27,6 +31,12 @@ public interface IAppDbContext
     public DbSet<Section> Sections { get; }
     public DbSet<Lesson> Lessons { get; }
     public DbSet<Resource> Resources { get; }
+
+    public DbSet<Quiz> Quizzes { get; }
+    public DbSet<Question> Questions { get; }
+    public DbSet<Choice> Choices { get; }
+    public DbSet<QuizAttempt> QuizAttempts { get; }
+    public DbSet<Answer> Answers { get; }
 
     public DbSet<Enrollment> Enrollments { get; }
     public DbSet<LessonProgress> LessonProgresses { get; }

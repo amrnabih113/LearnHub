@@ -1,5 +1,9 @@
 using LearnHub.Application.common.Interfaces;
 using LearnHub.Application.Common.Interfaces;
+using LearnHub.Domain.Assessments;
+using LearnHub.Domain.Assessments.Attempts;
+using LearnHub.Domain.Assessments.Questions;
+using LearnHub.Domain.Assessments.Questions.Choices;
 using LearnHub.Domain.Classification.Categories;
 using LearnHub.Domain.Classification.Tags;
 using LearnHub.Domain.Common;
@@ -37,6 +41,12 @@ public class AppDbContext(
     public DbSet<Section> Sections => Set<Section>();
     public DbSet<Lesson> Lessons => Set<Lesson>();
     public DbSet<Resource> Resources => Set<Resource>();
+
+    public DbSet<Quiz> Quizzes => Set<Quiz>();
+    public DbSet<Question> Questions => Set<Question>();
+    public DbSet<Choice> Choices => Set<Choice>();
+    public DbSet<QuizAttempt> QuizAttempts => Set<QuizAttempt>();
+    public DbSet<Answer> Answers => Set<Answer>();
 
     public DbSet<Enrollment> Enrollments => Set<Enrollment>();
     public DbSet<LessonProgress> LessonProgresses => Set<LessonProgress>();

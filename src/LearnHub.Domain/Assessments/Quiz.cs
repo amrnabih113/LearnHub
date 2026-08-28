@@ -11,6 +11,8 @@ namespace LearnHub.Domain.Assessments;
 public sealed class Quiz : AuditableEntity
 {
     public Guid CourseId { get; private set; }
+    public Guid? SectionId { get; private set; }
+    public QuizType Type { get; private set; }
     public string Title { get; private set; } = default!;
     public string? Description { get; private set; }
     public QuizStatus Status { get; private set; }
@@ -22,9 +24,11 @@ public sealed class Quiz : AuditableEntity
 
     private Quiz() { }
 
-    private Quiz(Guid id, Guid courseId, string title, string? description, int? timeLimitMinutes, PassingPolicy passingPolicy) : base(id)
+    private Quiz(Guid id, Guid courseId, Guid? sectionId, QuizType type, string title, string? description, int? timeLimitMinutes, PassingPolicy passingPolicy) : base(id)
     {
         CourseId = courseId;
+        SectionId = sectionId;
+        Type = type;
         Title = title;
         Description = description;
         TimeLimitMinutes = timeLimitMinutes;
@@ -33,6 +37,11 @@ public sealed class Quiz : AuditableEntity
     }
 
     public static Result<Quiz> Create(Guid id, Guid courseId, string title, string? description, int? timeLimitMinutes, int maxAttempts, int passPercentage)
+    {
+        return CreateSectionQuiz(id, courseId, null, title, description, timeLimitMinutes, maxAttempts, passPercentage);
+    }
+
+    public static Result<Quiz> CreateSectionQuiz(Guid id, Guid courseId, Guid? sectionId, string title, string? description, int? timeLimitMinutes, int maxAttempts, int passPercentage)
     {
         if (courseId == Guid.Empty)
         {
@@ -55,10 +64,71 @@ public sealed class Quiz : AuditableEntity
             return passingPolicyResult.Errors;
         }
 
-        var quiz = new Quiz(id, courseId, title.Trim(), description?.Trim(), timeLimitMinutes, passingPolicyResult.Value);
+        var quiz = new Quiz(id, courseId, sectionId, QuizType.Section, title.Trim(), description?.Trim(), timeLimitMinutes, passingPolicyResult.Value);
         quiz.AddDomainEvent(new QuizCreatedDomainEvent(quiz.Id, quiz.CourseId));
 
         return quiz;
+    }
+
+    public static Result<Quiz> CreateFinalExam(Guid id, Guid courseId, string title, string? description, int? timeLimitMinutes, int maxAttempts, int passPercentage)
+    {
+        if (courseId == Guid.Empty)
+        {
+            return QuizErrors.CourseIdRequired;
+        }
+
+        if (string.IsNullOrWhiteSpace(title))
+        {
+            return QuizErrors.TitleRequired;
+        }
+
+        if (timeLimitMinutes is <= 0)
+        {
+            return QuizErrors.TimeLimitInvalid;
+        }
+
+        var passingPolicyResult = PassingPolicy.Create(maxAttempts, passPercentage);
+        if (passingPolicyResult.IsError)
+        {
+            return passingPolicyResult.Errors;
+        }
+
+        var quiz = new Quiz(id, courseId, null, QuizType.Final, title.Trim(), description?.Trim(), timeLimitMinutes, passingPolicyResult.Value);
+        quiz.AddDomainEvent(new QuizCreatedDomainEvent(quiz.Id, quiz.CourseId));
+
+        return quiz;
+    }
+
+    public Result<Updated> UpdateDetails(string title, string? description, int? timeLimitMinutes, int maxAttempts, int passPercentage)
+    {
+        if (Status != QuizStatus.Draft)
+        {
+            return QuizErrors.NotDraft;
+        }
+
+        if (string.IsNullOrWhiteSpace(title))
+        {
+            return QuizErrors.TitleRequired;
+        }
+
+        if (timeLimitMinutes is <= 0)
+        {
+            return QuizErrors.TimeLimitInvalid;
+        }
+
+        var passingPolicyResult = PassingPolicy.Create(maxAttempts, passPercentage);
+        if (passingPolicyResult.IsError)
+        {
+            return passingPolicyResult.Errors;
+        }
+
+        Title = title.Trim();
+        Description = description?.Trim();
+        TimeLimitMinutes = timeLimitMinutes;
+        PassingPolicy = passingPolicyResult.Value;
+        UpdatedAtUtc = DateTimeOffset.UtcNow;
+
+        return Result.Updated;
     }
 
     public Result<Updated> AddQuestion(Guid questionId, string prompt, QuestionType type, int points, int order)

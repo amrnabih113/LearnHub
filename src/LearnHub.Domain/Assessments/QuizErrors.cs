@@ -47,4 +47,20 @@ public static class QuizErrors
     public static Error UnsupportedQuestionTypeForAutoScoring
     => Error.Validation(code: "DomainError.Quiz.UnsupportedQuestionTypeForAutoScoring",
     description: "Quiz contains a question type that cannot be auto-scored");
+
+    public static Error SectionIdRequired
+    => Error.Validation(code: "DomainError.Quiz.SectionIdRequired",
+    description: "Section id is required for section quizzes");
+
+    public static Error FinalExamAlreadyExists
+    => Error.Conflict(code: "DomainError.Quiz.FinalExamAlreadyExists",
+    description: "Final exam already exists for this course");
+
+    public static Error PrerequisitesNotCompleted
+    => Error.Conflict(code: "DomainError.Quiz.PrerequisitesNotCompleted",
+    description: "Required course content must be completed before attempting the final exam");
+
+    public static Error SectionLocked
+    => Error.Conflict(code: "DomainError.Quiz.SectionLocked",
+    description: "Previous section assessment must be passed before accessing this content");
 }

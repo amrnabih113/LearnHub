@@ -4129,6 +4129,228 @@
           }
         }
       ]
+    },
+    {
+      "name": "Quizzes & Assessments",
+      "item": [
+        {
+          "name": "Create Section Quiz",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courseId\": \"{{course_id}}\",\n  \"title\": \"Section 1 Quiz\",\n  \"description\": \"Test your understanding of section 1 concepts.\",\n  \"timeLimitMinutes\": 15,\n  \"maxAttempts\": 3,\n  \"passPercentage\": 70\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/sections/{{section_id}}/quizzes",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "sections",
+                "{{section_id}}",
+                "quizzes"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Final Exam",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Course Final Exam\",\n  \"description\": \"Comprehensive final exam required for course completion and certification.\",\n  \"timeLimitMinutes\": 60,\n  \"maxAttempts\": 3,\n  \"passPercentage\": 75\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/courses/{{course_id}}/final-exam",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "courses",
+                "{{course_id}}",
+                "final-exam"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add Question to Quiz",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"What is the primary role of ASP.NET Core Middleware?\",\n  \"type\": 0,\n  \"points\": 10,\n  \"order\": 1,\n  \"choices\": [\n    {\n      \"text\": \"Handle HTTP requests and responses in pipeline\",\n      \"isCorrect\": true\n    },\n    {\n      \"text\": \"Database engine indexing\",\n      \"isCorrect\": false\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/quizzes/{{quiz_id}}/questions",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "quizzes",
+                "{{quiz_id}}",
+                "questions"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Publish Quiz",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/quizzes/{{quiz_id}}/publish",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "quizzes",
+                "{{quiz_id}}",
+                "publish"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Start Quiz Attempt",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/quizzes/{{quiz_id}}/attempts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "quizzes",
+                "{{quiz_id}}",
+                "attempts"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Save Quiz Answer",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"selectedChoiceId\": \"{{choice_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/quiz-attempts/{{attempt_id}}/answers/{{question_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "quiz-attempts",
+                "{{attempt_id}}",
+                "answers",
+                "{{question_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Submit Quiz Attempt",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/quiz-attempts/{{attempt_id}}/submit",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "quiz-attempts",
+                "{{attempt_id}}",
+                "submit"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Quiz Attempt Result",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/quiz-attempts/{{attempt_id}}/result",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "quiz-attempts",
+                "{{attempt_id}}",
+                "result"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Student Quiz Attempts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/quizzes/{{quiz_id}}/attempts",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "quizzes",
+                "{{quiz_id}}",
+                "attempts"
+              ]
+            }
+          }
+        }
+      ]
     }
   ]
 }

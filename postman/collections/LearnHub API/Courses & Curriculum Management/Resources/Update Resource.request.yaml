@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/resources/:id"
+method: PUT
+headers:
+  Content-Type: application/json
+pathVariables:
+  id: your-resource-id
+body:
+  type: text
+  content: |-
+    {
+      "name": "Updated Cheat Sheet PDF",
+      "url": "https://res.cloudinary.com/demo/raw/upload/sample.pdf",
+      "type": "Pdf",
+      "sizeInBytes": 2097152
+    }
+order: 1000

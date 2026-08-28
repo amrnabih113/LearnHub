@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/sections/:sectionId/lessons"
+method: POST
+headers:
+  Content-Type: application/json
+pathVariables:
+  sectionId: your-section-id
+body:
+  type: text
+  content: |-
+    {
+      "title": "Lesson 1: Hello World",
+      "description": "Writing your first C# application.",
+      "videoUrl": "https://res.cloudinary.com/demo/video/upload/sample.mp4",
+      "isPreview": true,
+      "content": "Detailed reading notes for Lesson 1",
+      "durationInMinutes": 15,
+      "order": 1
+    }
+order: 3000

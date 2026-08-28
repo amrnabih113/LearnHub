@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/lessons/:id"
+method: PUT
+headers:
+  Content-Type: application/json
+pathVariables:
+  id: your-lesson-id
+body:
+  type: text
+  content: |-
+    {
+      "title": "Lesson 1: Hello World in .NET 10",
+      "description": "Updated lesson info.",
+      "videoUrl": "https://res.cloudinary.com/demo/video/upload/sample.mp4",
+      "isPreview": true,
+      "content": "Updated content notes.",
+      "durationInMinutes": 20,
+      "order": 1
+    }
+order: 1000

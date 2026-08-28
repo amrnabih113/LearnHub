@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/learning-paths"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "title": "Full Stack .NET Developer",
+      "slug": "full-stack-dotnet",
+      "description": "Comprehensive learning path covering C#, ASP.NET Core, EF Core, and React.",
+      "shortDescription": "Master full-stack .NET development.",
+      "thumbnailUrl": "https://example.com/thumb.jpg",
+      "level": "Intermediate"
+    }
+order: 4000

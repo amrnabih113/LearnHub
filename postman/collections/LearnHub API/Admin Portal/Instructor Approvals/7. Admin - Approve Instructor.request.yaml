@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/admin/instructors/{{instructorUserId}}/approve"
+method: POST
+order: 1000

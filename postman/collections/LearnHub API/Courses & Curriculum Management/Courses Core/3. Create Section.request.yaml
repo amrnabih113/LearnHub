@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/courses/{{courseId}}/sections"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "title": "Section 1: Getting Started",
+      "description": "Basic intro section"
+    }
+order: 16000

@@ -1,0 +1,9 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/learning-paths?search=dotnet&level=Intermediate&pageNumber=1&pageSize=10"
+method: GET
+queryParams:
+  search: dotnet
+  level: Intermediate
+  pageNumber: "1"
+  pageSize: "10"
+order: 1000

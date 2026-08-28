@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/certificates"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "enrollmentId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+    }
+order: 1000

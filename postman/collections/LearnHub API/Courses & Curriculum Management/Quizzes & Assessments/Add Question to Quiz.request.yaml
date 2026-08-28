@@ -1,0 +1,25 @@
+$kind: http-request
+url: "{{base_url}}/api/v1/quizzes/{{quiz_id}}/questions"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "prompt": "What is the primary role of ASP.NET Core Middleware?",
+      "type": 0,
+      "points": 10,
+      "order": 1,
+      "choices": [
+        {
+          "text": "Handle HTTP requests and responses in pipeline",
+          "isCorrect": true
+        },
+        {
+          "text": "Database engine indexing",
+          "isCorrect": false
+        }
+      ]
+    }
+order: 2000

@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/courses/{{courseId}}/sections/reorder"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "items": [
+        { "sectionId": "{{sectionId1}}", "order": 2 },
+        { "sectionId": "{{sectionId2}}", "order": 1 }
+      ]
+    }
+order: 17000

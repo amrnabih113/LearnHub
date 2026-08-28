@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/instructors/profile/image"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "imageUrl": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500"
+    }
+order: 13000

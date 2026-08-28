@@ -1,0 +1,7 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/student/my-learning"
+method: GET
+headers:
+  Authorization: Bearer {{jwtToken}}
+  Content-Type: application/json
+order: 3000

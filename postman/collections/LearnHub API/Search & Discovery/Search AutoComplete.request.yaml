@@ -1,0 +1,7 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/search/autocomplete?q=asp&limit=5"
+method: GET
+queryParams:
+  q: asp
+  limit: "5"
+order: 2000

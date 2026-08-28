@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/certificates/:code/verify"
+method: GET
+pathVariables:
+  code: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+auth:
+  type: noauth
+order: 5000

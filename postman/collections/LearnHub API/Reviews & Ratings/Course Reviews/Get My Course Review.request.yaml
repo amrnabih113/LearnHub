@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/courses/:courseId/reviews/me"
+method: GET
+pathVariables:
+  courseId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+order: 4000

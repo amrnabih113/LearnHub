@@ -43,7 +43,6 @@ public class AppDbContext(
     public DbSet<Section> Sections => Set<Section>();
     public DbSet<Lesson> Lessons => Set<Lesson>();
     public DbSet<Resource> Resources => Set<Resource>();
-    public DbSet<SecurityAuditLog> SecurityAuditLogs { get; }
 
     public DbSet<Quiz> Quizzes => Set<Quiz>();
     public DbSet<Question> Questions => Set<Question>();

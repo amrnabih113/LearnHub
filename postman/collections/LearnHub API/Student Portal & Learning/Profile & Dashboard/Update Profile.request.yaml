@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/student/profile"
+method: PUT
+headers:
+  Authorization: Bearer {{jwtToken}}
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "firstName": "John",
+      "lastName": "Doe",
+      "phoneNumber": "+1234567890",
+      "bio": "Software Dev",
+      "country": "US"
+    }
+order: 2000

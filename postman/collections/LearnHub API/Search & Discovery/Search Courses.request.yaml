@@ -1,0 +1,29 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/search/courses?q=dotnet&level=Intermediate&isFree=false&minPrice=0&maxPrice=200&minimumRating=4&sortBy=Relevance&pageNumber=1&pageSize=10"
+method: GET
+queryParams:
+  - key: q
+    value: dotnet
+  - key: categoryId
+    value: ""
+    disabled: true
+  - key: level
+    value: Intermediate
+  - key: language
+    value: English
+    disabled: true
+  - key: isFree
+    value: "false"
+  - key: minPrice
+    value: "0"
+  - key: maxPrice
+    value: "200"
+  - key: minimumRating
+    value: "4"
+  - key: sortBy
+    value: Relevance
+  - key: pageNumber
+    value: "1"
+  - key: pageSize
+    value: "10"
+order: 1000

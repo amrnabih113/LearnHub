@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/admin/reviews?status=Flagged&pageNumber=1&pageSize=10"
+method: GET
+queryParams:
+  status: Flagged
+  pageNumber: "1"
+  pageSize: "10"
+order: 1000

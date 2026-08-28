@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/instructors/profile/educations"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "institution": "MIT",
+      "degree": "Bachelor of Science",
+      "fieldOfStudy": "Computer Science",
+      "startDate": "2010-09-01",
+      "endDate": "2014-06-01",
+      "description": "Graduated with honors"
+    }
+order: 6000

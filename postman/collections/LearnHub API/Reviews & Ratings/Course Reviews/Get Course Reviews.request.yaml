@@ -1,0 +1,11 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/courses/:courseId/reviews?pageNumber=1&pageSize=10"
+method: GET
+queryParams:
+  pageNumber: "1"
+  pageSize: "10"
+pathVariables:
+  courseId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+auth:
+  type: noauth
+order: 2000

@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/sections/{{sectionId}}/lessons"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "title": "Lesson 1.1: Environment Setup",
+      "description": "Setting up IDE",
+      "content": "Follow setup instructions."
+    }
+order: 5000

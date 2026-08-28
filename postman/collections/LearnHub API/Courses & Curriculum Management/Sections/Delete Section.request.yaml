@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/sections/:id"
+method: DELETE
+pathVariables:
+  id: your-section-id
+order: 2000

@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/instructors/:instructorId/reviews/summary"
+method: GET
+pathVariables:
+  instructorId: 55555555-5555-5555-5555-555555555555
+auth:
+  type: noauth
+order: 3000

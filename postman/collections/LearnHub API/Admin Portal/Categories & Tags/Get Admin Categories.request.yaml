@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/admin/categories?search=&pageNumber=1&pageSize=10"
+method: GET
+queryParams:
+  search: ""
+  pageNumber: "1"
+  pageSize: "10"
+order: 1000

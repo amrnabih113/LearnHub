@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/admin/reviews/:reviewId/status"
+method: PATCH
+headers:
+  Content-Type: application/json
+pathVariables:
+  reviewId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+body:
+  type: text
+  content: |-
+    {
+      "status": "Published"
+    }
+order: 2000

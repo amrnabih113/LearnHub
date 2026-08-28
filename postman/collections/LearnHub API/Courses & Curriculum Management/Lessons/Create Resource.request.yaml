@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/lessons/:lessonId/resources"
+method: POST
+headers:
+  Content-Type: application/json
+pathVariables:
+  lessonId: your-lesson-id
+body:
+  type: text
+  content: |-
+    {
+      "name": "Source Code Cheat Sheet",
+      "url": "https://res.cloudinary.com/demo/raw/upload/sample.pdf",
+      "type": "Pdf",
+      "sizeInBytes": 1048576
+    }
+order: 3000

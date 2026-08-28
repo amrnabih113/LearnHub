@@ -1,0 +1,17 @@
+$kind: http-request
+url: "{{base_url}}/api/v1/sections/{{section_id}}/quizzes"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "courseId": "{{course_id}}",
+      "title": "Section 1 Quiz",
+      "description": "Test your understanding of section 1 concepts.",
+      "timeLimitMinutes": 15,
+      "maxAttempts": 3,
+      "passPercentage": 70
+    }
+order: 4000

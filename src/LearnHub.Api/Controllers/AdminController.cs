@@ -1,9 +1,12 @@
+using LearnHub.Application.Features.Admin.Commands.ApproveInstructor;
+using LearnHub.Application.Features.Admin.Commands.AssignRole;
 using LearnHub.Application.Features.Admin.Commands.CreateCategory;
 using LearnHub.Application.Features.Admin.Commands.CreateTag;
 using LearnHub.Application.Features.Admin.Commands.DeleteCategory;
 using LearnHub.Application.Features.Admin.Commands.DeleteTag;
 using LearnHub.Application.Features.Admin.Commands.UpdateCategory;
 using LearnHub.Application.Features.Admin.Commands.UpdateTag;
+using LearnHub.Application.Features.Admin.Queries.GetAdminAnalytics;
 using LearnHub.Application.Features.Admin.Queries.GetAdminDashboard;
 using LearnHub.Application.Features.Admin.Queries.GetCategoriesAdmin;
 using LearnHub.Application.Features.Admin.Queries.GetCategoryByIdAdmin;
@@ -35,8 +38,6 @@ using LearnHub.Domain.Reviews.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using LearnHub.Application.Features.Admin.Queries.GetAdminAnalytics;
 
 namespace LearnHub.Api.Controllers;
 
@@ -469,7 +470,7 @@ public sealed class AdminController(ISender sender) : BaseController
         CancellationToken cancellationToken)
     {
         var adminId = GetCurrentUserId();
-        var command = new LearnHub.Application.Features.Admin.Commands.AssignRole.AssignRoleCommand(adminId, userId, request.Role);
+        var command = new AssignRoleCommand(adminId, userId, request.Role);
         var result = await _sender.Send(command, cancellationToken);
         return HandleResult(result);
     }
@@ -480,7 +481,7 @@ public sealed class AdminController(ISender sender) : BaseController
         CancellationToken cancellationToken)
     {
         var adminId = GetCurrentUserId();
-        var command = new LearnHub.Application.Features.Admin.Commands.ApproveInstructor.ApproveInstructorCommand(adminId, instructorUserId);
+        var command = new ApproveInstructorCommand(adminId, instructorUserId);
         var result = await _sender.Send(command, cancellationToken);
         return HandleResult(result);
     }
@@ -492,5 +493,3 @@ public sealed class AdminController(ISender sender) : BaseController
     }
     #endregion
 }
-
-public sealed record AssignRoleRequest(Role Role);

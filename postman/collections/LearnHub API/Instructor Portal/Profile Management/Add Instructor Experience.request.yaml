@@ -1,0 +1,18 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/instructors/profile/experiences"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "company": "TechCorp Global",
+      "title": "Senior Solutions Architect",
+      "description": "Cloud transformation",
+      "startDate": "2020-01-01",
+      "endDate": null,
+      "isCurrent": true,
+      "location": "New York, USA"
+    }
+order: 4000

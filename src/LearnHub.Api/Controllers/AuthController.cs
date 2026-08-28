@@ -3,7 +3,6 @@ using LearnHub.Application.Features.Identity;
 using LearnHub.Application.Features.Identity.Commands.ForgotPassword;
 using LearnHub.Application.Features.Identity.Commands.Login;
 using LearnHub.Application.Features.Identity.Commands.RefreshToken;
-using LearnHub.Application.Features.Identity.Commands.Register;
 using LearnHub.Application.Features.Identity.Commands.ResendVerificationEmail;
 using LearnHub.Application.Features.Identity.Commands.ResetPassword;
 using LearnHub.Application.Features.Identity.Commands.VerifyEmail;
@@ -51,24 +50,6 @@ public sealed class AuthController(ISender sender) : BaseController
             request.Password,
             request.ConfirmPassword,
             PhoneNumber: request.PhoneNumber);
-
-        var result = await _sender.Send(command, cancellationToken);
-        return HandleResult(result);
-    }
-
-    [HttpPost("register")]
-    public async Task<IActionResult> Register(
-        [FromBody] RegisterRequest request,
-        CancellationToken cancellationToken)
-    {
-        // Safe default boundary: legacy register defaults to Student role
-        var command = new LearnHub.Application.Features.Identity.Commands.RegisterStudent.RegisterStudentCommand(
-            request.FirstName,
-            request.LastName,
-            request.Email,
-            request.Password,
-            request.ConfirmPassword,
-            request.PhoneNumber);
 
         var result = await _sender.Send(command, cancellationToken);
         return HandleResult(result);

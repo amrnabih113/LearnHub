@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/admin/payments?status=Succeeded&pageNumber=1&pageSize=10"
+method: GET
+queryParams:
+  status: Succeeded
+  pageNumber: "1"
+  pageSize: "10"
+order: 3000

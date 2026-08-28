@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/lessons/{{lessonId}}/video"
+method: POST
+body:
+  type: formdata
+  content:
+    - type: file
+      key: file
+      src: []
+    - type: text
+      key: durationInMinutes
+      value: "15"
+order: 4000

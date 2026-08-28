@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/webhooks/stripe"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "type": "payment_intent.succeeded"
+    }
+auth:
+  type: noauth
+order: 1000

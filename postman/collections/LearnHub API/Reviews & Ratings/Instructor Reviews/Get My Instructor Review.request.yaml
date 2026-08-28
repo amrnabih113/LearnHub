@@ -1,0 +1,6 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/instructors/:instructorId/reviews/me"
+method: GET
+pathVariables:
+  instructorId: 55555555-5555-5555-5555-555555555555
+order: 4000

@@ -1,0 +1,7 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/courses/:courseId/reviews/:reviewId"
+method: DELETE
+pathVariables:
+  courseId: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+  reviewId: 7fa85f64-5717-4562-b3fc-2c963f66afa7
+order: 6000

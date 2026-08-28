@@ -1,0 +1,7 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/learning-paths/:id/courses/:courseId"
+method: DELETE
+pathVariables:
+  id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+  courseId: 11111111-1111-1111-1111-111111111111
+order: 9000

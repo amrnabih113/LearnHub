@@ -1,0 +1,14 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/instructors/profile"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "professionalTitle": "Lead Principal Architect",
+      "headline": "Domain-Driven Design & Microservices Expert",
+      "biography": "Updated professional bio."
+    }
+order: 2000

@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/admin/certificates?isRevoked=false&pageNumber=1&pageSize=10"
+method: GET
+queryParams:
+  isRevoked: "false"
+  pageNumber: "1"
+  pageSize: "10"
+order: 1000

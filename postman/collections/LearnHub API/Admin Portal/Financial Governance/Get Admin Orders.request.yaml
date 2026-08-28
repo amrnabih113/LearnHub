@@ -1,0 +1,8 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/admin/orders?status=Paid&pageNumber=1&pageSize=10"
+method: GET
+queryParams:
+  status: Paid
+  pageNumber: "1"
+  pageSize: "10"
+order: 1000

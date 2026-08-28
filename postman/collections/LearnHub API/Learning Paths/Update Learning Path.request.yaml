@@ -1,0 +1,19 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/learning-paths/:id"
+method: PUT
+headers:
+  Content-Type: application/json
+pathVariables:
+  id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+body:
+  type: text
+  content: |-
+    {
+      "title": "Full Stack .NET Developer - Senior Track",
+      "slug": "full-stack-dotnet",
+      "description": "Updated path description.",
+      "shortDescription": "Master senior .NET development.",
+      "thumbnailUrl": "https://example.com/thumb.jpg",
+      "level": "Advanced"
+    }
+order: 5000

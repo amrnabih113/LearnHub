@@ -1,0 +1,12 @@
+$kind: http-request
+url: "{{base_url}}/api/v1/quiz-attempts/{{attempt_id}}/answers/{{question_id}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "selectedChoiceId": "{{choice_id}}"
+    }
+order: 5000

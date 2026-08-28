@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/cart/checkout"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "successUrl": "https://localhost:7098/checkout/success",
+      "cancelUrl": "https://localhost:7098/checkout/cancel"
+    }
+order: 7000

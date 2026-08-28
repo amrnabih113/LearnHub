@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{baseUrl}}/api/v1/instructors/profile/certifications"
+method: DELETE
+order: 9000

@@ -1,3 +1,7 @@
+using LearnHub.Application.Features.Instructor.Commands.AddInstructorLink;
+using LearnHub.Application.Features.Instructor.Commands.UpdateInstructorProfile;
+using LearnHub.Application.Features.Instructor.Queries.GetInstructorProfile;
+using LearnHub.Contracts.Instructor.Requests;
 using LearnHub.Domain.Identity;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +20,7 @@ public sealed class InstructorProfileController(ISender sender) : BaseController
         Guid userId,
         CancellationToken cancellationToken)
     {
-        var query = new LearnHub.Application.Features.Instructor.Queries.GetInstructorProfile.GetInstructorProfileQuery(userId);
+        var query = new GetInstructorProfileQuery(userId);
         var result = await _sender.Send(query, cancellationToken);
         return HandleResult(result);
     }
@@ -28,7 +32,7 @@ public sealed class InstructorProfileController(ISender sender) : BaseController
         CancellationToken cancellationToken)
     {
         var instructorUserId = GetCurrentUserId();
-        var command = new LearnHub.Application.Features.Instructor.Commands.UpdateInstructorProfile.UpdateInstructorProfileCommand(
+        var command = new UpdateInstructorProfileCommand(
             instructorUserId,
             request.ProfessionalTitle,
             request.Headline,
@@ -45,7 +49,7 @@ public sealed class InstructorProfileController(ISender sender) : BaseController
         CancellationToken cancellationToken)
     {
         var instructorUserId = GetCurrentUserId();
-        var command = new LearnHub.Application.Features.Instructor.Commands.AddInstructorLink.AddInstructorLinkCommand(
+        var command = new AddInstructorLinkCommand(
             instructorUserId,
             request.Title,
             request.Url);
@@ -60,12 +64,3 @@ public sealed class InstructorProfileController(ISender sender) : BaseController
         return Guid.TryParse(userIdClaim, out var id) ? id : Guid.Empty;
     }
 }
-
-public sealed record UpdateInstructorProfileRequest(
-    string? ProfessionalTitle = null,
-    string? Headline = null,
-    string? Biography = null);
-
-public sealed record AddInstructorLinkRequest(
-    string Title,
-    string Url);
